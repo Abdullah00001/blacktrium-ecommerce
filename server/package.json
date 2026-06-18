@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "mohammad-event-management-server",
+  "name": "blacktrium-ecommerce-server",
   "author": "",
   "description": "",
   "license": "ISC",
@@ -10,8 +10,7 @@
   "scripts": {
     "build": "bash scripts/build.sh",
     "start": "node ./dist/server.js",
-    "dev": "npx prisma generate --config ${PRISMA_CONFIG_PATH:-../prisma.config.ts} --schema ${PRISMA_SCHEMA_PATH:-../prisma/schema.prisma} && nodemon",
-    "postinstall": "npx prisma generate --config ${PRISMA_CONFIG_PATH:-../prisma.config.ts} --schema ${PRISMA_SCHEMA_PATH:-../prisma/schema.prisma}",
+    "dev": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.{ts,js}\" --quiet",
     "create:module": "node ./scripts/createModule.js",
@@ -20,7 +19,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.893.0",
-    "@prisma/client": "^6.19.2",
     "axios": "^1.16.0",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.67.2",
@@ -37,11 +35,11 @@
     "jsonwebtoken": "^9.0.3",
     "mime-types": "^3.0.2",
     "morgan": "^1.10.1",
+    "mongoose": "^9.7.0",
     "multer": "^2.0.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^7.0.12",
     "otp-generator": "^4.0.1",
-    "prisma": "^6.19.2",
     "socket.io": "^4.8.3",
     "stripe": "^20.4.1",
     "uuid": "^13.0.0",

@@ -3,9 +3,7 @@ import { Job, Worker } from 'bullmq';
 import logger from '@/app/configs/logger.configs';
 import { getRedisClient } from '@/app/configs/redis.configs';
 import { requestContext } from '@/app/configs/requestContext.configs';
-import  prisma  from '@/app/configs/db.configs';
 import { getCountryFromGps } from '@/app/utils/geocoder.utils';
-import {Redis} from 'ioredis';
 
 export const createSystemWorker = (): Worker => {
   const SystemWorker = new Worker(
@@ -16,44 +14,6 @@ export const createSystemWorker = (): Worker => {
       return requestContext.run({ traceId }, async () => {
         try {
           switch (name) {
-            case 'update-user-visited-country': {
-              const { userLocation, userId } = data as {
-                userId: string;
-                userLocation: {
-                  lng: any;
-                  lat: any;
-                };
-              };
-              const { lat, lng } = userLocation;
-              const userProfile=await prisma.profile.findUnique({where:{userId}});
-              if(!userProfile){
-                logger.warn(`User profile not found for userId: ${userId}`);
-                return;
-              }
-              const visitedCountries =userProfile.countryVisited || [];
-              const countryInfo = await getCountryFromGps(lat, lng);
-              if (!countryInfo.countryCode && !countryInfo.countryName) {
-                logger.warn(
-                  `Could not determine country code for lat: ${lat}, lng: ${lng}`
-                );
-                return;
-              }
-              if (!visitedCountries.includes(countryInfo.countryCode)) {
-                visitedCountries.push(countryInfo.countryCode);
-                await prisma.profile.update({
-                  where: { userId },
-                  data: { countryVisited: visitedCountries },
-                });
-                logger.info(
-                  `Updated visited countries for userId: ${userId}, added: ${countryInfo.countryCode}`
-                );
-              } else {
-                logger.info(
-                  `Country code ${countryInfo.countryCode} already in visited list for userId: ${userId}`
-                );
-              }
-              return;
-            }
             default:
               logger.warn(`Unknown job name: ${name}`);
               return;

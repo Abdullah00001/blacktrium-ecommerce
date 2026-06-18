@@ -3,6 +3,7 @@ import { getEnv } from '@/app/utils/env.utils';
 
 export const env: TEnv = {
   NODE_ENV: getEnv('NODE_ENV'),
+  MONGODB_URI: getEnv('MONGODB_URI'),
   JWT_ACCESS_TOKEN_SECRET_KEY: getEnv('JWT_ACCESS_TOKEN_SECRET_KEY'),
   JWT_REFRESH_TOKEN_SECRET_KEY: getEnv('JWT_REFRESH_TOKEN_SECRET_KEY'),
   SMTP_HOST: getEnv('SMTP_HOST'),

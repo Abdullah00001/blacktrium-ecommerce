@@ -3,6 +3,7 @@ export type TEnv = {
   GEO_USER_AGENT: string;
   GOOGLE_MAPS_API_KEY: string;
   NODE_ENV: string;
+  MONGODB_URI: string;
   SMTP_HOST: string;
   SMTP_PORT: number;
   SMTP_USER: string;

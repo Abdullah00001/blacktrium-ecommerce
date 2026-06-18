@@ -1,11 +1,71 @@
-const { PrismaClient } = require('@prisma/client');
-require('dotenv').config({
-  path: require('path').join(__dirname, '..', '.env'),
-});
+const path = require('path');
 const readline = require('readline');
-const bcrypt = require('bcrypt');
 
-const prisma = new PrismaClient();
+const bcrypt = require('bcrypt');
+require('dotenv').config({
+  path: path.join(__dirname, '..', '.env'),
+});
+const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    isVerified: {
+      type: Boolean,
+      default: true,
+    },
+    accountStatus: {
+      type: String,
+      enum: ['ACTIVE', 'BLOCKED'],
+      default: 'ACTIVE',
+    },
+    role: {
+      type: String,
+      enum: ['ADMIN', 'USER'],
+      default: 'USER',
+    },
+    provider: {
+      type: String,
+      default: 'MANUAL',
+    },
+  },
+  { timestamps: true }
+);
+
+const ProfileSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    countryVisited: {
+      type: [String],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
+
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+const Profile =
+  mongoose.models.Profile || mongoose.model('Profile', ProfileSchema);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -74,12 +134,15 @@ const isValidEmail = (email) => {
 
 const createAdmin = async () => {
   try {
-    await prisma.$connect();
-    console.log('✓ Connected to PostgreSQL\n');
+    if (!process.env.MONGODB_URI) {
+      throw new Error('Missing Environment Variable: MONGODB_URI');
+    }
+
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('✓ Connected to MongoDB\n');
     console.log('Creating Admin User');
     console.log('-------------------\n');
 
-    // --- Name ---
     let name = '';
     while (!name || name.length < 4) {
       name = await question('Name: ');
@@ -91,7 +154,6 @@ const createAdmin = async () => {
       }
     }
 
-    // --- Email ---
     let email = '';
     while (!email || !isValidEmail(email)) {
       email = await question('Email: ');
@@ -101,7 +163,7 @@ const createAdmin = async () => {
         console.log('⚠ Please enter a valid email address!');
         email = '';
       } else {
-        const existingUser = await prisma.user.findUnique({ where: { email } });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
           console.log('⚠ A user with this email already exists!');
           email = '';
@@ -109,7 +171,6 @@ const createAdmin = async () => {
       }
     }
 
-    // --- Password ---
     let password = '';
     let confirmPassword = '';
     while (!password || password !== confirmPassword || password.length < 8) {
@@ -132,44 +193,53 @@ const createAdmin = async () => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const session = await mongoose.startSession();
+    let result;
 
-    // --- Create User + Profile in a transaction ---
-    const result = await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          email,
-          password: hashedPassword,
-          isVerified: true,
-          accountStatus: 'ACTIVE',
-          role: 'ADMIN',
-          provider: 'MANUAL',
-        },
-      });
+    await session.withTransaction(async () => {
+      const [user] = await User.create(
+        [
+          {
+            email,
+            password: hashedPassword,
+            isVerified: true,
+            accountStatus: 'ACTIVE',
+            role: 'ADMIN',
+            provider: 'MANUAL',
+          },
+        ],
+        { session }
+      );
 
-      const profile = await tx.profile.create({
-        data: {
-          userId: user.id,
-          name,
-        },
-      });
+      const [profile] = await Profile.create(
+        [
+          {
+            userId: user._id.toString(),
+            name,
+          },
+        ],
+        { session }
+      );
 
-      return { user, profile };
+      result = { user, profile };
     });
+
+    await session.endSession();
 
     console.log('\n✓ Admin user created successfully!');
     console.log(`Email:    ${email}`);
     console.log(`Name:     ${name}`);
     console.log(`Role:     ADMIN`);
     console.log(`Verified: Yes`);
-    console.log(`ID:       ${result.user.id}`);
+    console.log(`ID:       ${result.user._id.toString()}`);
 
     rl.close();
-    await prisma.$disconnect();
+    await mongoose.disconnect();
     process.exit(0);
   } catch (error) {
     console.error('\n✗ Error creating admin:', error.message);
     rl.close();
-    await prisma.$disconnect();
+    await mongoose.disconnect();
     process.exit(1);
   }
 };

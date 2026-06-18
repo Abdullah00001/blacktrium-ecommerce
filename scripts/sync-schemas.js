@@ -8,7 +8,7 @@ const srcModulesDir = path.join(__dirname, "..", "schemas", "modules");
 const destinations = [
   path.join(__dirname, "..", "server", "src", "app", "schemas"),
   path.join(__dirname, "..", "worker", "src", "app", "schemas"),
-  path.join(__dirname, "..", "cron", "src", "app", "schemas"),
+  path.join(__dirname, "..", "corn", "src", "app", "schemas"),
 ];
 
 function syncSchemas() {

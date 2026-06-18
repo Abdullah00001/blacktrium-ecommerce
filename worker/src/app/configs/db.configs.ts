@@ -1,30 +1,30 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import mongoose from 'mongoose';
 
+import { env } from '@/env';
 import logger from '@/app/configs/logger.configs';
 
-const prisma = new PrismaClient({
-  log: [
-    { emit: 'event', level: 'query' },
-    { emit: 'event', level: 'error' },
-    { emit: 'event', level: 'warn' },
-  ],
+mongoose.connection.on('error', (error) => {
+  logger.error('[MongoDB] Connection error', { error });
 });
 
-prisma.$on('error', (e: Prisma.LogEvent) =>
-  logger.error(`[Prisma] ${e.message}`)
-);
-prisma.$on('warn', (e: Prisma.LogEvent) =>
-  logger.warn(`[Prisma] ${e.message}`)
-);
+mongoose.connection.on('disconnected', () => {
+  logger.warn('[MongoDB] Disconnected');
+});
 
 export const connectDatabase = async (): Promise<void> => {
-  await prisma.$connect();
-  console.log('[Database] Connected');
+  if (mongoose.connection.readyState === 1) return;
+
+  await mongoose.connect(env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 10_000,
+  });
+  console.log('[MongoDB] Connected');
 };
 
 export const disconnectDatabase = async (): Promise<void> => {
-  await prisma.$disconnect();
-  console.log('[Database] Disconnected');
+  if (mongoose.connection.readyState === 0) return;
+
+  await mongoose.disconnect();
+  console.log('[MongoDB] Disconnected');
 };
 
-export default prisma;
+export default mongoose;

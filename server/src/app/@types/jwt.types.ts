@@ -1,6 +1,7 @@
-import { Role, User } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { Socket } from 'socket.io';
+
+import { IUser, Role } from '@/app/models/user.model';
 
 export interface ITokenPayload extends JwtPayload {
   sub: string;
@@ -11,6 +12,6 @@ export interface ITokenPayload extends JwtPayload {
 }
 
 export interface AuthenticatedSocket extends Socket {
-  user?: User;
+  user?: IUser;
   traceId?: string;
 }
