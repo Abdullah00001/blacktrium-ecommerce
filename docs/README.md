@@ -1,20 +1,38 @@
 # Documentation Index
 
-This folder contains developer-focused documentation for the repository.
+This folder contains the development documentation for the repository.
 
-## Guides
+## Recommended Reading Order
 
-- [Development Guide](development.md)
+1. Start with the root onboarding guide: [README.md](../README.md)
+2. Read the Docker-first development workflow: [development.md](development.md)
+3. Review service-specific guides for runtime responsibilities:
+   - [server/README.md](../server/README.md)
+   - [worker/README.md](../worker/README.md)
+   - [corn/README.md](../corn/README.md)
+4. Use the shared schema guide when creating or syncing modules: [schemas/README.md](../schemas/README.md)
 
-## Suggested reading order
+## Documentation Map
 
-1. Read this index for the repository layout.
-2. Follow the development guide for setup and day-to-day workflows.
-3. Refer to each service README for service-specific runtime behavior.
+| Document                                  | Purpose                                      |
+| ----------------------------------------- | -------------------------------------------- |
+| [README.md](../README.md)                 | Repository overview, setup, and architecture |
+| [development.md](development.md)          | Docker-first developer workflow              |
+| [server/README.md](../server/README.md)   | API service details                          |
+| [worker/README.md](../worker/README.md)   | Queue worker details                         |
+| [corn/README.md](../corn/README.md)       | Scheduler details                            |
+| [schemas/README.md](../schemas/README.md) | Schema generation and sync process           |
 
-## High-level architecture
+## Architecture Summary
 
-- The API layer lives in the `server` service.
-- Worker processes for background jobs live in `worker`.
-- Scheduler/cron behavior lives in `corn`.
-- Shared schema tooling lives in `schemas` and is synchronized into runtime services.
+- The API layer runs in the `server` service.
+- Long-running background jobs run in `worker`.
+- Scheduled tasks run in `corn`.
+- Shared schema definitions live under `schemas/` and are synchronized into the runtime services.
+
+## Developer Workflow Checklist
+
+- Copy service `.env.example` files to `.env`.
+- Run `docker compose up --build` from the repository root.
+- Verify container logs with `docker compose logs -f`.
+- Use `npm run sync:schemas` when schema files change.

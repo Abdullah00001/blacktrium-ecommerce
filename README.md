@@ -1,32 +1,28 @@
-# Blacktrium E-commerce Monorepo
+# Blacktrium E-commerce Backend
+
+> Warning: This project is designed to run in Docker containers. The supported development and runtime model is Docker-first. You should install only Docker Desktop (or Docker Engine + Compose) and Node.js for scripting convenience. You do not need to run MongoDB, Redis, or the services directly on your host.
+
+## 1. Purpose
 
 This repository contains the backend services for the Blacktrium e-commerce platform:
 
-- **server**: Express API and Socket.IO server
-- **worker**: BullMQ background worker service
-- **corn**: scheduled job runner (cron-style service)
-- **schemas**: shared schema/module generator source
-
-## 1. Project Overview
-
-The codebase is organized as a monorepo with containerized development support. Each runtime service is isolated, while shared schema generation utilities live at the repository root.
-
-### Runtime responsibilities
-
-| Service  | Purpose                                   | Primary runtime              |
-| -------- | ----------------------------------------- | ---------------------------- |
-| `server` | REST API, webhook handlers, auth, sockets | Node.js + Express            |
-| `worker` | Background job processing                 | Node.js + BullMQ             |
-| `corn`   | Scheduled jobs and recurring tasks        | Node.js + cron-style startup |
+- `server`: Express API, Socket.IO, auth, and business endpoints
+- `worker`: BullMQ worker processes for background jobs
+- `corn`: scheduled/cron-style job runner
+- `schemas`: shared schema source-of-truth and scaffolding utilities
 
 ## 2. Prerequisites
 
-Before running the project locally, install:
+Required for local setup:
 
-- Node.js (recommended LTS)
+- Docker Desktop or Docker Engine with Docker Compose
+- Node.js (LTS recommended)
 - npm
-- Docker Desktop or Docker Engine + Docker Compose
-- MongoDB and Redis (provided via Docker Compose if you use the default setup)
+
+Optional but useful:
+
+- Git
+- VS Code with Docker and Dev Containers support
 
 ## 3. Repository Layout
 
@@ -39,27 +35,32 @@ Before running the project locally, install:
 ├── server/
 ├── worker/
 ├── corn/
-└── docs/
+├── docs/
+└── README.md
 ```
 
-## 4. Clone and Setup
+## 4. Documentation Map
 
-### Clone the repository
+Use this map to navigate the repository:
+
+| Area                  | Purpose                               | Location                                   |
+| --------------------- | ------------------------------------- | ------------------------------------------ |
+| Root setup guide      | Full project onboarding               | [README.md](README.md)                     |
+| Developer docs index  | Documentation navigation              | [docs/README.md](docs/README.md)           |
+| Development workflow  | Docker-first workflow and scripts     | [docs/development.md](docs/development.md) |
+| Shared schema tooling | Schema generation and synchronization | [schemas/README.md](schemas/README.md)     |
+| API service docs      | Server runtime details                | [server/README.md](server/README.md)       |
+| Queue worker docs     | Worker runtime details                | [worker/README.md](worker/README.md)       |
+| Scheduler docs        | Corn runtime details                  | [corn/README.md](corn/README.md)           |
+
+## 5. Clone and Bootstrap
 
 ```bash
 git clone <your-repo-url>
 cd blacktrium-ecommerce
 ```
 
-### Environment files
-
-The project intentionally keeps environment files inside each service folder:
-
-- `server/.env`
-- `worker/.env`
-- `corn/.env`
-
-Copy the example files if needed:
+Create service-local environment files:
 
 ```bash
 cp server/.env.example server/.env
@@ -67,17 +68,22 @@ cp worker/.env.example worker/.env
 cp corn/.env.example corn/.env
 ```
 
-> Do not create a root-level `.env` file for this setup.
+> Do not create a root-level `.env` file for this repository.
 
-## 5. Running the Project
-
-### Option A: Docker Compose (recommended)
+## 6. Run the Entire Project with Docker
 
 From the repository root:
 
 ```bash
 docker compose up --build
 ```
+
+This command will:
+
+- build the `server`, `worker`, and `corn` containers
+- start Redis and MongoDB services
+- mount local source folders into the containers for live development
+- keep dependencies inside container volumes
 
 Useful commands:
 
@@ -89,92 +95,80 @@ docker compose logs -f worker
 docker compose logs -f corn
 ```
 
-### Option B: Run services locally
+## 7. Root Scripts
 
-Each service has its own `package.json` with development scripts.
-
-```bash
-cd server
-npm install
-npm run dev
-```
-
-```bash
-cd worker
-npm install
-npm run dev
-```
-
-```bash
-cd corn
-npm install
-npm run dev
-```
-
-## 6. Root Scripts
-
-The root package.json exposes schema utilities:
+The root project defines the schema workflow shortcuts:
 
 ```bash
 npm run g:schema
 npm run sync:schemas
 ```
 
-- `g:schema` generates a new schema/module scaffold.
-- `sync:schemas` copies schema definitions from the shared `schemas/` project into the runtime services.
+- `g:schema` creates a new schema/module scaffold under the shared schema directory.
+- `sync:schemas` copies generated schema content into the runtime services.
 
-## 7. Development Workflow
+## 8. Schema Workflow
 
-1. Make changes in the relevant service.
-2. If you add or modify schema modules, run:
-   ```bash
-   npm run g:schema
-   npm run sync:schemas
-   ```
-3. Restart the affected service/container if needed.
-4. Verify logs and health endpoints.
+The schema source-of-truth lives in [schemas](schemas).
 
-## 8. Health and Verification
+When you add or update a schema module:
 
-The server exposes a simple health endpoint:
+```bash
+npm run g:schema
+npm run sync:schemas
+```
+
+This keeps the runtime services aligned with the root schema definitions.
+
+## 9. Service Responsibilities
+
+| Service  | Role                         | Notes                               |
+| -------- | ---------------------------- | ----------------------------------- |
+| `server` | API, auth, sockets, webhooks | Exposes health checks and endpoints |
+| `worker` | BullMQ background workers    | Consumes queue jobs                 |
+| `corn`   | Scheduled jobs               | Long-running scheduler process      |
+
+## 10. Health Check
+
+The API endpoint for health verification is:
 
 ```http
 GET /health
 ```
 
-Expected result:
+Expected response:
 
 - HTTP `200`
-- JSON response with `success: true`
+- JSON payload containing `success: true`
 
-## 9. Troubleshooting
+## 11. Troubleshooting
 
-### Service starts but schema imports fail
+### Docker build or startup issues
 
-Run the schema sync command again:
+```bash
+docker compose down
+docker compose up --build
+```
+
+### Schema files not appearing in runtime services
+
+Run:
 
 ```bash
 npm run sync:schemas
 ```
 
-### Docker build issues
+### Environment values are missing
 
-Rebuild from scratch:
+Make sure the service-level `.env` files exist and are correctly populated:
 
-```bash
-docker compose down
- docker compose up --build
-```
+- `server/.env`
+- `worker/.env`
+- `corn/.env`
 
-### Environment variables not loaded
+## 12. Contribution Guidelines
 
-Ensure the correct service-level `.env` file exists and matches the service you are running.
-
-## 10. Contributing
-
-When contributing:
-
-- keep service-specific logic inside its own folder
-- avoid creating root-level environment files
-- update docs when adding new scripts, tools, or services
-- prefer clear, service-specific naming and structure
+- Keep service-specific logic inside the relevant service folder.
+- Do not add root-level runtime environment files.
+- Update documentation whenever scripts or workflows change.
+- Prefer Docker-based validation for cross-service behavior.

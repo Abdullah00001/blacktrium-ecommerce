@@ -1,60 +1,60 @@
 # Development Guide
 
-This guide explains how to work effectively in the repository.
+This guide describes the official development workflow for the repository.
 
-## 1. Environment Setup
+> Important: The project is Docker-first. Developers should run the stack with Docker Compose. The host machine is expected to have only Docker and Node.js installed.
 
-Use service-level environment files only:
+## 1. Required Tools
 
-- `server/.env`
-- `worker/.env`
-- `corn/.env`
+- Docker Desktop or Docker Engine + Compose
+- Node.js (for script execution and code editing)
+- npm
 
-The root repository should not contain the runtime `.env` files.
+## 2. Environment Setup
 
-## 2. Local Development with Docker
+Create service-level environment files only:
 
-Start all services:
+```bash
+cp server/.env.example server/.env
+cp worker/.env.example worker/.env
+cp corn/.env.example corn/.env
+```
+
+Do not create a root-level `.env` file.
+
+## 3. Start the Project
+
+Run the full stack from the repository root:
 
 ```bash
 docker compose up --build
 ```
 
-The services will mount local source code into their containers so changes are reflected during development.
+Docker Compose will:
 
-Stop the stack:
+- build service images
+- start MongoDB and Redis
+- attach live source folders into the containers
+- preserve container-installed dependencies with anonymous volumes
+
+To stop the stack:
 
 ```bash
 docker compose down
 ```
 
-## 3. Local Development Without Docker
-
-### Server
+## 4. Useful Docker Commands
 
 ```bash
-cd server
-npm install
-npm run dev
+docker compose ps
+docker compose logs -f server
+docker compose logs -f worker
+docker compose logs -f corn
+docker compose restart server
+docker compose exec server sh
 ```
 
-### Worker
-
-```bash
-cd worker
-npm install
-npm run dev
-```
-
-### Corn
-
-```bash
-cd corn
-npm install
-npm run dev
-```
-
-## 4. Scripts Reference
+## 5. Script Reference
 
 ### Root scripts
 
@@ -96,34 +96,34 @@ npm run format
 npm run lint
 ```
 
-## 5. Schema Workflow
+## 6. Schema Workflow
 
-The repository uses a shared schema source under `schemas/`.
+The shared schema source lives under [schemas](../schemas).
 
-To generate and sync schema definitions:
+When you create or update a schema module:
 
 ```bash
 npm run g:schema
 npm run sync:schemas
 ```
 
-This keeps runtime service schemas aligned with the source-of-truth schema definitions.
+This ensures the generated schema files are copied into:
 
-## 6. Logging and Debugging
+- `server/src/app/schemas`
+- `worker/src/app/schemas`
+- `corn/src/app/schemas`
 
-Use Docker logs during development:
+## 7. Developer Workflow
 
-```bash
-docker compose logs -f server
-docker compose logs -f worker
-docker compose logs -f corn
-```
+1. Make code changes in the relevant service folder.
+2. Use Docker Compose to rebuild/restart the affected service when needed.
+3. Verify logs with `docker compose logs -f <service>`.
+4. Run `npm run sync:schemas` whenever schema definitions change.
+5. Keep root-level environment files out of the repository.
 
-You can also run each service individually to see service-specific logs.
+## 8. Recommended Practices
 
-## 7. Recommended Team Practices
-
-- Keep environment files out of the repository root.
-- Use the service-local `.env.example` files as templates.
-- Prefer running Docker Compose when validating cross-service behavior.
-- Update docs when scripts or service responsibilities change.
+- Prefer Docker Compose for all validation and integration checks.
+- Do not rely on host-installed MongoDB or Redis for local development.
+- Keep documentation updated whenever scripts, services, or workflows change.
+- Use service-local `.env.example` files as templates for new contributors.

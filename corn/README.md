@@ -2,12 +2,14 @@
 
 The `corn` service handles scheduled and recurring background tasks.
 
+> Docker-first note: this service should be started through the root Docker Compose setup so it can use the shared Redis and MongoDB containers correctly.
+
 ## Responsibilities
 
-- cron-style task startup
-- scheduler registration and loader logic
-- periodic maintenance jobs
-- Redis and MongoDB access for scheduled workflows
+- scheduler startup and lifecycle management
+- registration of recurring jobs
+- periodic maintenance and scheduled workflows
+- Redis and MongoDB access for job coordination
 
 ## Scripts
 
@@ -23,24 +25,22 @@ npm run lint
 
 ### Script details
 
-- `build`: builds the compiled service output
-- `start`: runs the compiled cron service
-- `dev`: runs the service in development mode using nodemon
-- `format`: formats code
+- `build`: creates a production build
+- `start`: runs the compiled scheduler service
+- `dev`: starts the service in development mode with nodemon
+- `format`: formats the source code
 - `lint`: checks for lint issues
 
 ## Development Notes
 
-- The service is intended to stay running continuously when scheduled work is needed.
-- It depends on Redis and MongoDB for runtime state and job coordination.
-- It is designed to mirror the worker startup behavior for long-lived background processing.
+- The service is meant to stay running continuously when scheduled workflows are needed.
+- It depends on Redis and MongoDB for runtime state and coordination.
+- It mirrors the worker startup pattern so that background jobs can be managed consistently.
 
-## Useful commands
-
-```bash
-npm run dev
-```
+## Useful Commands
 
 ```bash
 docker compose logs -f corn
+docker compose restart corn
+docker compose exec corn sh
 ```

@@ -1,15 +1,17 @@
 # Server Service
 
-The `server` service is the main HTTP API for the platform. It exposes REST endpoints, socket connectivity, authentication flows, and related business logic.
+The `server` service is the main HTTP API for the platform. It handles REST endpoints, Socket.IO flows, authentication, middleware, media utilities, and request orchestration.
+
+> Docker-first note: this service should be run through the root Docker Compose setup. You should not rely on starting MongoDB or Redis directly on the host.
 
 ## Responsibilities
 
-- API routes and middleware
-- request validation and response formatting
-- Socket.IO integration
+- API routing and middleware composition
+- request/response handling and validation
+- Socket.IO setup and authentication
 - Redis and MongoDB access
-- file and media utilities
-- health checks and startup orchestration
+- health endpoint and startup orchestration
+- file/media-related utilities
 
 ## Scripts
 
@@ -28,37 +30,40 @@ npm run create:subscriptionFeature
 
 ### Script details
 
-- `build`: builds the service for production output
+- `build`: produces a production build
 - `start`: runs the compiled server
-- `dev`: starts the service in development mode using nodemon
-- `format`: formats source code
-- `lint`: validates code style and correctness
-- `create:module`: scaffolds a new module or feature area
-- `create:admin`: creates an admin-related utility or setup entry point
-- `create:subscriptionFeature`: adds subscription-related scaffolding if needed
+- `dev`: runs the server with nodemon for development
+- `format`: formats the source tree
+- `lint`: runs the linter
+- `create:module`: scaffolds a new module
+- `create:admin`: runs the admin setup utility
+- `create:subscriptionFeature`: runs the subscription scaffolding utility
 
 ## Development Notes
 
-- The service listens on port `5000` by default.
-- It expects service-local environment values from `.env`.
-- The service is intended to be run alongside Redis and MongoDB, either through Docker Compose or by starting those dependencies separately.
-
-## Useful commands
+- Default port: `5000`
+- The service expects a service-local `.env` file.
+- For a full environment, start the stack from the repository root:
 
 ```bash
-npm run dev
+docker compose up --build
 ```
+
+## Useful Commands
 
 ```bash
 docker compose logs -f server
+docker compose restart server
+docker compose exec server sh
 ```
 
-## Health check
-
-The service exposes:
+## Health Check
 
 ```http
 GET /health
 ```
 
-This should return a successful JSON response when the server is running correctly.
+Expected result:
+
+- HTTP `200`
+- JSON payload with `success: true`

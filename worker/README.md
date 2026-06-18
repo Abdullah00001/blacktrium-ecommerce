@@ -1,14 +1,16 @@
 # Worker Service
 
-The `worker` service processes background jobs using BullMQ.
+The `worker` service processes asynchronous jobs through BullMQ.
+
+> Docker-first note: this service should be started through the repository root Docker Compose stack. It relies on Redis and MongoDB that are provided by the compose environment.
 
 ## Responsibilities
 
-- queue consumption
-- async job handlers
-- email processing
-- system/background workflows
-- communication with Redis and MongoDB
+- queue consumers
+- async job processing
+- email-related background flows
+- system maintenance and worker orchestration
+- Redis and MongoDB integration
 
 ## Scripts
 
@@ -24,24 +26,22 @@ npm run lint
 
 ### Script details
 
-- `build`: builds the compiled worker output
-- `start`: runs the compiled worker
-- `dev`: runs the worker in development mode using nodemon
+- `build`: creates a production build
+- `start`: runs the built worker
+- `dev`: starts the worker in development mode with nodemon
 - `format`: formats TypeScript files
-- `lint`: checks code quality
+- `lint`: runs the linter
 
 ## Development Notes
 
 - The worker depends on Redis for queue access.
-- It should be started alongside the MongoDB and Redis services.
-- The worker process is designed for continuous background operation and does not expose a public HTTP API.
+- It should be run alongside the shared MongoDB and Redis containers.
+- This service does not expose a public HTTP API.
 
-## Useful commands
-
-```bash
-npm run dev
-```
+## Useful Commands
 
 ```bash
 docker compose logs -f worker
+docker compose restart worker
+docker compose exec worker sh
 ```
