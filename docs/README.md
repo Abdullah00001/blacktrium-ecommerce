@@ -35,4 +35,5 @@ This folder contains the development documentation for the repository.
 - Copy service `.env.example` files to `.env`.
 - Run `docker compose up --build` from the repository root.
 - Verify container logs with `docker compose logs -f`.
-- Use `npm run sync:schemas` when schema files change.
+- Use `npm run create:schema <module-name>` to create a new shared schema module.
+- Use `npm run sync:schema` whenever schema files change.

@@ -1,6 +1,10 @@
 # Blacktrium E-commerce Backend
 
-> Warning: This project is designed to run in Docker containers. The supported development and runtime model is Docker-first. You should install only Docker Desktop (or Docker Engine + Compose) and Node.js for scripting convenience. You do not need to run MongoDB, Redis, or the services directly on your host.
+> [!WARNING]
+> **This project is strictly Docker-centric.**
+> Do not try to run the backend services, MongoDB, Redis, or any dependencies directly on your host machine.
+> The supported development flow is to use Docker Compose for everything.
+> Install Docker and Node.js only for container orchestration and scripting convenience.
 
 ## 1. Purpose
 
@@ -100,25 +104,36 @@ docker compose logs -f corn
 The root project defines the schema workflow shortcuts:
 
 ```bash
-npm run g:schema
-npm run sync:schemas
+npm run create:schema <module-name>
+npm run sync:schema
 ```
 
-- `g:schema` creates a new schema/module scaffold under the shared schema directory.
-- `sync:schemas` copies generated schema content into the runtime services.
+- `create:schema <module-name>` creates a new shared schema module under [schemas](schemas/modules).
+- `sync:schema` copies the shared schema output into the runtime services.
 
 ## 8. Schema Workflow
 
 The schema source-of-truth lives in [schemas](schemas).
 
-When you add or update a schema module:
+When you create a new module, run:
 
 ```bash
-npm run g:schema
-npm run sync:schemas
+npm run create:schema product-category
 ```
 
-This keeps the runtime services aligned with the root schema definitions.
+This creates the module scaffold under:
+
+```text
+schemas/modules/product-category/
+```
+
+After editing files in that module, sync the changes into the runtime services:
+
+```bash
+npm run sync:schema
+```
+
+Run `npm run sync:schema` every time you change schema files under [schemas](schemas/modules).
 
 ## 9. Service Responsibilities
 
@@ -155,7 +170,7 @@ docker compose up --build
 Run:
 
 ```bash
-npm run sync:schemas
+npm run sync:schema
 ```
 
 ### Environment values are missing

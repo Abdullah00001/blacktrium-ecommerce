@@ -2,6 +2,11 @@
 
 The `corn` service handles scheduled and recurring background tasks.
 
+> [!WARNING]
+> **This project is strictly Docker-centric.**
+> Run the scheduler only through Docker Compose.
+> Do not start Redis, MongoDB, or the scheduler process directly on the host.
+
 > Docker-first note: this service should be started through the root Docker Compose setup so it can use the shared Redis and MongoDB containers correctly.
 
 ## Responsibilities

@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "g:schema": "node schemas/scripts/create-module.js",
-    "sync:schemas": "node scripts/sync-schemas.js",
+    "create:schema": "node schemas/scripts/create-module.js",
+    "sync:schema": "node scripts/sync-schemas.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

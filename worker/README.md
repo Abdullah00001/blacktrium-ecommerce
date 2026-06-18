@@ -2,6 +2,11 @@
 
 The `worker` service processes asynchronous jobs through BullMQ.
 
+> [!WARNING]
+> **This project is strictly Docker-centric.**
+> Run the worker only through Docker Compose.
+> Do not start Redis, MongoDB, or the worker process directly on the host.
+
 > Docker-first note: this service should be started through the repository root Docker Compose stack. It relies on Redis and MongoDB that are provided by the compose environment.
 
 ## Responsibilities

@@ -2,6 +2,11 @@
 
 The `server` service is the main HTTP API for the platform. It handles REST endpoints, Socket.IO flows, authentication, middleware, media utilities, and request orchestration.
 
+> [!WARNING]
+> **This project is strictly Docker-centric.**
+> Run the API only through Docker Compose.
+> Do not start MongoDB, Redis, or the server process directly on the host.
+
 > Docker-first note: this service should be run through the root Docker Compose setup. You should not rely on starting MongoDB or Redis directly on the host.
 
 ## Responsibilities

@@ -2,7 +2,10 @@
 
 This guide describes the official development workflow for the repository.
 
-> Important: The project is Docker-first. Developers should run the stack with Docker Compose. The host machine is expected to have only Docker and Node.js installed.
+> [!WARNING]
+> **This repository is strictly Docker-centric.**
+> Do not run MongoDB, Redis, or the backend services locally on your machine.
+> Use Docker Compose for all development, testing, and runtime validation.
 
 ## 1. Required Tools
 
@@ -59,8 +62,8 @@ docker compose exec server sh
 ### Root scripts
 
 ```bash
-npm run g:schema
-npm run sync:schemas
+npm run create:schema <module-name>
+npm run sync:schema
 ```
 
 ### Server scripts
@@ -100,11 +103,18 @@ npm run lint
 
 The shared schema source lives under [schemas](../schemas).
 
-When you create or update a schema module:
+When you create a new schema module, run:
 
 ```bash
-npm run g:schema
-npm run sync:schemas
+npm run create:schema product-category
+```
+
+This creates the new module scaffold under [schemas](../schemas/modules).
+
+After editing any schema files, sync them into the runtime services:
+
+```bash
+npm run sync:schema
 ```
 
 This ensures the generated schema files are copied into:
@@ -118,7 +128,7 @@ This ensures the generated schema files are copied into:
 1. Make code changes in the relevant service folder.
 2. Use Docker Compose to rebuild/restart the affected service when needed.
 3. Verify logs with `docker compose logs -f <service>`.
-4. Run `npm run sync:schemas` whenever schema definitions change.
+4. Run `npm run sync:schema` whenever schema definitions change.
 5. Keep root-level environment files out of the repository.
 
 ## 8. Recommended Practices
