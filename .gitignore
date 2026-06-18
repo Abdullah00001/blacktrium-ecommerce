@@ -1,3 +1,7 @@
 server/src/app/schemas/
 worker/src/app/schemas/
 corn/src/app/schemas/
+
+server/.env
+worker/.env
+corn/.env
