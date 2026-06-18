@@ -11,6 +11,40 @@ const destinations = [
   path.join(__dirname, "..", "corn", "src", "app", "schemas"),
 ];
 
+function getSchemaModuleNames(dir) {
+  if (!fs.existsSync(dir)) {
+    return new Set();
+  }
+
+  return new Set(
+    fs
+      .readdirSync(dir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name),
+  );
+}
+
+function rewriteSchemaImportPaths(filePath, content, moduleNames) {
+  return content.replace(
+    /(["'])@\/([^"']+)(["'])/g,
+    (match, quote, aliasPath) => {
+      const segments = aliasPath.split("/");
+      const moduleName = segments[0];
+
+      if (!moduleNames.has(moduleName)) {
+        return match;
+      }
+
+      const normalizedPath = segments.slice(1).join("/");
+      const rewrittenPath = normalizedPath
+        ? `@/app/schemas/${moduleName}/${normalizedPath}`
+        : `@/app/schemas/${moduleName}`;
+
+      return `${quote}${rewrittenPath}${quote}`;
+    },
+  );
+}
+
 function syncSchemas() {
   if (!fs.existsSync(srcModulesDir)) {
     console.error(
@@ -19,6 +53,8 @@ function syncSchemas() {
     );
     process.exit(1);
   }
+
+  const moduleNames = getSchemaModuleNames(srcModulesDir);
 
   console.log("\x1b[36m%s\x1b[0m", "🔄 Syncing schemas across services...");
 
@@ -34,6 +70,39 @@ function syncSchemas() {
 
       // 3. Copy modules folder contents over
       fs.cpSync(srcModulesDir, dest, { recursive: true });
+
+      // 4. Rewrite schema alias imports so they match the service layout
+      const copiedRoot = path.join(dest);
+      const copiedModuleDirs = fs.readdirSync(copiedRoot, {
+        withFileTypes: true,
+      });
+
+      copiedModuleDirs.forEach((entry) => {
+        if (!entry.isDirectory()) {
+          return;
+        }
+
+        const moduleDir = path.join(copiedRoot, entry.name);
+        const files = fs.readdirSync(moduleDir, { withFileTypes: true });
+
+        files.forEach((file) => {
+          if (!file.isFile() || !file.name.endsWith(".ts")) {
+            return;
+          }
+
+          const filePath = path.join(moduleDir, file.name);
+          const original = fs.readFileSync(filePath, "utf8");
+          const rewritten = rewriteSchemaImportPaths(
+            filePath,
+            original,
+            moduleNames,
+          );
+
+          if (rewritten !== original) {
+            fs.writeFileSync(filePath, rewritten, "utf8");
+          }
+        });
+      });
 
       // Get relative path for cleaner logs
       const relativeDest = path.relative(path.join(__dirname, ".."), dest);
