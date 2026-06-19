@@ -33,7 +33,7 @@ const typesFilePath = path.join(targetDir, `${folderName}.types.ts`);
 
 // 3. File Templates
 const schemaTemplate = `import { Schema, model, Model } from 'mongoose';
-import { I${pascalName} } from './${folderName}.types';
+import { I${pascalName} } from '@/${folderName}/${folderName}.types';
 
 const ${pascalName}Schema = new Schema<I${pascalName}>({
   // Define your schema properties here
@@ -44,10 +44,10 @@ const ${pascalName}Schema = new Schema<I${pascalName}>({
 export const ${pascalName}Model: Model<I${pascalName}> = model<I${pascalName}>('${pascalName}', ${pascalName}Schema);
 `;
 
-const typesTemplate = `import { Document } from 'mongoose';
+const typesTemplate = `import { Document, Types } from 'mongoose';
 
 export interface I${pascalName} extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
