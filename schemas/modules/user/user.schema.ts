@@ -3,6 +3,7 @@ import { IUser } from "@/user/user.types";
 
 const UserSchema = new Schema<IUser>(
   {
+    // Define your schema properties here
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     password: { type: String, required: true },
