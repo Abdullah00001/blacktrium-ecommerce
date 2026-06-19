@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
-const routes: Router[] = [];
+import AuthRoutes from '@/app/modules/auth/auth.routes';
+
+const routes: Router[] = [AuthRoutes];
 
 const v1Routes = Router();
 

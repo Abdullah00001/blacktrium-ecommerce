@@ -44,10 +44,9 @@ const ${pascalName}Schema = new Schema<I${pascalName}>({
 export const ${pascalName}Model: Model<I${pascalName}> = model<I${pascalName}>('${pascalName}', ${pascalName}Schema);
 `;
 
-const typesTemplate = `import { Document, Types } from 'mongoose';
+const typesTemplate = `import { Document } from 'mongoose';
 
 export interface I${pascalName} extends Document {
-  _id: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,5 +1,5 @@
 import { Schema, model, Model } from "mongoose";
-import { IUser } from "@/user/user.types";
+import { AccountStatus, IUser } from "@/user/user.types";
 
 const UserSchema = new Schema<IUser>(
   {
@@ -9,6 +9,13 @@ const UserSchema = new Schema<IUser>(
     password: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, default: null },
+    isVerified: { type: Boolean, default: false },
+    accountStatus: {
+      type: String,
+      enum: AccountStatus,
+      default: AccountStatus.ACTIVE,
+    },
+    isLegalTermsAccepted: { type: Boolean, required: true },
   },
   {
     timestamps: true,

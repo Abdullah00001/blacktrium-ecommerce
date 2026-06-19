@@ -1,8 +1,7 @@
-import { Document, Types } from 'mongoose';
+import { Document, Schema } from "mongoose";
 
 export interface IProfile extends Document {
-  _id: Types.ObjectId;
-  userId:Types.ObjectId;
+  userId:Schema.Types.ObjectId;
   profileAvatar:string|null;
   interest:string[];
   country:string;
