@@ -30,3 +30,42 @@ export const DEFAULT_LIMIT = 10;
 export const DEFAULT_RADIUS_KM = 5;
 export const EARTH_RADIUS_KM = 6371;
 export const SUBSCRIPTION_FEATURE_CACHE_EXPIRY = '1d';
+
+/**
+ * ==============================================
+ * ------------------REDIS KEYS------------------
+ * ==============================================
+ */
+
+/**
+ * ⚠️ DEVELOPER NOTICE: REDIS KEY PREFIXES
+ *
+ * Rules for adding new prefixes:
+ * 1. DO NOT include a trailing colon (:) at the end of the string.
+ * 2. The `createRedisKey` utility automatically manages colon separators.
+ *
+ * Adding a trailing colon here will cause broken keys like 'user:otp::12345'.
+ */
+export const REDIS_PREFIXES = {
+  otp: 'user:otp',
+  blacklist: 'blacklist:token'
+} as const;
+
+export const OTP_GENERATE_CONFIG = {
+  digits: true,
+  lowerCaseAlphabets: false,
+  specialChars: false,
+  upperCaseAlphabets: false,
+} as const;
+
+export enum AuthErrorType {
+  TOKEN_EXPIRED = 'TOKEN_EXPIRED',
+  TOKEN_INVALID = 'TOKEN_INVALID',
+  TOKEN_BLACKLISTED = 'TOKEN_BLACKLISTED',
+  USER_BLOCKED = 'USER_BLOCKED',
+  INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
+  DUPLICATE_DATA = 'DUPLICATE_DATA',
+  OTP_EXPIRED = 'OTP_EXPIRED',
+  INVALID_OTP = 'INVALID_OTP',
+  ACCESS_DENIED = 'ACCESS_DENIED',
+};

@@ -17,7 +17,7 @@ export const createEmailWorker = (): Worker => {
     'email-queue',
     async (job: Job) => {
       const { id, name, data } = job;
-      const traceId = (job.data as any)?.traceId ?? 'NO_TRACE_ID';
+      const traceId = (job.data as Record<string,any>)?.traceId ?? 'NO_TRACE_ID';
       return requestContext.run({ traceId }, async () => {
         try {
           switch (name) {

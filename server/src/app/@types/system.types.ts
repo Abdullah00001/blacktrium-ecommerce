@@ -1,3 +1,5 @@
+import { REDIS_PREFIXES } from "@/const";
+
 export type TEnv = {
   GEO_PROVIDER: string;
   GOOGLE_MAPS_API_KEY: string;
@@ -71,3 +73,5 @@ export type TSendNotificationPayload={
   },
   userId:string
 }
+
+export type TRedisPrefix = (typeof REDIS_PREFIXES)[keyof typeof REDIS_PREFIXES];

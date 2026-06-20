@@ -68,7 +68,21 @@ services:
       - redis_data:/data
     networks:
       - blacktrium_ecommerce_net
-
+  redis-ui:
+    image: rediscommander/redis-commander:latest
+    container_name: blacktrium_ecommerce_redis_ui
+    environment:
+      # Format: connectionName:host:port:dbIndex:password
+      - REDIS_HOSTS=local:redis:6379:0:myStrongRedisPassword
+      # This helps the UI start even if it takes a second to find the redis container
+      - HTTP_USER=admin
+      - HTTP_PASSWORD=admin
+    ports:
+      - 8081:8081
+    networks:
+      - blacktrium_ecommerce_net
+    depends_on:
+      - redis
   server:
     build:
       context: .

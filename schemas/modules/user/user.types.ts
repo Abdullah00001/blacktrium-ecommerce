@@ -5,6 +5,11 @@ export enum AccountStatus {
   ACTIVE = "active",
 }
 
+export enum Role{
+  ADMIN='admin',
+  USER='user'
+}
+
 export interface IUser extends Document {
   firstName: string;
   lastName: string;
@@ -14,6 +19,7 @@ export interface IUser extends Document {
   isVerified: boolean;
   accountStatus: AccountStatus;
   isLegalTermsAccepted: boolean;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 }

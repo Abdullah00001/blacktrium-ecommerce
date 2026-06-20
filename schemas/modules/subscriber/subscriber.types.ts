@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export enum SubscribeStatus {
   SUBSCRIBED = "subscribed",
@@ -6,7 +6,7 @@ export enum SubscribeStatus {
 }
 
 export interface ISubscriber extends Document {
-  userId: Schema.Types.ObjectId | null;
+  userId: Types.ObjectId | null;
   firstName: string;
   lastName: string;
   email: string;

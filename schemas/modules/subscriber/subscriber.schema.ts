@@ -6,12 +6,17 @@ const SubscriberSchema = new Schema<ISubscriber>(
     // Define your schema properties here
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User",default:null },
+    email: { type: String, required: true, index: true },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      index: true,
+      default: null,
+    },
     subscribeStatus: {
       type: String,
       enum: SubscribeStatus,
-      default: SubscribeStatus.SUBSCRIBED,
+      default: SubscribeStatus.UNSUBSCRIBED,
     },
   },
   {
