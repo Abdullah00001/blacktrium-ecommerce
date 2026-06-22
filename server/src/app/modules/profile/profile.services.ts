@@ -2,6 +2,7 @@ import { IUser } from '@/app/schemas/user/user.types';
 import { TProfilePayload } from '@/app/modules/profile/profile.schemas';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 import { UserModel } from '@/app/schemas/user/user.schema';
+import { IProfile } from '@/app/schemas/profile/profile.types';
 
 export const updateProfileService = async ({
   payload,
@@ -33,10 +34,34 @@ export const updateProfileService = async ({
       _id: updatedUser._id,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
+      email:updatedUser.email,
       phone: updatedUser.phone,
       profileAvatar: updatedProfile.profileAvatar,
       country: updatedProfile.country,
       interest: updatedProfile.interest,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMyProfileService = ({
+  profile,
+  user,
+}: {
+  user: IUser;
+  profile: IProfile;
+}): unknown => {
+  try {
+    return {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email:user.email,
+      phone: user.phone,
+      profileAvatar: profile.profileAvatar,
+      country: profile.country,
+      interest: profile.interest,
     };
   } catch (error) {
     throw error;

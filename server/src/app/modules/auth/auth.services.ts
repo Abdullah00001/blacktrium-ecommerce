@@ -3,13 +3,16 @@ import mongoose, { Types } from 'mongoose';
 import { UserModel } from '@/app/schemas/user/user.schema';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 import { SubscriberModel } from '@/app/schemas/subscriber/subscriber.schema';
-import {
-  TSignupPayload,
-  TVerifyOtpPayload,
-} from '@/app/modules/auth/auth.schemas';
+import { TSignupPayload } from '@/app/modules/auth/auth.schemas';
 import { hashPassword } from '@/app/utils/password.utils';
 import { SubscribeStatus } from '@/app/schemas/subscriber/subscriber.types';
-import { generateAccessTokenForUser, generateOtpPageToken } from '@/app/utils/jwt.utils';
+import {
+  generateAccessTokenForAdmin,
+  generateAccessTokenForUser,
+  generateOtpPageToken,
+  generateRefreshToken,
+  verifyOtpPageToken,
+} from '@/app/utils/jwt.utils';
 import { generate } from 'otp-generator';
 import { hashOtp } from '@/app/utils/otp.utils';
 import {
@@ -19,6 +22,8 @@ import {
 import { OTP_GENERATE_CONFIG, otpExpireAt, REDIS_PREFIXES } from '@/const';
 import { getRedisClient } from '@/app/configs/redis.config';
 import { JwtPayload } from 'jsonwebtoken';
+import { IUser } from '@/app/schemas/user/user.types';
+import { IProfile } from '@/app/schemas/profile/profile.types';
 
 export const deleteExpiredUnverifiedUser = async ({
   userId,
@@ -152,12 +157,13 @@ export const verifySignupOtpService = async ({
   user,
   token,
 }: {
-  user: JwtPayload;
+  user: IUser;
   token: string;
 }): Promise<unknown | null> => {
   try {
     const redisClient = getRedisClient();
-    const userId = user?.sub;
+    const decoded = verifyOtpPageToken(token);
+    const userId = user?._id.toString();
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
       { $set: { isVerified: true } },
@@ -171,7 +177,7 @@ export const verifySignupOtpService = async ({
       accountStatus: updatedUser.accountStatus,
       rememberMe: true,
     });
-    const expirationTime = user.exp as number; // convert to seconds
+    const expirationTime = decoded?.exp as number; // convert to seconds
     const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
     const ttl = Math.floor(expirationTime - currentTime); // remaining time in seconds
     if (ttl > 0)
@@ -194,5 +200,141 @@ export const verifySignupOtpService = async ({
     };
   } catch (error) {
     throw error;
+  }
+};
+
+export const resendOtpService = async ({
+  user,
+  traceId,
+}: {
+  user: IUser;
+  traceId: string;
+}): Promise<unknown> => {
+  try {
+    const redisClient = getRedisClient();
+    const otp = generate(6, OTP_GENERATE_CONFIG);
+    const encryptedOtp = hashOtp({ otp });
+    const emailTemplatePayload = {
+      email: user.email,
+      otp,
+      traceId,
+      otpExpireAt,
+    } as const;
+    await Promise.all([
+      redisClient.set(
+        createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
+        encryptedOtp,
+        'PX',
+        calculateMilliseconds(otpExpireAt, 'minute')
+      ),
+      // here will be send the otp to user email using background job queue
+    ]);
+    return { otp };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const checkAccessTokenService = ({
+  profile,
+  user,
+}: {
+  user: IUser;
+  profile: IProfile;
+}): unknown => {
+  try {
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      profileAvatar: profile.profileAvatar,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const logoutService = async ({
+  token,
+  user,
+}: {
+  user: JwtPayload;
+  token: string;
+}): Promise<void> => {
+  try {
+    const redisClient = getRedisClient();
+    const expirationTime = user?.exp as number; // convert to seconds
+    const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
+    const ttl = Math.floor(expirationTime - currentTime); // remaining time in seconds
+    if (ttl > 0)
+      await redisClient.set(
+        createRedisKey(REDIS_PREFIXES.blacklist, token),
+        token,
+        'EX',
+        ttl
+      );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loginService = async ({
+  isAdmin,
+  user,
+  rememberMe,
+}: {
+  isAdmin: boolean;
+  rememberMe: boolean;
+  user: IUser;
+}): Promise<{ accessToken: string; refreshToken?: string }> => {
+  try {
+    if (isAdmin) {
+      const accessToken = generateAccessTokenForAdmin({
+        isVerified: user.isVerified,
+        role: user.role,
+        sub: user._id.toString(),
+        rememberMe,
+        accountStatus: user.accountStatus,
+      });
+      const refreshToken = generateRefreshToken({
+        isVerified: user.isVerified,
+        role: user.role,
+        sub: user._id.toString(),
+        rememberMe,
+        accountStatus: user.accountStatus,
+      });
+      return { accessToken, refreshToken };
+    }
+    const accessToken = generateAccessTokenForUser({
+      isVerified: user.isVerified,
+      role: user.role,
+      sub: user._id.toString(),
+      rememberMe,
+      accountStatus: user.accountStatus,
+    });
+
+    return { accessToken };
+  } catch (error) {
+    if (error instanceof Error) throw error;
+    throw new Error('Unknown error occurred in login service');
+  }
+};
+
+export const changePasswordService = async ({
+  newPassword,
+  user,
+}: {
+  newPassword: string;
+  user: IUser;
+}): Promise<void> => {
+  try {
+    const hashPass = await hashPassword(newPassword);
+    await UserModel.findByIdAndUpdate(user._id, {
+      $set: { password: hashPass },
+    });
+    return;
+  } catch (error) {
+    if (error instanceof Error) throw error;
+    throw new Error('Unknown error occurred in change password service');
   }
 };

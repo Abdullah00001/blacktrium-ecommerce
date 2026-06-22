@@ -24,8 +24,9 @@ import {
   verifyOtpPageToken,
 } from '@/app/utils/jwt.utils';
 import { JwtPayload } from 'jsonwebtoken';
-import { AccountStatus } from '@/app/schemas/user/user.types';
+import { AccountStatus, IUser } from '@/app/schemas/user/user.types';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
+import { comparePassword } from '@/app/utils/password.utils';
 
 export const checkDuplicateUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -99,6 +100,45 @@ export const checkDuplicateUser = asyncHandler(
   }
 );
 
+export const findUserByEmail = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email }).lean();
+    if (!user) {
+      res.status(401).json({
+        success: false,
+        message: 'Invalid credentials,Please check email or password',
+        errorType: AuthErrorType.INVALID_CREDENTIALS,
+        traceId,
+      });
+      return;
+    }
+    req.user = user;
+    next();
+    return;
+  }
+);
+
+export const checkPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const { password } = req.body;
+    const hashedPassword = (req.user as IUser).password as string;
+    const isMatched = await comparePassword(password, hashedPassword);
+    if (!isMatched) {
+      res.status(401).json({
+        success: false,
+        errorType: AuthErrorType.INVALID_CREDENTIALS,
+        message: 'Invalid Credential,Check Your Email And Password',
+        traceId,
+      });
+      return;
+    }
+    next();
+  }
+);
+
 export const checkOtpPageToken = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const traceId = getTraceId();
@@ -141,12 +181,12 @@ export const checkOtpPageToken = asyncHandler(
 export const checkOtp = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const traceId = getTraceId();
-    const user = req.user as JwtPayload;
+    const user = req.user as IUser;
     const { otp } = req.body;
     // get the redis client
     const redisClient = getRedisClient();
     const hashedOtp = await redisClient.get(
-      createRedisKey(REDIS_PREFIXES.otp, user.sub as string)
+      createRedisKey(REDIS_PREFIXES.otp, user._id.toString() as string)
     );
     if (!hashedOtp) {
       res.status(401).json({
@@ -217,7 +257,6 @@ export const checkAccountStatus = asyncHandler(
     const traceId = getTraceId();
     const route = req.path;
     const { sub } = req.user as JwtPayload;
-    console.log(sub);
     const user = await UserModel.findOne({ _id: sub });
     if (!user) {
       res.status(401).json({
@@ -239,11 +278,35 @@ export const checkAccountStatus = asyncHandler(
       return;
     }
     const isLogoutRoute = route.startsWith('/auth/logout');
-    const profile = await ProfileModel.findOne({ where: { userId: sub } });
-    if (profile) {
-      req.profile = profile;
+    if (!isLogoutRoute) {
+      const profile = await ProfileModel.findOne({ userId: sub });
+      if (profile) {
+        req.profile = profile;
+      }
+      req.user = user;
     }
-    if (!isLogoutRoute) req.user = user;
+    next();
+  }
+);
+
+export const checkCurrentPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { currentPassword } = req.body;
+    const { password } = req.user as IUser;
+    const isMatched = await comparePassword(
+      currentPassword,
+      password as string
+    );
+    if (!isMatched) {
+      res
+        .status(403)
+        .json({
+          success: false,
+          status: 403,
+          message: 'Current password not matched',
+        });
+      return;
+    }
     next();
   }
 );
