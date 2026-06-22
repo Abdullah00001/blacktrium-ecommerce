@@ -25,6 +25,7 @@ import {
 } from '@/app/utils/jwt.utils';
 import { JwtPayload } from 'jsonwebtoken';
 import { AccountStatus } from '@/app/schemas/user/user.types';
+import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 
 export const checkDuplicateUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -216,7 +217,8 @@ export const checkAccountStatus = asyncHandler(
     const traceId = getTraceId();
     const route = req.path;
     const { sub } = req.user as JwtPayload;
-    const user = await UserModel.findOne({ where: { id: sub } });
+    console.log(sub);
+    const user = await UserModel.findOne({ _id: sub });
     if (!user) {
       res.status(401).json({
         success: false,
@@ -237,9 +239,11 @@ export const checkAccountStatus = asyncHandler(
       return;
     }
     const isLogoutRoute = route.startsWith('/auth/logout');
-    const profile = await prisma.profile.findUnique({ where: { userId: sub } });
-    req.profile = profile as Profile;
-    if (!isLogoutRoute) req.user = user as User;
+    const profile = await ProfileModel.findOne({ where: { userId: sub } });
+    if (profile) {
+      req.profile = profile;
+    }
+    if (!isLogoutRoute) req.user = user;
     next();
   }
 );

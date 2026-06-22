@@ -1,10 +1,12 @@
 import { JwtPayload } from 'jsonwebtoken';
-import UserModel from '@/app/schemas/user/user.schema';
+import {IUser} from '@/app/schemas/user/user.types';
+import {IProfile} from '@/app/schemas/profile/profile.types';
 
 declare global {
   namespace Express {
     interface Request {
-      user: JwtPayload | UserModel;
+      user: JwtPayload | IUser;
+      profile:IProfile;
       fileLimit?: number;
       fieldName?: string;
       requireAtLeastOne?: boolean;

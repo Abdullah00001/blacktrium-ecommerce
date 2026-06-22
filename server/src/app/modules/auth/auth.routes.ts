@@ -30,4 +30,6 @@ router
     checkOtp,
     verifySignupOtpController);
 
+  
+
 export default router;
