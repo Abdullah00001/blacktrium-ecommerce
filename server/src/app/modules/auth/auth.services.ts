@@ -3,7 +3,10 @@ import mongoose, { Types } from 'mongoose';
 import { UserModel } from '@/app/schemas/user/user.schema';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 import { SubscriberModel } from '@/app/schemas/subscriber/subscriber.schema';
-import { TSignupPayload } from '@/app/modules/auth/auth.schemas';
+import {
+  TRecoverResetPayload,
+  TSignupPayload,
+} from '@/app/modules/auth/auth.schemas';
 import { hashPassword } from '@/app/utils/password.utils';
 import { SubscribeStatus } from '@/app/schemas/subscriber/subscriber.types';
 import {
@@ -11,7 +14,6 @@ import {
   generateAccessTokenForUser,
   generateOtpPageToken,
   generateRefreshToken,
-  verifyOtpPageToken,
 } from '@/app/utils/jwt.utils';
 import { generate } from 'otp-generator';
 import { hashOtp } from '@/app/utils/otp.utils';
@@ -156,13 +158,14 @@ export const signupService = async ({
 export const verifySignupOtpService = async ({
   user,
   token,
+  tokenTtl,
 }: {
   user: IUser;
   token: string;
+  tokenTtl: number;
 }): Promise<unknown | null> => {
   try {
     const redisClient = getRedisClient();
-    const decoded = verifyOtpPageToken(token);
     const userId = user?._id.toString();
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
@@ -177,15 +180,12 @@ export const verifySignupOtpService = async ({
       accountStatus: updatedUser.accountStatus,
       rememberMe: true,
     });
-    const expirationTime = decoded?.exp as number; // convert to seconds
-    const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
-    const ttl = Math.floor(expirationTime - currentTime); // remaining time in seconds
-    if (ttl > 0)
+    if (tokenTtl > 0)
       await redisClient.set(
         createRedisKey(REDIS_PREFIXES.blacklist, token),
         token,
         'EX',
-        ttl
+        tokenTtl
       );
     await redisClient.del(
       createRedisKey(REDIS_PREFIXES.otp, updatedUser._id.toString())
@@ -336,5 +336,70 @@ export const changePasswordService = async ({
   } catch (error) {
     if (error instanceof Error) throw error;
     throw new Error('Unknown error occurred in change password service');
+  }
+};
+
+export const recoverFindService = async ({
+  user,
+}: {
+  user: IUser;
+}): Promise<unknown> => {
+  const redisClient = getRedisClient();
+  const otp = generate(6, OTP_GENERATE_CONFIG);
+  const token = generateOtpPageToken({
+    accountStatus: user.accountStatus,
+    isVerified: user.isVerified,
+    role: user.role,
+    sub: user._id.toString(),
+  });
+  const encryptedOtp = hashOtp({ otp });
+  await Promise.all([
+    redisClient.set(
+      createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
+      encryptedOtp,
+      'PX',
+      calculateMilliseconds(otpExpireAt, 'minute')
+    ),
+    // here will be send the recover otp to user email using background job queue later
+  ]);
+  return {
+    token,
+    otp,
+  };
+};
+
+export const verifyRecoverOtpService = async ({
+  user,
+}: {
+  user: IUser;
+}): Promise<void> => {
+  const redisClient = getRedisClient();
+  await redisClient.del(
+    createRedisKey(REDIS_PREFIXES.otp, user._id.toString())
+  );
+};
+
+export const recoverResetPasswordService = async ({
+  password,
+  token,
+  tokenTtl,
+  user,
+}: TRecoverResetPayload & {
+  token: string;
+  tokenTtl: number;
+  user: IUser;
+}): Promise<void> => {
+  const redisClient = getRedisClient();
+  const hashPass = await hashPassword(password);
+  await UserModel.findByIdAndUpdate(user._id, {
+    $set: { password: hashPass },
+  });
+  if (tokenTtl > 0) {
+    await redisClient.set(
+      createRedisKey(REDIS_PREFIXES.blacklist, token),
+      token,
+      'EX',
+      tokenTtl
+    );
   }
 };

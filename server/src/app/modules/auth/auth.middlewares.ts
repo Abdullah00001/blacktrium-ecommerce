@@ -120,6 +120,47 @@ export const findUserByEmail = asyncHandler(
   }
 );
 
+export const findRecoverUserByEmail = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        status: 404,
+        message: 'No account found with this email',
+        errorType: AuthErrorType.INVALID_CREDENTIALS,
+        traceId,
+      });
+      return;
+    }
+    if (!user.isVerified) {
+      res.status(403).json({
+        success: false,
+        status: 403,
+        message: 'Please verify your account before recovering password',
+        errorType: AuthErrorType.ACCESS_DENIED,
+        traceId,
+      });
+      return;
+    }
+    if (user.accountStatus === AccountStatus.BLOCKED) {
+      res.status(401).json({
+        success: false,
+        status: 401,
+        message: 'Access denied, your account has been blocked',
+        errorType: AuthErrorType.USER_BLOCKED,
+        traceId,
+      });
+      return;
+    }
+    req.user = user;
+    next();
+    return;
+  }
+);
+
 export const checkPassword = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const traceId = getTraceId();
@@ -153,7 +194,9 @@ export const checkOtpPageToken = asyncHandler(
       return;
     }
     const redisClient = getRedisClient();
-    const isBlackListed = await redisClient.get(createRedisKey(REDIS_PREFIXES.blacklist,token));
+    const isBlackListed = await redisClient.get(
+      createRedisKey(REDIS_PREFIXES.blacklist, token)
+    );
     if (isBlackListed) {
       res.status(401).json({
         success: false,
@@ -173,6 +216,8 @@ export const checkOtpPageToken = asyncHandler(
       });
       return;
     }
+    const currentTime = Math.floor(Date.now() / 1000);
+    req.tokenTtl = Math.floor((decoded.exp as number) - currentTime);
     req.user = decoded;
     next();
   }
@@ -298,13 +343,11 @@ export const checkCurrentPassword = asyncHandler(
       password as string
     );
     if (!isMatched) {
-      res
-        .status(403)
-        .json({
-          success: false,
-          status: 403,
-          message: 'Current password not matched',
-        });
+      res.status(403).json({
+        success: false,
+        status: 403,
+        message: 'Current password not matched',
+      });
       return;
     }
     next();

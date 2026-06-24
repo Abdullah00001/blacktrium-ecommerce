@@ -7,8 +7,11 @@ import {
   checkAccessTokenService,
   loginService,
   logoutService,
+  recoverFindService,
+  recoverResetPasswordService,
   resendOtpService,
   signupService,
+  verifyRecoverOtpService,
   verifySignupOtpService,
 } from '@/app/modules/auth/auth.services';
 import { extractToken } from '@/app/utils/jwt.utils';
@@ -21,7 +24,7 @@ import {
   refreshTokenExpiresInWithRememberMe,
 } from '@/const';
 import { cookieOption } from '@/app/utils/cookie.utils';
-import { TLoginPayload } from './auth.schemas';
+import { TLoginPayload, TRecoverResetPayload } from './auth.schemas';
 
 export const signupController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -44,7 +47,11 @@ export const verifySignupOtpController = asyncHandler(
     const traceId = getTraceId();
     const user = req.user as IUser;
     const token = extractToken(req) as string;
-    const data = await verifySignupOtpService({ user, token });
+    const data = await verifySignupOtpService({
+      token,
+      tokenTtl: req.tokenTtl || 0,
+      user,
+    });
     res.status(200).json({
       success: true,
       status: 200,
@@ -138,7 +145,7 @@ export const loginController = asyncHandler(
     }
     res.status(200).json({
       success: true,
-      status:200,
+      status: 200,
       message: 'Login successful',
       data: { accessToken },
       traceId,
@@ -155,8 +162,61 @@ export const changePasswordController = asyncHandler(
     await changePasswordService({ newPassword, user });
     res.status(200).json({
       success: true,
-      status:200,
+      status: 200,
       message: 'Password change successful',
+      traceId,
+    });
+    return;
+  }
+);
+
+export const recoverFindController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+    const data = await recoverFindService({ user });
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'User found and recover OTP sent successful',
+      data,
+      traceId,
+    });
+    return;
+  }
+);
+
+export const verifyRecoverOtpController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+    await verifyRecoverOtpService({ user });
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Otp verification successful',
+      traceId,
+    });
+    return;
+  }
+);
+
+export const recoverResetPasswordController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+    const token = extractToken(req) as string;
+    const { password } = req.body as TRecoverResetPayload;
+    await recoverResetPasswordService({
+      password,
+      token,
+      tokenTtl: req.tokenTtl || 0,
+      user,
+    });
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Password reset successful',
       traceId,
     });
     return;

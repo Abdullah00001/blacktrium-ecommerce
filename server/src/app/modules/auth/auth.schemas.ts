@@ -109,3 +109,30 @@ export const changePasswordSchema = z.object({
 });
 
 export type TChangePasswordPayload = z.infer<typeof changePasswordSchema>;
+
+export const recoverFindSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .pipe(z.email('Please provide a valid email address')),
+  })
+  .strict();
+
+export type TRecoverFindPayload = z.infer<typeof recoverFindSchema>;
+
+export const recoverResetSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(8, 'Password must be at least 8 characters long')
+      .max(128, 'Password is too long')
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      ),
+  })
+  .strict();
+
+export type TRecoverResetPayload = z.infer<typeof recoverResetSchema>;

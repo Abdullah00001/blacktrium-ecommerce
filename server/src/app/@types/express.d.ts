@@ -1,12 +1,12 @@
 import { JwtPayload } from 'jsonwebtoken';
-import {IUser} from '@/app/schemas/user/user.types';
-import {IProfile} from '@/app/schemas/profile/profile.types';
+import { IUser } from '@/app/schemas/user/user.types';
+import { IProfile } from '@/app/schemas/profile/profile.types';
 
 declare global {
   namespace Express {
     interface Request {
       user: JwtPayload | IUser;
-      profile:IProfile;
+      profile: IProfile;
       fileLimit?: number;
       fieldName?: string;
       requireAtLeastOne?: boolean;
@@ -14,6 +14,7 @@ declare global {
       fieldConfig?: FieldConfig[];
       fileRequired: boolean;
       files?: { [fieldname: string]: Express.Multer.File[] };
+      tokenTtl?: number;
       validatedQuery?: unknown;
     }
   }

@@ -18,7 +18,8 @@ export const saltRound = 10;
  * -------------- REGEX'S -----------------
  * ========================================
  */
-export const s3Regex = /^https:\/\/[a-z0-9.-]+\.s3\.[a-z0-9-]+\.amazonaws\.com\/.+$/;
+export const s3Regex =
+  /^https:\/\/[a-z0-9.-]+\.s3\.[a-z0-9-]+\.amazonaws\.com\/.+$/;
 export const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
 
 export const baseUrl = {
@@ -55,7 +56,7 @@ export const SUBSCRIPTION_FEATURE_CACHE_EXPIRY = '1d';
  */
 export const REDIS_PREFIXES = {
   otp: 'user:otp',
-  blacklist: 'blacklist:token'
+  blacklist: 'blacklist:token',
 } as const;
 
 export const OTP_GENERATE_CONFIG = {
@@ -75,4 +76,4 @@ export enum AuthErrorType {
   OTP_EXPIRED = 'OTP_EXPIRED',
   INVALID_OTP = 'INVALID_OTP',
   ACCESS_DENIED = 'ACCESS_DENIED',
-};
+}
