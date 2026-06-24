@@ -99,7 +99,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./server/src:/usr/src/app/src
+      - ./server:/usr/src/app
       - server_node_modules:/usr/src/app/node_modules
     depends_on:
       mongo-init:

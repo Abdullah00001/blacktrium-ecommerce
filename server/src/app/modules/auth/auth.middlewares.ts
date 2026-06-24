@@ -153,7 +153,7 @@ export const checkOtpPageToken = asyncHandler(
       return;
     }
     const redisClient = getRedisClient();
-    const isBlackListed = await redisClient.get(`blacklist:jwt:${token}`);
+    const isBlackListed = await redisClient.get(createRedisKey(REDIS_PREFIXES.blacklist,token));
     if (isBlackListed) {
       res.status(401).json({
         success: false,

@@ -7,6 +7,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import type { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ZodType } from 'zod';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   TRedisPrefix,
@@ -18,6 +19,8 @@ import logger from '@/app/configs/logger.configs';
 import { getTraceId } from '@/app/configs/requestContext.configs';
 import { NOMINATIM_URL } from '@/const';
 import { env } from '@/env';
+import { extname, join } from 'path';
+import { TFileInfo } from '@/app/modules/image/image.types';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -171,7 +174,7 @@ export function mailOption(
   return option;
 }
 
-const ALLOWED_WRITE_METHODS = ['POST', 'PUT', 'PATCH'] as const;
+const ALLOWED_WRITE_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'] as const;
 
 export const validateReqBody =
   <T>(schema: ZodType<T>) =>
@@ -308,7 +311,7 @@ export function timeToMinutes(time: string): number {
 /**
  * Safely constructs a standardized, colon-separated Redis key.
  * * This utility acts as a defensive barrier against common runtime bugs by sanitizing
- * dynamic inputs, trimming accidental whitespace, and completely preventing 
+ * dynamic inputs, trimming accidental whitespace, and completely preventing
  * "undefined" or "null" strings from leaking into your database keys.
  *
  * @param prefix - The base namespace prefix from `REDIS_PREFIXES` (must not contain a trailing colon).
@@ -317,16 +320,16 @@ export function timeToMinutes(time: string): number {
  * * @throws {Error} If any argument in `parts` resolves to `undefined`, `null`, or an empty string `""`.
  * * @example
  * // 1. Standard dynamic key generation
- * createRedisKey(REDIS_PREFIXES.otp, 12345); 
+ * createRedisKey(REDIS_PREFIXES.otp, 12345);
  * // Returns: "user:otp:12345"
  * * @example
  * // 2. Multi-part key generation
- * createRedisKey(REDIS_PREFIXES.session, 'US', 'auth_token_xyz'); 
+ * createRedisKey(REDIS_PREFIXES.session, 'US', 'auth_token_xyz');
  * // Returns: "user:session:US:auth_token_xyz"
  * * @example
  * // 3. Edge Case: Throws error instead of creating a corrupt key like "user:otp:undefined"
  * const userId = undefined;
- * createRedisKey(REDIS_PREFIXES.otp, userId); 
+ * createRedisKey(REDIS_PREFIXES.otp, userId);
  * // Throws: [RedisKeyError] Invalid key component passed for prefix "user:otp". Received: undefined
  */
 export function createRedisKey(
@@ -348,3 +351,49 @@ export function createRedisKey(
 
   return joinedParts ? `${prefix}:${joinedParts}` : prefix;
 }
+
+/**
+ * Generates file information for uploading to storage.
+ * @param image - The file object from your request (e.g., Express.Multer.File)
+ * @param folderPath - The base path for storage (e.g., 'user-collections/bag-image')
+ */
+export const generateFileInfo = (image: {
+  filename: string;
+  originalname: string;
+}): TFileInfo => {
+  const extension = extname(image.originalname);
+  const fileName = `${uuidv4()}-${Date.now()}${extension}`;
+
+  return {
+    filePath: join(__dirname, '../../../public/temp', image.filename),
+    mimeType: extension,
+    key: `media/${fileName}`,
+  };
+};
+
+export const normalizeImageUrls = ({
+  imageUrl,
+  imageUrls,
+}: {
+  imageUrl?: string;
+  imageUrls?: string[];
+}): string[] => {
+  const urls = [...(imageUrl ? [imageUrl] : []), ...(imageUrls || [])];
+  return [...new Set(urls)];
+};
+
+export const formatUploadResponse = (imageUrls: string[]): unknown => {
+  if (imageUrls.length === 1) {
+    return { imageUrl: imageUrls[0] };
+  }
+
+  return { imageUrls };
+};
+
+export const formatDeleteResponse = (deletedImageUrls: string[]): unknown => {
+  if (deletedImageUrls.length === 1) {
+    return { deletedImageUrl: deletedImageUrls[0] };
+  }
+
+  return { deletedImageUrls };
+};

@@ -13,7 +13,14 @@ export const corsWhiteList = [
   'http://10.10.10.26:3000',
 ];
 export const saltRound = 10;
+/**
+ * ========================================
+ * -------------- REGEX'S -----------------
+ * ========================================
+ */
+export const s3Regex = /^https:\/\/[a-z0-9.-]+\.s3\.[a-z0-9-]+\.amazonaws\.com\/.+$/;
 export const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+
 export const baseUrl = {
   v1: '/api/v1',
 };
