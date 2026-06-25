@@ -2,14 +2,62 @@ name: CONTINUOUS DELIVERY AND DEPLOYMENT
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
+          script: |
+            # 1. Navigate to your workspace folder
+            cd ~/abdullah_projects
+
+            # 2. Clone repository if first deployment, or safely pull latest main branch updates
+            if [ ! -d "blacktrium-ecommerce" ]; then
+              git clone https://github.com/${{ github.repository }}.git blacktrium-ecommerce
+              cd blacktrium-ecommerce
+            else
+              cd blacktrium-ecommerce
+              git fetch --all
+              git reset --hard origin/main
+            fi
+
+            # 3. Securely inject multi-line .env secrets into each service folder
+            cat << 'EOF' > ./server/.env
+            ${{ secrets.SERVER_ENV_FILE }}
+            EOF
+
+            cat << 'EOF' > ./worker/.env
+            ${{ secrets.WORKER_ENV_FILE }}
+            EOF
+
+            cat << 'EOF' > ./corn/.env
+            ${{ secrets.CORN_ENV_FILE }}
+            EOF
+
+            # 4. Monorepo Setup: Install root dependencies and run your custom schema syncing engine
+            echo "🔄 Compiling shared monorepo schemas and distributing to services..."
+            npm install --no-audit --no-fund
+            npm run sync:schema
+
+            # 5. Clean and rebuild the isolated multi-container system
+            echo "🚀 Orchestrating Docker containers..."
+            docker compose down --remove-orphans
+            docker compose up -d --build
+
+            # 6. Sanity check confirming containers booted successfully
+            echo "✅ Deployment complete. Current container states:"
+            docker compose ps
