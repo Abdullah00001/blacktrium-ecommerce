@@ -11,6 +11,8 @@ export const corsWhiteList = [
   'http://localhost:3008',
   'http://10.10.10.26:3008',
   'http://10.10.10.26:3000',
+  'http://10.10.28.21:3001',
+  'http://10.10.28.21:3002',
 ];
 export const saltRound = 10;
 /**
