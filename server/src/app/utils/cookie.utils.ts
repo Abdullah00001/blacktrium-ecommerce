@@ -9,7 +9,7 @@ export function cookieOption(expiresIn: string): TCookieOptions {
     secure: isProd,
     sameSite: isProd ? 'lax' : 'lax',
     path: '/',
-    domain: isProd ? '.workly.ink' : 'localhost',
+    // domain: isProd ? '.workly.ink' : 'localhost',
   };
 
   option.maxAge = parseExpiresIn(expiresIn);
