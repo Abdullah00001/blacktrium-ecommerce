@@ -9,35 +9,20 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    isVerified: {
-      type: Boolean,
-      default: true,
-    },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true, index: true },
+    phone: { type: String, default: null },
+    isVerified: { type: Boolean, default: false, index: true },
     accountStatus: {
       type: String,
-      enum: ['ACTIVE', 'BLOCKED'],
-      default: 'ACTIVE',
+      enum: ['active', 'blocked'],
+      default: 'active',
+      index: true,
     },
-    role: {
-      type: String,
-      enum: ['ADMIN', 'USER'],
-      default: 'USER',
-    },
-    provider: {
-      type: String,
-      default: 'MANUAL',
-    },
+    role: { type: String, default: 'user', index: true },
+    isLegalTermsAccepted: { type: Boolean, required: true },
   },
   { timestamps: true }
 );
@@ -45,20 +30,14 @@ const UserSchema = new mongoose.Schema(
 const ProfileSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
-      unique: true,
       index: true,
     },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    countryVisited: {
-      type: [String],
-      default: [],
-    },
+    profileAvatar: { type: String, default: null },
+    interest: [{ type: String }],
+    country: { type: String, required: true },
   },
   { timestamps: true }
 );
@@ -143,14 +122,25 @@ const createAdmin = async () => {
     console.log('Creating Admin User');
     console.log('-------------------\n');
 
-    let name = '';
-    while (!name || name.length < 4) {
-      name = await question('Name: ');
-      if (!name) {
-        console.log('⚠ Name cannot be empty!');
-      } else if (name.length < 4) {
-        console.log('⚠ Name must be at least 4 characters long!');
-        name = '';
+    let firstName = '';
+    while (!firstName || firstName.length < 2) {
+      firstName = await question('First Name: ');
+      if (!firstName) {
+        console.log('⚠ First name cannot be empty!');
+      } else if (firstName.length < 2) {
+        console.log('⚠ First name must be at least 2 characters long!');
+        firstName = '';
+      }
+    }
+
+    let lastName = '';
+    while (!lastName || lastName.length < 2) {
+      lastName = await question('Last Name: ');
+      if (!lastName) {
+        console.log('⚠ Last name cannot be empty!');
+      } else if (lastName.length < 2) {
+        console.log('⚠ Last name must be at least 2 characters long!');
+        lastName = '';
       }
     }
 
@@ -168,6 +158,14 @@ const createAdmin = async () => {
           console.log('⚠ A user with this email already exists!');
           email = '';
         }
+      }
+    }
+
+    let country = '';
+    while (!country) {
+      country = await question('Country: ');
+      if (!country) {
+        console.log('⚠ Country cannot be empty!');
       }
     }
 
@@ -200,12 +198,14 @@ const createAdmin = async () => {
       const [user] = await User.create(
         [
           {
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
             isVerified: true,
-            accountStatus: 'ACTIVE',
-            role: 'ADMIN',
-            provider: 'MANUAL',
+            accountStatus: 'active',
+            role: 'admin',
+            isLegalTermsAccepted: true,
           },
         ],
         { session }
@@ -214,8 +214,8 @@ const createAdmin = async () => {
       const [profile] = await Profile.create(
         [
           {
-            userId: user._id.toString(),
-            name,
+            userId: user._id,
+            country,
           },
         ],
         { session }
@@ -227,8 +227,9 @@ const createAdmin = async () => {
     await session.endSession();
 
     console.log('\n✓ Admin user created successfully!');
+    console.log(`Name:     ${firstName} ${lastName}`);
     console.log(`Email:    ${email}`);
-    console.log(`Name:     ${name}`);
+    console.log(`Country:  ${country}`);
     console.log(`Role:     ADMIN`);
     console.log(`Verified: Yes`);
     console.log(`ID:       ${result.user._id.toString()}`);

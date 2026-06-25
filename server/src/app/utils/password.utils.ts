@@ -9,11 +9,7 @@ export async function hashPassword(passwordString: string): Promise<string> {
   try {
     return await hash(passwordString, saltRound);
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    } else {
-      throw new Error('Unexpected Error Occurred In Hash Password Utils');
-    }
+    throw error;
   }
 }
 
@@ -25,12 +21,10 @@ export async function comparePassword(
   hashPassword: string
 ): Promise<boolean> {
   try {
+    console.log(requestedPassword);
+    console.log(hashPassword);
     return await compare(requestedPassword, hashPassword);
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    } else {
-      throw new Error('Unexpected Error Occurred In Compare Password Utils');
-    }
+    throw error;
   }
 }

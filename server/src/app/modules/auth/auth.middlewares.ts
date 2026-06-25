@@ -22,9 +22,10 @@ import {
   generateOtpPageToken,
   verifyAccessToken,
   verifyOtpPageToken,
+  verifyRefreshToken,
 } from '@/app/utils/jwt.utils';
 import { JwtPayload } from 'jsonwebtoken';
-import { AccountStatus, IUser } from '@/app/schemas/user/user.types';
+import { AccountStatus, IUser, Role } from '@/app/schemas/user/user.types';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 import { comparePassword } from '@/app/utils/password.utils';
 
@@ -117,6 +118,34 @@ export const findUserByEmail = asyncHandler(
     req.user = user;
     next();
     return;
+  }
+);
+
+export const findUserById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const route = req.path;
+    const { sub } = req.user as JwtPayload;
+    const foundUser = await UserModel.findOne({ _id: sub });
+    if (!foundUser) {
+      res.status(404).json({
+        success: false,
+        status: 404,
+        message: 'No account found',
+        errorType: AuthErrorType.INVALID_CREDENTIALS,
+        traceId,
+      });
+      return;
+    }
+    const isLogoutRoute = route.startsWith('/auth/logout');
+    if (!isLogoutRoute) {
+      const profile = await ProfileModel.findOne({ userId: sub });
+      if (profile) {
+        req.profile = profile;
+      }
+    }
+    req.user = foundUser;
+    next();
   }
 );
 
@@ -350,6 +379,101 @@ export const checkCurrentPassword = asyncHandler(
       });
       return;
     }
+    next();
+  }
+);
+
+export const isAdmin = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const user = req.user;
+    if (user.role !== Role.ADMIN) {
+      res.status(403).json({
+        success: false,
+        message: 'Access denied, admin privileges required',
+        errorType: AuthErrorType.ACCESS_DENIED,
+        traceId,
+      });
+      return;
+    }
+    next();
+  }
+);
+
+export const checkAdminAccessToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const traceId = getTraceId();
+    const token = req?.cookies?.accesstoken;
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        message: 'Unauthorized request, authentication required',
+        errorType: AuthErrorType.TOKEN_INVALID,
+        traceId,
+      });
+      return;
+    }
+    const redisClient = getRedisClient();
+    const isBlackListed = await redisClient.get(`blacklist:jwt:${token}`);
+    if (isBlackListed) {
+      res.status(401).json({
+        success: false,
+        message: 'Token has been revoked',
+        errorType: AuthErrorType.TOKEN_BLACKLISTED,
+        traceId,
+      });
+      return;
+    }
+    const decoded = verifyAccessToken(token);
+    if (!decoded) {
+      res.status(401).json({
+        success: false,
+        message: 'Invalid or expired token',
+        errorType: AuthErrorType.TOKEN_INVALID,
+        traceId,
+      });
+      return;
+    }
+    req.user = decoded;
+    next();
+  }
+);
+
+export const checkAdminRefreshToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const traceId = getTraceId();
+    const token = req?.cookies?.refreshtoken;
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        message: 'Unauthorized request, refresh token required',
+        errorType: AuthErrorType.TOKEN_INVALID,
+        traceId,
+      });
+      return;
+    }
+    const redisClient = getRedisClient();
+    const isBlackListed = await redisClient.get(`blacklist:jwt:${token}`);
+    if (isBlackListed) {
+      res.status(401).json({
+        success: false,
+        message: 'Token has been revoked',
+        errorType: AuthErrorType.TOKEN_BLACKLISTED,
+        traceId,
+      });
+      return;
+    }
+    const decoded = verifyRefreshToken(token);
+    if (!decoded) {
+      res.status(401).json({
+        success: false,
+        message: 'Invalid or expired refresh token',
+        errorType: AuthErrorType.TOKEN_INVALID,
+        traceId,
+      });
+      return;
+    }
+    req.user = decoded;
     next();
   }
 );

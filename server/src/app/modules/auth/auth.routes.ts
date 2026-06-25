@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 import { validateReqBody } from '@/app/utils/system.utils';
 import {
+  adminAccessTokenController,
+  adminRefreshTokenController,
   changePasswordController,
   checkAccessTokenController,
   loginController,
@@ -14,6 +16,7 @@ import {
   verifySignupOtpController,
 } from '@/app/modules/auth/auth.controllers';
 import {
+  adminLoginSchema,
   changePasswordSchema,
   loginSchema,
   recoverFindSchema,
@@ -24,6 +27,8 @@ import {
 import {
   checkAccessToken,
   checkAccountStatus,
+  checkAdminAccessToken,
+  checkAdminRefreshToken,
   checkCurrentPassword,
   checkDuplicateUser,
   checkOtp,
@@ -31,6 +36,8 @@ import {
   checkPassword,
   findRecoverUserByEmail,
   findUserByEmail,
+  findUserById,
+  isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
@@ -120,4 +127,40 @@ router
     validateReqBody(recoverResetSchema),
     recoverResetPasswordController
   );
+
+/**
+ * ================================================
+ * ---------------- ADMIN AUTH --------------------
+ * ================================================
+ */
+
+router
+  .route('/admin/auth/login')
+  .post(
+    validateReqBody(adminLoginSchema),
+    findUserByEmail,
+    isAdmin,
+    checkPassword,
+    loginController
+  );
+
+router
+  .route('/admin/auth/check')
+  .post(checkAdminAccessToken, isAdmin, adminAccessTokenController);
+
+router
+  .route('/admin/auth/refresh')
+  .post(checkAdminRefreshToken, isAdmin, adminRefreshTokenController);
+
+router
+  .route('/admin/profile/password')
+  .post(
+    checkAdminAccessToken,
+    isAdmin,
+    findUserById,
+    validateReqBody(changePasswordSchema),
+    checkCurrentPassword,
+    changePasswordController
+  );
+
 export default router;

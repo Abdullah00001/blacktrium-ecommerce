@@ -20,11 +20,7 @@ export const signupPayloadSchema = z.object({
 
   country: z
     .string({ error: 'Country is required and must be text' })
-    .trim()
-    .min(2, {
-      message: 'Country code must be at least 2 characters (e.g., UK, US)',
-    })
-    .max(10, { message: 'Invalid country designation' }),
+    .trim(),
 
   password: z
     .string({ error: 'Password is required' })
@@ -136,3 +132,28 @@ export const recoverResetSchema = z
   .strict();
 
 export type TRecoverResetPayload = z.infer<typeof recoverResetSchema>;
+
+export const adminLoginSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .pipe(z.email('Please provide a valid email address')),
+
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(8, 'Password must be at least 8 characters long')
+      .max(128, 'Password is too long')
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      ),
+
+    rememberMe: z
+      .boolean({ message: 'Remember me field is required' })
+      .default(false),
+  })
+  .strict();
+
+export type TAdminLoginPayload = z.infer<typeof adminLoginSchema>;

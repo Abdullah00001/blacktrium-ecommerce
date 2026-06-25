@@ -31,6 +31,7 @@ export const getMyProfileController = asyncHandler(
   async (req: Request, res: Response) => {
     const traceId = getTraceId();
     const user = req.user as IUser;
+    console.log(user);
     const profile = req.profile as IProfile;
     const data = getMyProfileService({ profile, user });
     res.status(200).json({

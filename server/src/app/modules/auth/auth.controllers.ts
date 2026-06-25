@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { asyncHandler } from '@/app/utils/system.utils';
 import { getTraceId } from '@/app/configs/requestContext.configs';
 import {
+  adminRefreshToken,
   changePasswordService,
   checkAccessTokenService,
   loginService,
@@ -119,7 +120,7 @@ export const loginController = asyncHandler(
     const isAdminLogin = path.includes('/admin/auth/login');
     const traceId = getTraceId();
     const user = req.user as IUser;
-    const { accessToken, refreshToken } = await loginService({
+    const { accessToken, refreshToken, role, _id } = await loginService({
       isAdmin: isAdminLogin,
       user,
       rememberMe,
@@ -147,7 +148,7 @@ export const loginController = asyncHandler(
       success: true,
       status: 200,
       message: 'Login successful',
-      data: { accessToken },
+      data: { accessToken, role, _id },
       traceId,
     });
     return;
@@ -217,6 +218,35 @@ export const recoverResetPasswordController = asyncHandler(
       success: true,
       status: 200,
       message: 'Password reset successful',
+      traceId,
+    });
+    return;
+  }
+);
+
+export const adminRefreshTokenController = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const traceId = getTraceId();
+    const user = req.user as JwtPayload;
+    const { jwt } = await adminRefreshToken({ user });
+    res.cookie('accesstoken', jwt, cookieOption(adminAccessTokenExpiresIn));
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Token refresh successful',
+      traceId,
+    });
+    return;
+  }
+);
+
+export const adminAccessTokenController = asyncHandler(
+  async (_req: Request, res: Response): Promise<void> => {
+    const traceId = getTraceId();
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'User is authenticated',
       traceId,
     });
     return;

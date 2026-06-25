@@ -3,6 +3,9 @@ import { Router } from 'express';
 import {
   checkAccessToken,
   checkAccountStatus,
+  checkAdminAccessToken,
+  findUserById,
+  isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
 import { validateReqBody } from '@/app/utils/system.utils';
 import { profileSchema } from '@/app/modules/profile/profile.schemas';
@@ -22,5 +25,16 @@ router
     updateProfileController
   )
   .get(checkAccessToken, checkAccountStatus, getMyProfileController);
+
+router
+  .route('/admin/profile')
+  .patch(
+    checkAdminAccessToken,
+    isAdmin,
+    findUserById,
+    validateReqBody(profileSchema),
+    updateProfileController
+  )
+  .get(checkAdminAccessToken, isAdmin, findUserById, getMyProfileController);
 
 export default router;

@@ -286,7 +286,7 @@ export const loginService = async ({
   isAdmin: boolean;
   rememberMe: boolean;
   user: IUser;
-}): Promise<{ accessToken: string; refreshToken?: string }> => {
+}): Promise<{ accessToken: string; refreshToken?: string,role?:string,_id?:string }> => {
   try {
     if (isAdmin) {
       const accessToken = generateAccessTokenForAdmin({
@@ -313,10 +313,9 @@ export const loginService = async ({
       accountStatus: user.accountStatus,
     });
 
-    return { accessToken };
+    return { role:user.role, accessToken,_id:user._id.toString() };
   } catch (error) {
-    if (error instanceof Error) throw error;
-    throw new Error('Unknown error occurred in login service');
+    throw error;
   }
 };
 
@@ -334,8 +333,7 @@ export const changePasswordService = async ({
     });
     return;
   } catch (error) {
-    if (error instanceof Error) throw error;
-    throw new Error('Unknown error occurred in change password service');
+    throw error;
   }
 };
 
@@ -344,28 +342,32 @@ export const recoverFindService = async ({
 }: {
   user: IUser;
 }): Promise<unknown> => {
-  const redisClient = getRedisClient();
-  const otp = generate(6, OTP_GENERATE_CONFIG);
-  const token = generateOtpPageToken({
-    accountStatus: user.accountStatus,
-    isVerified: user.isVerified,
-    role: user.role,
-    sub: user._id.toString(),
-  });
-  const encryptedOtp = hashOtp({ otp });
-  await Promise.all([
-    redisClient.set(
-      createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
-      encryptedOtp,
-      'PX',
-      calculateMilliseconds(otpExpireAt, 'minute')
-    ),
-    // here will be send the recover otp to user email using background job queue later
-  ]);
-  return {
-    token,
-    otp,
-  };
+  try {
+    const redisClient = getRedisClient();
+    const otp = generate(6, OTP_GENERATE_CONFIG);
+    const token = generateOtpPageToken({
+      accountStatus: user.accountStatus,
+      isVerified: user.isVerified,
+      role: user.role,
+      sub: user._id.toString(),
+    });
+    const encryptedOtp = hashOtp({ otp });
+    await Promise.all([
+      redisClient.set(
+        createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
+        encryptedOtp,
+        'PX',
+        calculateMilliseconds(otpExpireAt, 'minute')
+      ),
+      // here will be send the recover otp to user email using background job queue later
+    ]);
+    return {
+      token,
+      otp,
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const verifyRecoverOtpService = async ({
@@ -373,10 +375,14 @@ export const verifyRecoverOtpService = async ({
 }: {
   user: IUser;
 }): Promise<void> => {
-  const redisClient = getRedisClient();
-  await redisClient.del(
-    createRedisKey(REDIS_PREFIXES.otp, user._id.toString())
-  );
+  try {
+    const redisClient = getRedisClient();
+    await redisClient.del(
+      createRedisKey(REDIS_PREFIXES.otp, user._id.toString())
+    );
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const recoverResetPasswordService = async ({
@@ -389,17 +395,39 @@ export const recoverResetPasswordService = async ({
   tokenTtl: number;
   user: IUser;
 }): Promise<void> => {
-  const redisClient = getRedisClient();
-  const hashPass = await hashPassword(password);
-  await UserModel.findByIdAndUpdate(user._id, {
-    $set: { password: hashPass },
-  });
-  if (tokenTtl > 0) {
-    await redisClient.set(
-      createRedisKey(REDIS_PREFIXES.blacklist, token),
-      token,
-      'EX',
-      tokenTtl
-    );
+  try {
+    const redisClient = getRedisClient();
+    const hashPass = await hashPassword(password);
+    await UserModel.findByIdAndUpdate(user._id, {
+      $set: { password: hashPass },
+    });
+    if (tokenTtl > 0) {
+      await redisClient.set(
+        createRedisKey(REDIS_PREFIXES.blacklist, token),
+        token,
+        'EX',
+        tokenTtl
+      );
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const adminRefreshToken = async ({
+  user,
+}: {
+  user: JwtPayload;
+}): Promise<{ jwt: string }> => {
+  try {
+    const accessToken = generateAccessTokenForAdmin({
+      sub: String(user.sub),
+      role: user.role,
+      isVerified: user.isVerified,
+      accountStatus: user.accountStatus,
+    });
+    return { jwt: accessToken };
+  } catch (error) {
+    throw error;
   }
 };

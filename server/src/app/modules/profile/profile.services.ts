@@ -34,11 +34,12 @@ export const updateProfileService = async ({
       _id: updatedUser._id,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
-      email:updatedUser.email,
+      email: updatedUser.email,
       phone: updatedUser.phone,
       profileAvatar: updatedProfile.profileAvatar,
       country: updatedProfile.country,
       interest: updatedProfile.interest,
+      role: updatedUser.role,
     };
   } catch (error) {
     throw error;
@@ -57,11 +58,12 @@ export const getMyProfileService = ({
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      email:user.email,
+      email: user.email,
       phone: user.phone,
       profileAvatar: profile.profileAvatar,
       country: profile.country,
       interest: profile.interest,
+      role: user.role,
     };
   } catch (error) {
     throw error;
