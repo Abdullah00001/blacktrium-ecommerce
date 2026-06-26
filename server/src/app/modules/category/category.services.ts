@@ -5,6 +5,7 @@ import {
   TCreateCategory,
   TUpdateCategory,
   TCreateSubCategory,
+  TUpdateSubCategory,
   TSubCategoryQuery,
 } from '@/app/modules/category/category.schemas';
 
@@ -41,24 +42,15 @@ export const updateCategoryService = async ({
     if (!result) {
       throw new Error('Category not found');
     }
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
 
-export const deleteCategoryService = async ({
-  id,
-}: {
-  id: string;
-}): Promise<unknown> => {
-  try {
-    const result = await CategoryModel.findByIdAndDelete(id);
-    if (!result) {
-      throw new Error('Category not found');
+    // Cascade status update to all related subcategories
+    if (payload.status !== undefined) {
+      await SubcategoryModel.updateMany(
+        { categoryId: id },
+        { $set: { status: payload.status } }
+      );
     }
-    // Delete all associated subcategories
-    await SubcategoryModel.deleteMany({ categoryId: id });
+
     return result;
   } catch (error) {
     throw error;
@@ -71,17 +63,22 @@ export const getCategoriesService = async ({
   query: TCategoryQuery;
 }): Promise<unknown> => {
   try {
-    const { page = 1, limit = 10, search } = query;
+    const { page = 1, limit = 10, search, status } = query;
     const skip = (page - 1) * limit;
 
     const pipeline: any[] = [];
+    const matchStage: Record<string, any> = {};
 
     if (search) {
-      pipeline.push({
-        $match: {
-          categoryName: { $regex: search, $options: 'i' },
-        },
-      });
+      matchStage.categoryName = { $regex: search, $options: 'i' };
+    }
+
+    if (status !== undefined) {
+      matchStage.status = status;
+    }
+
+    if (Object.keys(matchStage).length > 0) {
+      pipeline.push({ $match: matchStage });
     }
 
     pipeline.push(
@@ -168,13 +165,19 @@ export const createSubCategoryService = async ({
   }
 };
 
-export const deleteSubCategoryService = async ({
+export const updateSubCategoryService = async ({
   id,
+  payload,
 }: {
   id: string;
+  payload: TUpdateSubCategory;
 }): Promise<unknown> => {
   try {
-    const result = await SubcategoryModel.findByIdAndDelete(id);
+    const result = await SubcategoryModel.findByIdAndUpdate(
+      id,
+      { $set: payload },
+      { new: true }
+    );
     if (!result) {
       throw new Error('SubCategory not found');
     }
@@ -190,7 +193,7 @@ export const getSubCategoriesService = async ({
   query: TSubCategoryQuery;
 }): Promise<unknown> => {
   try {
-    const { page = 1, limit = 10, search, category } = query;
+    const { page = 1, limit = 10, search, category, status } = query;
     const skip = (page - 1) * limit;
 
     const filter: Record<string, any> = {};
@@ -201,6 +204,10 @@ export const getSubCategoriesService = async ({
 
     if (search) {
       filter.subCategoryName = { $regex: search, $options: 'i' };
+    }
+
+    if (status !== undefined) {
+      filter.status = status;
     }
 
     const [data, total] = await Promise.all([

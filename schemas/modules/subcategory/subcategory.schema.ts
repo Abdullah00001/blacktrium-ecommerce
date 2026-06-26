@@ -11,6 +11,7 @@ const SubcategorySchema = new Schema<ISubcategory>(
       index: true,
     },
     subCategoryName: { type: String, required: true, index: true },
+    status: { type: Boolean, default: true, index: true },
   },
   {
     timestamps: true,

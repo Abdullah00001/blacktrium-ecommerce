@@ -4,10 +4,9 @@ import { getTraceId } from '@/app/configs/requestContext.configs';
 import {
   createCategoryService,
   updateCategoryService,
-  deleteCategoryService,
   getCategoriesService,
   createSubCategoryService,
-  deleteSubCategoryService,
+  updateSubCategoryService,
   getSubCategoriesService,
 } from '@/app/modules/category/category.services';
 import {
@@ -15,6 +14,7 @@ import {
   TCreateCategory,
   TUpdateCategory,
   TCreateSubCategory,
+  TUpdateSubCategory,
   TSubCategoryQuery,
 } from '@/app/modules/category/category.schemas';
 
@@ -51,23 +51,6 @@ export const updateCategoryController = asyncHandler(
       success: true,
       status: 200,
       message: 'Category updated successfully',
-      data,
-      traceId,
-    });
-  }
-);
-
-export const deleteCategoryController = asyncHandler(
-  async (req: Request, res: Response) => {
-    const traceId = getTraceId();
-    const { id } = req.params as { id: string };
-
-    const data = await deleteCategoryService({ id });
-
-    res.status(200).json({
-      success: true,
-      status: 200,
-      message: 'Category deleted successfully',
       data,
       traceId,
     });
@@ -112,17 +95,18 @@ export const createSubCategoryController = asyncHandler(
   }
 );
 
-export const deleteSubCategoryController = asyncHandler(
+export const updateSubCategoryController = asyncHandler(
   async (req: Request, res: Response) => {
     const traceId = getTraceId();
     const { id } = req.params as { id: string };
+    const payload = req.body as TUpdateSubCategory;
 
-    const data = await deleteSubCategoryService({ id });
+    const data = await updateSubCategoryService({ id, payload });
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: 'SubCategory deleted successfully',
+      message: 'SubCategory updated successfully',
       data,
       traceId,
     });

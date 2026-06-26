@@ -2,10 +2,9 @@ import { Router } from 'express';
 import {
   createCategoryController,
   updateCategoryController,
-  deleteCategoryController,
   getCategoriesController,
   createSubCategoryController,
-  deleteSubCategoryController,
+  updateSubCategoryController,
   getSubCategoriesController,
 } from '@/app/modules/category/category.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
@@ -14,6 +13,7 @@ import {
   UpdateCategorySchema,
   CategoryQuerySchema,
   CreateSubCategorySchema,
+  UpdateSubCategorySchema,
   SubCategoryQuerySchema,
 } from '@/app/modules/category/category.schemas';
 import {
@@ -21,6 +21,10 @@ import {
   findUserById,
   isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
+import {
+  checkCategoryExists,
+  checkSubCategoryExists,
+} from '@/app/modules/category/category.middlewares';
 
 const router = Router();
 
@@ -48,14 +52,9 @@ router
     checkAdminAccessToken,
     isAdmin,
     findUserById,
+    checkCategoryExists,
     validateReqBody(UpdateCategorySchema),
     updateCategoryController
-  )
-  .delete(
-    checkAdminAccessToken,
-    isAdmin,
-    findUserById,
-    deleteCategoryController
   );
 
 // ========================
@@ -80,11 +79,13 @@ router
 
 router
   .route('/admin/subcategory/:id')
-  .delete(
+  .patch(
     checkAdminAccessToken,
     isAdmin,
     findUserById,
-    deleteSubCategoryController
+    checkSubCategoryExists,
+    validateReqBody(UpdateSubCategorySchema),
+    updateSubCategoryController
   );
 
 export default router;

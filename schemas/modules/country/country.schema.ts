@@ -6,7 +6,7 @@ const CountrySchema = new Schema<ICountry>(
     // Define your schema properties here
     countryName: { type: String, required: true, index: true },
     countryCode: { type: String, required: true, index: true },
-    status: { type: Boolean, required: true,default:true },
+    status: { type: Boolean,default:true,index:true },
   },
   {
     timestamps: true,
