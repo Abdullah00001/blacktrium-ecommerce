@@ -3,6 +3,9 @@ import { Router } from 'express';
 import {
   checkAccessToken,
   checkAccountStatus,
+  checkAdminAccessToken,
+  findUserById,
+  isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
 import {
   deleteImageController,
@@ -33,6 +36,25 @@ router
   .delete(
     checkAccessToken,
     checkAccountStatus,
+    validateReqBody(deleteImageSchema),
+    deleteImageController
+  );
+
+router
+  .route('/admin/image')
+  .post(
+    checkAdminAccessToken,
+    isAdmin,
+    findUserById,
+    uploadArray('image', 10, true),
+    handleMulterError,
+    validateReqBody(imageSchema),
+    uploadImageController
+  )
+  .delete(
+    checkAdminAccessToken,
+    isAdmin,
+    findUserById,
     validateReqBody(deleteImageSchema),
     deleteImageController
   );

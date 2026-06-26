@@ -5,6 +5,7 @@ import ProfileRoutes from '@/app/modules/profile/profile.routes';
 import ImageRoutes from '@/app/modules/image/image.routes';
 import LegalRoutes from '@/app/modules/legal/legal.routes';
 import CountryRoutes from '@/app/modules/country/country.routes';
+import CategoryRoutes from '@/app/modules/category/category.routes';
 
 const routes: Router[] = [
   AuthRoutes,
@@ -12,6 +13,7 @@ const routes: Router[] = [
   ImageRoutes,
   LegalRoutes,
   CountryRoutes,
+  CategoryRoutes,
 ];
 
 const v1Routes = Router();
