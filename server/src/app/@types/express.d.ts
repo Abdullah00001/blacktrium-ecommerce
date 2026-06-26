@@ -1,6 +1,7 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { IUser } from '@/app/schemas/user/user.types';
 import { IProfile } from '@/app/schemas/profile/profile.types';
+import { ILegal } from '@/app/schemas/legal/legal.types';
 
 declare global {
   namespace Express {
@@ -16,6 +17,7 @@ declare global {
       files?: { [fieldname: string]: Express.Multer.File[] };
       tokenTtl?: number;
       validatedQuery?: unknown;
+      legalDoc: ILegal;
     }
   }
 }
