@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { CategoryModel } from '@/app/schemas/category/category.schema';
 import { SubcategoryModel } from '@/app/schemas/subcategory/subcategory.schema';
 import {
@@ -63,7 +64,7 @@ export const getCategoriesService = async ({
   query: TCategoryQuery;
 }): Promise<unknown> => {
   try {
-    const { page = 1, limit = 10, search, status } = query;
+    const { page = 1, limit = 10, search, status, isPopular } = query as any;
     const skip = (page - 1) * limit;
 
     const pipeline: any[] = [];
@@ -75,6 +76,10 @@ export const getCategoriesService = async ({
 
     if (status !== undefined) {
       matchStage.status = status;
+    }
+
+    if (isPopular !== undefined) {
+      matchStage.isPopular = isPopular;
     }
 
     if (Object.keys(matchStage).length > 0) {

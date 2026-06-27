@@ -1,7 +1,7 @@
+/* eslint-disable no-useless-catch */
 import { LegalModel } from '@/app/schemas/legal/legal.schema';
 import { TLegalQuery } from '@/app/modules/legal/legal.schemas';
 import { ILegal } from '@/app/schemas/legal/legal.types';
-import { getRedisClient } from '@/app/configs/redis.config';
 
 export const getLegalContentService = async ({
   query,
@@ -9,7 +9,7 @@ export const getLegalContentService = async ({
   query: TLegalQuery;
 }): Promise<unknown> => {
   try {
-    const redisClient = getRedisClient();
+  
     const { targetRole, contentType } = query;
     const result = await LegalModel.findOne({
       targetRole,
@@ -29,7 +29,7 @@ export const updateLegalContentService = async ({
   legalDoc: ILegal;
 }): Promise<unknown> => {
   try {
-    const redisClient = getRedisClient();
+  
     const result = await LegalModel.findByIdAndUpdate(
       legalDoc._id,
       {

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import mongoose, { Types } from 'mongoose';
 
 import { UserModel } from '@/app/schemas/user/user.schema';
@@ -57,7 +58,7 @@ export const deleteExpiredUnverifiedUser = async ({
 
 export const signupService = async ({
   payload,
-  traceId,
+  traceId: _traceId,
 }: {
   payload: TSignupPayload;
   traceId: string;
@@ -73,6 +74,7 @@ export const signupService = async ({
       isLegalTermsAccepted,
       isSubscribe,
       lastName,
+      fcmToken,
     } = payload;
     const encryptedPassword = await hashPassword(payload.password);
 
@@ -84,6 +86,7 @@ export const signupService = async ({
           isLegalTermsAccepted,
           lastName,
           password: encryptedPassword,
+          fcmToken: fcmToken || null,
         },
       ],
       { session }
@@ -122,12 +125,14 @@ export const signupService = async ({
       sub: user._id.toString(),
     });
     const encryptedOtp = hashOtp({ otp });
+    /*
     const emailTemplatePayload = {
       email: user.email,
       otp,
       traceId,
       otpExpireAt,
     } as const;
+    */
     await Promise.all([
       redisClient.set(
         createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
@@ -205,7 +210,7 @@ export const verifySignupOtpService = async ({
 
 export const resendOtpService = async ({
   user,
-  traceId,
+  traceId: _traceId,
 }: {
   user: IUser;
   traceId: string;
@@ -214,12 +219,14 @@ export const resendOtpService = async ({
     const redisClient = getRedisClient();
     const otp = generate(6, OTP_GENERATE_CONFIG);
     const encryptedOtp = hashOtp({ otp });
+    /*
     const emailTemplatePayload = {
       email: user.email,
       otp,
       traceId,
       otpExpireAt,
     } as const;
+    */
     await Promise.all([
       redisClient.set(
         createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
@@ -235,14 +242,19 @@ export const resendOtpService = async ({
   }
 };
 
-export const checkAccessTokenService = ({
+export const checkAccessTokenService = async ({
   profile,
   user,
+  fcmToken,
 }: {
   user: IUser;
   profile: IProfile;
-}): unknown => {
+  fcmToken?: string | null;
+}): Promise<unknown> => {
   try {
+    if (fcmToken) {
+      await UserModel.findByIdAndUpdate(user._id, { $set: { fcmToken } });
+    }
     return {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -282,12 +294,17 @@ export const loginService = async ({
   isAdmin,
   user,
   rememberMe,
+  fcmToken,
 }: {
   isAdmin: boolean;
   rememberMe: boolean;
   user: IUser;
+  fcmToken?: string | null;
 }): Promise<{ accessToken: string; refreshToken?: string,role?:string,_id?:string }> => {
   try {
+    if (fcmToken && !isAdmin) {
+      await UserModel.findByIdAndUpdate(user._id, { $set: { fcmToken } });
+    }
     if (isAdmin) {
       const accessToken = generateAccessTokenForAdmin({
         isVerified: user.isVerified,

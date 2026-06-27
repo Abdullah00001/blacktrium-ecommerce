@@ -20,6 +20,7 @@ export interface IUser extends Document {
   accountStatus: AccountStatus;
   isLegalTermsAccepted: boolean;
   role: Role;
+  fcmToken: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

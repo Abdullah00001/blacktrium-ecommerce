@@ -285,11 +285,10 @@ export function getFirebaseCredentials(): TFirebaseCredentials {
   };
 }
 
-export async function sendNotification({
-  data,
-  fcmToken,
-  userId,
-}: TSendNotificationPayload) {
+export async function sendNotification(
+  payload: TSendNotificationPayload
+) {
+  const { userId } = payload;
   try {
     // const user=await
   } catch (error) {

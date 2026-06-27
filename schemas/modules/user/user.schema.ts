@@ -18,6 +18,7 @@ const UserSchema = new Schema<IUser>(
     },
     role: { type: String, default: Role.USER, index: true },
     isLegalTermsAccepted: { type: Boolean, required: true },
+    fcmToken: { type: String, default: null },
   },
   {
     timestamps: true,

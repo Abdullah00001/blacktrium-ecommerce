@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { hash, compare } from 'bcrypt';
 
 import { saltRound } from '@/const';

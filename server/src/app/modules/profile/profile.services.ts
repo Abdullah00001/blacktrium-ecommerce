@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { IUser } from '@/app/schemas/user/user.types';
 import { TProfilePayload } from '@/app/modules/profile/profile.schemas';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';

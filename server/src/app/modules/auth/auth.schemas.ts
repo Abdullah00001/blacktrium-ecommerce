@@ -42,6 +42,8 @@ export const signupPayloadSchema = z.object({
     .refine((val) => val === true, {
       message: 'You must accept the Terms and Conditions to create an account',
     }),
+
+  fcmToken: z.string().optional().nullable(),
 });
 
 export type TSignupPayload = z.infer<typeof signupPayloadSchema>;
@@ -78,6 +80,8 @@ export const loginSchema = z
     rememberMe: z
       .boolean({ message: 'Remember me field is required' })
       .default(false),
+
+    fcmToken: z.string().optional().nullable(),
   })
   .strict();
 

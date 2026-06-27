@@ -44,6 +44,14 @@ export const CategoryQuerySchema = z.object({
       if (val === 'false' || val === false || val === '0' || val === 0) return false;
       return undefined;
     }),
+  isPopular: z
+    .any()
+    .optional()
+    .transform((val) => {
+      if (val === 'true' || val === true || val === '1' || val === 1) return true;
+      if (val === 'false' || val === false || val === '0' || val === 0) return false;
+      return undefined;
+    }),
 });
 
 export type TCategoryQuery = z.infer<typeof CategoryQuerySchema>;

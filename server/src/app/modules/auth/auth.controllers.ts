@@ -85,7 +85,11 @@ export const checkAccessTokenController = asyncHandler(
     const traceId = getTraceId();
     const user = req.user as IUser;
     const profile = req.profile as IProfile;
-    const data = checkAccessTokenService({ profile, user });
+    
+    // Accept FCM token from a custom header
+    const fcmToken = req.headers['x-fcm-token'] as string | undefined;
+
+    const data = await checkAccessTokenService({ profile, user, fcmToken });
     res.status(200).json({
       success: true,
       status: 200,
@@ -115,7 +119,7 @@ export const logoutController = asyncHandler(
 
 export const loginController = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const { rememberMe } = req.body as TLoginPayload;
+    const { rememberMe, fcmToken } = req.body as TLoginPayload;
     const path = req.path;
     const isAdminLogin = path.includes('/admin/auth/login');
     const traceId = getTraceId();
@@ -124,6 +128,7 @@ export const loginController = asyncHandler(
       isAdmin: isAdminLogin,
       user,
       rememberMe,
+      fcmToken,
     });
     if (isAdminLogin && refreshToken) {
       const refreshTokenExpireIn = rememberMe

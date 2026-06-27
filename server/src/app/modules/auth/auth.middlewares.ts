@@ -63,12 +63,14 @@ export const checkDuplicateUser = asyncHandler(
         sub: userIdStr,
       });
       const encryptedOtp = hashOtp({ otp });
+      /*
       const emailTemplatePayload = {
         email: user.email,
         otp,
         traceId,
         otpExpireAt,
       } as const;
+      */
       await Promise.all([
         redisClient.set(
           createRedisKey(REDIS_PREFIXES.otp, userIdStr),

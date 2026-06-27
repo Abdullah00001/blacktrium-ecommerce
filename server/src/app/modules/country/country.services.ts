@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { CountryModel } from '@/app/schemas/country/country.schema';
 import { TCountryQuery } from '@/app/modules/country/country.schemas';
 
