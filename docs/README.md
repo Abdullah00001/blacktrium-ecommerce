@@ -22,6 +22,9 @@ This folder contains the development documentation for the repository.
 | [worker/README.md](../worker/README.md)   | Queue worker details                         |
 | [corn/README.md](../corn/README.md)       | Scheduler details                            |
 | [schemas/README.md](../schemas/README.md) | Schema generation and sync process           |
+| [APP_INTEGRATION_GUIDE.md](APP_INTEGRATION_GUIDE.md) | Mobile App & Web API Integration Guide       |
+| [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)           | VPS Deployment & Production Seeding Guide    |
+| [CREDENTIALS_HANDOVER.md](CREDENTIALS_HANDOVER.md)   | Explanation of platform account credentials  |
 
 ## Architecture Summary
 
