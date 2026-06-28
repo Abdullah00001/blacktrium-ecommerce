@@ -51,6 +51,7 @@ const start = async (): Promise<void> => {
 };
 
 start().catch((err) => {
+  console.error('CORN STARTUP ERROR:', err);
   logger.error(`${TAG} Failed to start`, { err });
   process.exit(1);
 });
