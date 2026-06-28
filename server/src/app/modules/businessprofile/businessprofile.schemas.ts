@@ -1,8 +1,21 @@
 import { z } from 'zod';
 
+const mongoObjectIdRegex = /^[0-9a-fA-F]{24}$/;
+
+const SocialLinkSchema = z.object({
+  platform: z.string().min(1, 'Platform name is required'),
+  url: z.string().url({ message: 'Must be a valid URL' }),
+});
+
 export const UpdateBusinessProfileSchema = z.object({
   firstName: z.string().min(1).optional(),
   lastName: z.string().min(1).optional(),
+  profileAvatar: z.string().url().optional().nullable(),
+  businessOwnerType: z.string().min(1).optional(),
+  countryId: z.string().regex(mongoObjectIdRegex).optional(),
+  tagLine: z.string().max(200).optional().nullable(),
+  bio: z.string().max(2000).optional().nullable(),
+  socialLinks: z.array(SocialLinkSchema).optional(),
 });
 
 export type TUpdateBusinessProfile = z.infer<typeof UpdateBusinessProfileSchema>;

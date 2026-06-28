@@ -89,7 +89,7 @@ export const getAllBusinessesService = async ({
 }: {
   query: TBusinessQuery;
 }): Promise<unknown> => {
-  const { page = 1, limit = 10, search, status, categoryId, subCategoryId, countryId, businessOwnerType, businessType, location, isFeatured } = query as any;
+  const { page = 1, limit = 10, search, status, categoryId, subCategoryId, countryId, businessType, location, isFeatured } = query as any;
   const skip = (page - 1) * limit;
 
   const filter: Record<string, any> = {};
@@ -99,7 +99,6 @@ export const getAllBusinessesService = async ({
   if (categoryId) filter.categoryId = new Types.ObjectId(categoryId);
   if (subCategoryId) filter.subCategoryId = new Types.ObjectId(subCategoryId);
   if (countryId) filter.countryId = new Types.ObjectId(countryId);
-  if (businessOwnerType) filter.businessOwnerType = businessOwnerType;
   if (businessType) filter.businessType = businessType;
   if (location) filter.location = { $regex: location, $options: 'i' };
   if (isFeatured !== undefined) filter.spotlightFeature = isFeatured;

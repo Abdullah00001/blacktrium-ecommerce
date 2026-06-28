@@ -2,10 +2,6 @@ import { z } from 'zod';
 
 const mongoObjectIdRegex = /^[0-9a-fA-F]{24}$/;
 
-const SocialLinkSchema = z.object({
-  platform: z.string().min(1, 'Platform name is required'),
-  url: z.string().url({ message: 'Must be a valid URL' }),
-});
 
 export const PromotionSchema = z.object({
   title: z.string().min(1, 'Promotion title is required'),
@@ -26,7 +22,6 @@ export const EventSchema = z.object({
 export const CreateBusinessSchema = z.object({
   businessName: z.string().min(1, 'Business name cannot be empty').max(150, 'Business name is too long'),
   businessType: z.string().min(1, 'Business type is required'),
-  businessOwnerType: z.string().min(1, 'Business owner type is required'),
   categoryId: z.string().regex(mongoObjectIdRegex, 'Invalid Category ID format'),
   subCategoryId: z.string().regex(mongoObjectIdRegex, 'Invalid Sub-category ID format'),
   countryId: z.string().regex(mongoObjectIdRegex, 'Invalid Country ID format').optional(),
@@ -34,7 +29,6 @@ export const CreateBusinessSchema = z.object({
   thumbnailImage: z.string().url().optional().nullable(),
   businessImages: z.array(z.string().url()).max(10, 'Maximum 10 images allowed').optional().default([]),
   businessDescription: z.string().max(2000, 'Description too long').optional().nullable(),
-  socialLinks: z.array(SocialLinkSchema).optional().default([]),
   promotions: z.array(PromotionSchema).optional().default([]),
   events: z.array(EventSchema).optional().default([]),
   spotlightFeature: z.boolean().optional().default(false),
@@ -45,13 +39,11 @@ export type TCreateBusiness = z.infer<typeof CreateBusinessSchema>;
 export const UpdateBusinessSchema = z.object({
   businessName: z.string().min(1).max(150).optional(),
   businessType: z.string().min(1).optional(),
-  businessOwnerType: z.string().min(1).optional(),
   countryId: z.string().regex(mongoObjectIdRegex).optional(),
   location: z.string().min(1).optional(),
   thumbnailImage: z.string().url().optional().nullable(),
   businessImages: z.array(z.string().url()).max(10).optional(),
   businessDescription: z.string().max(2000).optional().nullable(),
-  socialLinks: z.array(SocialLinkSchema).optional(),
   promotions: z.array(PromotionSchema).optional(),
   events: z.array(EventSchema).optional(),
   spotlightFeature: z.boolean().optional(),
@@ -73,7 +65,6 @@ export const BusinessQuerySchema = z.object({
   categoryId: z.string().optional(),
   subCategoryId: z.string().optional(),
   countryId: z.string().optional(),
-  businessOwnerType: z.string().optional(),
   businessType: z.string().optional(),
   location: z.string().optional(),
   isFeatured: z.any().optional().transform((val) => {

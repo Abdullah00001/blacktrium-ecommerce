@@ -1,14 +1,6 @@
 import { Schema, model, Model } from 'mongoose';
 import { IBusiness } from '@/business/business.types';
 
-const SocialLinkSchema = new Schema(
-  {
-    platform: { type: String, required: true },
-    url: { type: String, required: true },
-  },
-  { _id: false }
-);
-
 const PromotionSchema = new Schema(
   {
     title: { type: String, required: true },
@@ -40,7 +32,6 @@ const BusinessSchema = new Schema<IBusiness>({
   },
   businessName: { type: String, required: true, index: true },
   businessType: { type: String, required: true },
-  businessOwnerType: { type: String, required: true },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: 'Category',
@@ -62,7 +53,6 @@ const BusinessSchema = new Schema<IBusiness>({
   thumbnailImage: { type: String, default: null },
   businessImages: [{ type: String }],
   businessDescription: { type: String, default: null },
-  socialLinks: { type: [SocialLinkSchema], default: [] },
   promotions: { type: [PromotionSchema], default: [] },
   events: { type: [EventSchema], default: [] },
   spotlightFeature: { type: Boolean, default: false },
