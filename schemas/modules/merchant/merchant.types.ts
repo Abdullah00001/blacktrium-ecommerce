@@ -7,6 +7,7 @@ export interface ISocialLink {
 
 export interface IMerchant extends Document {
   userId: Types.ObjectId;
+  businessProfileId: Types.ObjectId;
   shopName: string;
   aboutShop: string;
   termsAndCondition: string;

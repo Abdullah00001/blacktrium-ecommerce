@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import { SubscriptionModel } from '@/app/schemas/subscription/subscription.schema';
 import { ISubscription } from '@/app/schemas/subscription/subscription.types';
 import { TSyncSubscription } from '@/app/modules/subscription/subscription.schemas';
+import { getSystemQueue } from '@/app/queues/queues';
 
 /**
  * Business profile limits per plan tier.
@@ -46,6 +47,19 @@ export const syncSubscriptionService = async ({
     { upsert: true, new: true }
   );
 
+  const systemQueue = getSystemQueue();
+  const jobId = `expire_sub_${result._id.toString()}`;
+  await systemQueue.remove(jobId);
+
+  if (result.expiresAt) {
+    const delay = new Date(result.expiresAt).getTime() - Date.now();
+    if (delay > 0) {
+      await systemQueue.add('expire-subscription', { subscriptionId: result._id.toString() }, { delay, jobId });
+    } else {
+      await systemQueue.add('expire-subscription', { subscriptionId: result._id.toString() }, { jobId });
+    }
+  }
+
   return result;
 };
 
@@ -58,5 +72,23 @@ export const getMySubscriptionService = async ({
     userId: new Types.ObjectId(userId),
     status: 'active',
   });
+  return subscription;
+};
+
+export const cancelSubscriptionService = async ({
+  userId,
+}: {
+  userId: string;
+}): Promise<unknown> => {
+  const subscription = await SubscriptionModel.findOneAndUpdate(
+    { userId: new Types.ObjectId(userId), status: 'active' },
+    { $set: { status: 'cancelled' } },
+    { new: true }
+  );
+  if (!subscription) throw new Error('No active subscription found to cancel');
+
+  const systemQueue = getSystemQueue();
+  await systemQueue.remove(`expire_sub_${subscription._id.toString()}`);
+
   return subscription;
 };

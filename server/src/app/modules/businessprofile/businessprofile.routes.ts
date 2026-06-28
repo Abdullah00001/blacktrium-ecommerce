@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
-  createBusinessProfileController,
-  getMyBusinessProfilesController,
+  getMyBusinessProfileController,
   getBusinessProfileByIdController,
   updateBusinessProfileController,
   getAllBusinessProfilesController,
@@ -9,7 +8,6 @@ import {
 } from '@/app/modules/businessprofile/businessprofile.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
 import {
-  CreateBusinessProfileSchema,
   UpdateBusinessProfileSchema,
   BusinessProfileQuerySchema,
   AdminUpdateBusinessProfileStatusSchema,
@@ -24,7 +22,6 @@ import {
 
 import {
   checkBusinessProfileExists,
-  checkBusinessOwnership,
 } from '@/app/modules/businessprofile/businessprofile.middlewares';
 
 const router = Router();
@@ -33,25 +30,25 @@ const router = Router();
 // Business Profile Routes
 // ========================
 
-// CREATE business profile (Authenticated + Requires Active Subscription)
-router
-  .route('/business-profile')
-  .post(
-    checkAccessToken,
-    checkAccountStatus,
-    findUserById,
-    validateReqBody(CreateBusinessProfileSchema),
-    createBusinessProfileController
-  );
-
-// GET my business profiles (Authenticated)
+// GET my business profile (Authenticated)
 router
   .route('/business-profile/me')
   .get(
     checkAccessToken,
     checkAccountStatus,
     findUserById,
-    getMyBusinessProfilesController
+    getMyBusinessProfileController
+  );
+
+// UPDATE my business profile (Authenticated)
+router
+  .route('/business-profile/me')
+  .patch(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    validateReqBody(UpdateBusinessProfileSchema),
+    updateBusinessProfileController
   );
 
 // GET single business profile
@@ -60,19 +57,6 @@ router
   .get(
     checkBusinessProfileExists,
     getBusinessProfileByIdController
-  );
-
-// UPDATE business profile (Authenticated + Owner)
-router
-  .route('/business-profile/:id')
-  .patch(
-    checkAccessToken,
-    checkAccountStatus,
-    findUserById,
-    checkBusinessProfileExists,
-    checkBusinessOwnership,
-    validateReqBody(UpdateBusinessProfileSchema),
-    updateBusinessProfileController
   );
 
 // ========================

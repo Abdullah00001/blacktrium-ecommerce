@@ -1,8 +1,10 @@
 /* eslint-disable no-useless-catch */
 import mongoose, { Types } from 'mongoose';
+import { getEmailQueue } from '@/app/queues/queues';
 
 import { UserModel } from '@/app/schemas/user/user.schema';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
+import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
 import { SubscriberModel } from '@/app/schemas/subscriber/subscriber.schema';
 import {
   TRecoverResetPayload,
@@ -100,6 +102,18 @@ export const signupService = async ({
       ],
       { session }
     );
+    await BusinessProfileModel.create(
+      [
+        {
+          userId: user._id,
+          firstName,
+          lastName,
+          email,
+          status: 'inactive',
+        },
+      ],
+      { session }
+    );
     await SubscriberModel.findOneAndUpdate(
       { email },
       {
@@ -125,14 +139,7 @@ export const signupService = async ({
       sub: user._id.toString(),
     });
     const encryptedOtp = hashOtp({ otp });
-    /*
-    const emailTemplatePayload = {
-      email: user.email,
-      otp,
-      traceId,
-      otpExpireAt,
-    } as const;
-    */
+    
     await Promise.all([
       redisClient.set(
         createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
@@ -140,11 +147,14 @@ export const signupService = async ({
         'PX',
         calculateMilliseconds(otpExpireAt, 'minute')
       ),
-      // here will be send the otp to user email using background job queue
+      getEmailQueue().add('send-signup-user-verify-otp-email', {
+        email: user.email,
+        otp,
+        traceId: _traceId,
+      }),
     ]);
     return {
       token,
-      otp,
       userId: user._id,
       email: user.email,
       firstName: user.firstName,
@@ -195,11 +205,12 @@ export const verifySignupOtpService = async ({
     await redisClient.del(
       createRedisKey(REDIS_PREFIXES.otp, updatedUser._id.toString())
     );
-    // in production user will get an email
-    // await getEmailQueue().add('send-signup-success-email', {
-    //   email: updatedUser.email,
-    //   traceId,
-    // });
+    
+    await getEmailQueue().add('send-signup-success-email', {
+      email: updatedUser.email,
+      traceId: 'NO_TRACE_ID', // Modify as needed if traceId is passed to this service
+    });
+
     return {
       token: accessToken,
     };
@@ -219,14 +230,7 @@ export const resendOtpService = async ({
     const redisClient = getRedisClient();
     const otp = generate(6, OTP_GENERATE_CONFIG);
     const encryptedOtp = hashOtp({ otp });
-    /*
-    const emailTemplatePayload = {
-      email: user.email,
-      otp,
-      traceId,
-      otpExpireAt,
-    } as const;
-    */
+    
     await Promise.all([
       redisClient.set(
         createRedisKey(REDIS_PREFIXES.otp, user._id.toString()),
@@ -234,9 +238,13 @@ export const resendOtpService = async ({
         'PX',
         calculateMilliseconds(otpExpireAt, 'minute')
       ),
-      // here will be send the otp to user email using background job queue
+      getEmailQueue().add('send-signup-user-verify-otp-email', {
+        email: user.email,
+        otp,
+        traceId: _traceId,
+      }),
     ]);
-    return { otp };
+    return {};
   } catch (error) {
     throw error;
   }
@@ -376,11 +384,14 @@ export const recoverFindService = async ({
         'PX',
         calculateMilliseconds(otpExpireAt, 'minute')
       ),
-      // here will be send the recover otp to user email using background job queue later
+      getEmailQueue().add('send-find-recover-user-email-otp', {
+        email: user.email,
+        otp,
+        traceId: 'NO_TRACE_ID', // Modify as needed if traceId is passed
+      }),
     ]);
     return {
       token,
-      otp,
     };
   } catch (error) {
     throw error;
@@ -426,6 +437,10 @@ export const recoverResetPasswordService = async ({
         tokenTtl
       );
     }
+    await getEmailQueue().add('send-reset-successful-recover-user-email', {
+      email: user.email,
+      traceId: 'NO_TRACE_ID', // Modify as needed if traceId is passed
+    });
   } catch (error) {
     throw error;
   }

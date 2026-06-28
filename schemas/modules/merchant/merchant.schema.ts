@@ -16,6 +16,12 @@ const MerchantSchema = new Schema<IMerchant>({
     required: true,
     index: true,
   },
+  businessProfileId: {
+    type: Schema.Types.ObjectId,
+    ref: 'BusinessProfile',
+    required: true,
+    index: true,
+  },
   shopName: { type: String, required: true, index: true },
   aboutShop: { type: String, required: true },
   termsAndCondition: { type: String, required: true },

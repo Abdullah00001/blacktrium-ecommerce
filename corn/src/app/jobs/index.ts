@@ -1,3 +1,4 @@
 import logger from '@/app/configs/logger.configs';
+import './subscription.job';
 
-logger.info('[Corn] No schedules registered yet');
+logger.info('[Corn] Schedules registered');

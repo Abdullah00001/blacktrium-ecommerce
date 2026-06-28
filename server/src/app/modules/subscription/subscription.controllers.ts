@@ -4,6 +4,7 @@ import { getTraceId } from '@/app/configs/requestContext.configs';
 import {
   syncSubscriptionService,
   getMySubscriptionService,
+  cancelSubscriptionService,
 } from '@/app/modules/subscription/subscription.services';
 import { IUser } from '@/app/schemas/user/user.types';
 import { TSyncSubscription } from '@/app/modules/subscription/subscription.schemas';
@@ -44,6 +45,23 @@ export const getMySubscriptionController = asyncHandler(
       success: true,
       status: 200,
       message: data ? 'Active subscription found' : 'No active subscription found',
+      data,
+      traceId,
+    });
+  }
+);
+
+export const cancelSubscriptionController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+
+    const data = await cancelSubscriptionService({ userId: user._id.toString() });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Subscription cancelled successfully',
       data,
       traceId,
     });

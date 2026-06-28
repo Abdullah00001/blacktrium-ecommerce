@@ -2,59 +2,32 @@ import { Request, Response } from 'express';
 import { asyncHandler } from '@/app/utils/system.utils';
 import { getTraceId } from '@/app/configs/requestContext.configs';
 import {
-  createBusinessProfileService,
-  getMyBusinessProfilesService,
+  getMyBusinessProfileService,
   getBusinessProfileByIdService,
   updateBusinessProfileService,
   getAllBusinessProfilesService,
   updateBusinessProfileStatusService,
 } from '@/app/modules/businessprofile/businessprofile.services';
 import {
-  TCreateBusinessProfile,
   TUpdateBusinessProfile,
   TBusinessProfileQuery,
   TAdminUpdateBusinessProfileStatus,
 } from '@/app/modules/businessprofile/businessprofile.schemas';
 import { IUser } from '@/app/schemas/user/user.types';
 
-// ========================
-// Business Profile Controllers
-// ========================
-
-export const createBusinessProfileController = asyncHandler(
-  async (req: Request, res: Response) => {
-    const traceId = getTraceId();
-    const user = req.user as IUser;
-    const payload = req.body as TCreateBusinessProfile;
-
-    const data = await createBusinessProfileService({
-      userId: user._id.toString(),
-      payload,
-    });
-
-    res.status(201).json({
-      success: true,
-      status: 201,
-      message: 'Business profile created successfully',
-      data,
-      traceId,
-    });
-  }
-);
-
-export const getMyBusinessProfilesController = asyncHandler(
+export const getMyBusinessProfileController = asyncHandler(
   async (req: Request, res: Response) => {
     const traceId = getTraceId();
     const user = req.user as IUser;
 
-    const data = await getMyBusinessProfilesService({
+    const data = await getMyBusinessProfileService({
       userId: user._id.toString(),
     });
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: 'Business profiles retrieved successfully',
+      message: 'Business profile retrieved successfully',
       data,
       traceId,
     });
@@ -81,10 +54,10 @@ export const getBusinessProfileByIdController = asyncHandler(
 export const updateBusinessProfileController = asyncHandler(
   async (req: Request, res: Response) => {
     const traceId = getTraceId();
-    const { id } = req.params as { id: string };
+    const user = req.user as IUser;
     const payload = req.body as TUpdateBusinessProfile;
 
-    const data = await updateBusinessProfileService({ id, payload });
+    const data = await updateBusinessProfileService({ userId: user._id.toString(), payload });
 
     res.status(200).json({
       success: true,

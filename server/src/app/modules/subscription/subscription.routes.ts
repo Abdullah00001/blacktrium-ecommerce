@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   syncSubscriptionController,
   getMySubscriptionController,
+  cancelSubscriptionController,
 } from '@/app/modules/subscription/subscription.controllers';
 import { validateReqBody } from '@/app/utils/system.utils';
 import { SyncSubscriptionSchema } from '@/app/modules/subscription/subscription.schemas';
@@ -34,6 +35,15 @@ router
     checkAccountStatus,
     findUserById,
     getMySubscriptionController
+  );
+
+router
+  .route('/subscription/cancel')
+  .post(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    cancelSubscriptionController
   );
 
 export default router;

@@ -9,6 +9,7 @@ import CategoryRoutes from '@/app/modules/category/category.routes';
 import ProductCategoryRoutes from '@/app/modules/productcategory/productcategory.routes';
 import SubscriptionRoutes from '@/app/modules/subscription/subscription.routes';
 import BusinessProfileRoutes from '@/app/modules/businessprofile/businessprofile.routes';
+import BusinessRoutes from '@/app/modules/business/business.routes';
 import SubscriptionPlanRoutes from '@/app/modules/subscriptionplan/subscriptionplan.routes';
 import MerchantRoutes from '@/app/modules/merchant/merchant.routes';
 import ProductRoutes from '@/app/modules/product/product.routes';
@@ -28,6 +29,7 @@ const routes: Router[] = [
   ProductCategoryRoutes,
   SubscriptionRoutes,
   BusinessProfileRoutes,
+  BusinessRoutes,
   SubscriptionPlanRoutes,
   MerchantRoutes,
   ProductRoutes,

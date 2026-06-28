@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { MerchantModel } from '@/app/schemas/merchant/merchant.schema';
+import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
 import { IMerchant } from '@/app/schemas/merchant/merchant.types';
 import {
   TCreateMerchant,
@@ -18,9 +19,16 @@ export const createMerchantService = async ({
   userId: string;
   payload: TCreateMerchant;
 }): Promise<unknown> => {
+  const profile = await BusinessProfileModel.findOne({ userId: new Types.ObjectId(userId) });
+  if (!profile) throw new Error('Business Profile not found');
+
+  const existingShop = await MerchantModel.findOne({ businessProfileId: profile._id });
+  if (existingShop) throw new Error('A merchant shop already exists for this business profile');
+
   const result = await MerchantModel.create({
     ...payload,
     userId: new Types.ObjectId(userId),
+    businessProfileId: profile._id,
   });
 
   return result;
@@ -31,8 +39,11 @@ export const getMyMerchantService = async ({
 }: {
   userId: string;
 }): Promise<unknown> => {
+  const profile = await BusinessProfileModel.findOne({ userId: new Types.ObjectId(userId) });
+  if (!profile) return null;
+
   const shop = await MerchantModel.findOne({
-    userId: new Types.ObjectId(userId),
+    businessProfileId: profile._id,
   }).sort({ createdAt: -1 });
   
   return shop;
