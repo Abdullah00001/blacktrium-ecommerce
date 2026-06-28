@@ -1,0 +1,3126 @@
+{
+  "info": {
+    "_postman_id": "4ab9331a-ae68-4c6e-a52c-f9abaa87cf76",
+    "name": "BLACKTRIUM | HIDGIBOD",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51688868",
+    "_collection_link": "https://go.postman.co/collection/51688868-4ab9331a-ae68-4c6e-a52c-f9abaa87cf76?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Product Category",
+          "item": [
+            {
+              "name": "Retrieve Product Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product-category?page=1&limit=10&status=true",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product-category"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "true",
+                      "description": "true | false"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Country",
+          "item": [
+            {
+              "name": "Retrieve Countries",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/country?page=1&limit=10&status=true",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "country"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "BD",
+                      "description": "Country Name :Bangladesh | Country Code : BD",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "true",
+                      "description": "true | false"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "item": [
+            {
+              "name": "Update Porfile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        // \"phone\":\"\",\n        // \"profileAvatar\": \"\",\n        \"country\": \"US\",\n        \"interest\": []\n    }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/profile",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get My Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/profile",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Change Password",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"currentPassword\":\"StrongPassword123\",\n    \"newPassword\":\"StrongPassword123!\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/profile/password",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "profile",
+                    "password"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Signup Flow",
+              "item": [
+                {
+                  "name": "Signup",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe2@example.com\",\n  \"country\": \"US\",\n  \"password\": \"StrongPassword123!\",\n  \"isSubscribe\": true,\n  \"isLegalTermsAccepted\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/signup",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "signup"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Verify Signup User",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"otp\":\"790712\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/verify",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Personalization Step 1",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"interests\":[]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/profile",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "profile"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Resend Otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/resend",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "resend"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Login",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"kefom76841@fishnone.com\",\n    \"password\": \"12345678aA\",\n    \"rememberMe\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{PRODUCTION_SERVER}}/auth/login",
+                      "host": [
+                        "{{PRODUCTION_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Forgot Password",
+              "item": [
+                {
+                  "name": "Find User",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"john.doe2@example.com\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/find",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "find"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Verify Otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"otp\":\"571134\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/verify",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Resent Otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/resend",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "resend"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reset Password",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"password\":\"StrongPassword123!\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/reset",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "reset"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Is User Authenticate",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/auth/check",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "check"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logout",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/auth/logout",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Image",
+          "item": [
+            {
+              "name": "Upload Image",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "626deb84-6d96-48bf-a5cc-ed9433baadc5",
+                      "src": "/home/abdullah/Downloads/WhatsApp Image 2026-06-20 at 11.54.38.jpeg"
+                    },
+                    {
+                      "key": "imageUrl",
+                      "value": "",
+                      "description": "if need to update image with new one",
+                      "type": "text",
+                      "uuid": "4918bb61-1526-4134-a6db-96e299c68764",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/image",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "image"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"imageUrls\": [\n        \"https://abdullah-sta.s3.eu-north-1.amazonaws.com/media/61213778-49db-4f1e-b064-836aa095920c-1782322516431.jpeg\"\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/image",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "image"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Legal Information",
+          "item": [
+            {
+              "name": "Get Legal Information",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/legal?targetRole=merchant&contentType=about",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "legal"
+                  ],
+                  "query": [
+                    {
+                      "key": "targetRole",
+                      "value": "merchant",
+                      "description": "user | organizer | merchant"
+                    },
+                    {
+                      "key": "contentType",
+                      "value": "about",
+                      "description": "privacy | terms | about | mission"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Category",
+          "item": [
+            {
+              "name": "Retrieve Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/category?page=1&limit=10&search",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "category"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Retrieve Sub Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subcategory?page=1&limit=10",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subcategory"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": null,
+                      "disabled": true
+                    },
+                    {
+                      "key": "category",
+                      "value": null,
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Business",
+          "item": [
+            {
+              "name": "Business [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Keep active [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business/:id/keep-active",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business",
+                    ":id",
+                    "keep-active"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Businessprofile",
+          "item": [
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Cart",
+          "item": [
+            {
+              "name": "Cart [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": []
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cart [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": []
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Add [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/add",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "add"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":itemId [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/item/:itemId",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "item",
+                    ":itemId"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":itemId [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/item/:itemId",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "item",
+                    ":itemId"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Contact",
+          "item": [
+            {
+              "name": "Contact [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/contact",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Favorite",
+          "item": [
+            {
+              "name": "Toggle [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/favorite/toggle",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "favorite",
+                    "toggle"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Favorite [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/favorite",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "favorite"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Follow",
+          "item": [
+            {
+              "name": "Toggle [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/toggle",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "toggle"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Merchant",
+          "item": [
+            {
+              "name": "Merchant [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/merchant",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "merchant"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/merchant/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "merchant",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Analytics [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/merchant/analytics",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "merchant",
+                    "analytics"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/merchant/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "merchant",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/merchant/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "merchant",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "item": [
+            {
+              "name": "Order [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/order",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "order"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "My orders [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/my-orders",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "order",
+                    "my-orders"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Merchant [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/merchant",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "order",
+                    "merchant"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "order",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "order",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "item": [
+            {
+              "name": "Product [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Product [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Review",
+          "item": [
+            {
+              "name": "Review [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/review",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "review"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":targetId [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/review/target/:targetId",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "review",
+                    "target",
+                    ":targetId"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reply [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/review/:id/reply",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "review",
+                    ":id",
+                    "reply"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Report [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/review/:id/report",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "review",
+                    ":id",
+                    "report"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Subscription",
+          "item": [
+            {
+              "name": "Sync [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription/sync",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subscription",
+                    "sync"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subscription",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancel [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription/cancel",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subscription",
+                    "cancel"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Subscriptionplan",
+          "item": [
+            {
+              "name": "Subscription plan [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dev/subscription-plan",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dev",
+                    "subscription-plan"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dev/subscription-plan/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dev",
+                    "subscription-plan",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Subscription plan [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription-plan",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subscription-plan"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription-plan/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subscription-plan",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Transaction",
+          "item": [
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/transaction/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "transaction",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Withdraw [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/transaction/withdraw",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "transaction",
+                    "withdraw"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Wallet",
+          "item": [
+            {
+              "name": "Me [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/wallet/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "wallet",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Connect stripe [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/wallet/connect-stripe",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "wallet",
+                    "connect-stripe"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Profile",
+          "item": [
+            {
+              "name": "Update Porfile",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"phone\":\"+8801937868838\",\n        // \"profileAvatar\": \"\",\n        \"country\": \"US\",\n        \"interest\": []\n    }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/profile",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get My Profile",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/profile",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Change Password",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"currentPassword\":\"StrongPassword123!\",\n    \"newPassword\":\"12345678aA\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/profile/password",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "profile",
+                    "password"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Forgot Password",
+              "item": [
+                {
+                  "name": "Find User",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"abdullahbinomarchowdhury@outlook.com\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/find",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "find"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Verify Otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"otp\":\"952234\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/verify",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Resent Otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/resend",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "resend"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reset Password",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{otpPageToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"password\":\"StrongPassword123!\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/auth/recover/reset",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "recover",
+                        "reset"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Login",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"abdullahchowdhury00001@gmail.com\",\n    \"password\": \"12345678aA\",\n    \"rememberMe\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/admin/auth/login",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Check Access Token",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/admin/auth/check",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "auth",
+                        "check"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Refresh Token",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/admin/auth/refresh",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "auth",
+                        "refresh"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Image",
+          "item": [
+            {
+              "name": "Upload Image",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "626deb84-6d96-48bf-a5cc-ed9433baadc5",
+                      "src": "/home/abdullah/Downloads/download.jpeg"
+                    },
+                    {
+                      "key": "imageUrl",
+                      "value": "",
+                      "description": "if need to update image with new one",
+                      "type": "text",
+                      "uuid": "4918bb61-1526-4134-a6db-96e299c68764",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/image",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "image"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"imageUrls\": [\n        \"https://abdullah-sta.s3.eu-north-1.amazonaws.com/media/61213778-49db-4f1e-b064-836aa095920c-1782322516431.jpeg\"\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/image",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "image"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Legal Information",
+          "item": [
+            {
+              "name": "Get Legal Information",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/legal?targetRole=merchant&contentType=about",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "legal"
+                  ],
+                  "query": [
+                    {
+                      "key": "targetRole",
+                      "value": "merchant",
+                      "description": "user | organizer | merchant"
+                    },
+                    {
+                      "key": "contentType",
+                      "value": "about",
+                      "description": "privacy | terms | about | mission"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Legal Doc",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content\":\"<h1>Hello World<h1/>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/legal/6a3e0371415ea17c4e2f7e01",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "legal",
+                    "6a3e0371415ea17c4e2f7e01"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Country",
+          "item": [
+            {
+              "name": "Retrieve Countries",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/country?page=1&limit=10",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "country"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "BD",
+                      "description": "Country Name :Bangladesh | Country Code : BD",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "false",
+                      "description": "true | false",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Country Status",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"status\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/country/6a3e191e64a14a2b400a15b6/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "country",
+                    "6a3e191e64a14a2b400a15b6",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/country/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "country",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Category",
+          "item": [
+            {
+              "name": "Retrieve Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/category?page=1&limit=10",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "category"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "C",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "true",
+                      "description": "true | false",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Retrieve Sub Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/subcategory?page=1&limit=10&category=6a3e576e760f22b7e5cf0f6e",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "subcategory"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": null,
+                      "disabled": true
+                    },
+                    {
+                      "key": "category",
+                      "value": "6a3e576e760f22b7e5cf0f6e"
+                    },
+                    {
+                      "key": "status",
+                      "value": "true",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"categoryName\": \"Cloth And Fashion\",\n    \"categoryImage\": \"https://abdullah-sta.s3.eu-north-1.amazonaws.com/media/ab43714e-76a6-4a3f-83c6-a778774c4637-1782471778245.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/category",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Sub Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"subCategoryName\": \"Female\",\n    \"categoryId\": \"6a3e5ca2ad590969c06a335e\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subcategory",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "subcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    // \"categoryName\": \"Woman Luxary Bags\",\n    // \"categoryImage\": \"https://abdullah-sta.s3.eu-north-1.amazonaws.com/media/4171f182-f2c2-4dce-a384-55416662023b-1782466750749.webp\"\n    \"status\":false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/category/6a3e576e760f22b7e5cf0f6e",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "category",
+                    "6a3e576e760f22b7e5cf0f6e"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Sub Category",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    // \"subCategoryName\": \"Hermes\"\n    \"status\":false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subcategory/6a3e5ccbad590969c06a3360",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "subcategory",
+                    "6a3e5ccbad590969c06a3360"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/category/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "category",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subcategory/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "subcategory",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Product Category",
+          "item": [
+            {
+              "name": "Retrieve Product Category",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/product-category?page=1&limit=10&search=S&status=true",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "product-category"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "S"
+                    },
+                    {
+                      "key": "status",
+                      "value": "true",
+                      "description": "true | false"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Product Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"categoryName\":\"Shoe\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/product-category",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "product-category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Product Category",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"categoryName\":\"Shoe\",\n    \"status\":false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/product-category/6a3f6fd79524498204970fc4",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "product-category",
+                    "6a3f6fd79524498204970fc4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/product-category/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "product-category",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Business",
+          "item": [
+            {
+              "name": "Business [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "business"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "business",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Businessprofile",
+          "item": [
+            {
+              "name": "Business profile [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business-profile",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "business-profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business-profile/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "business-profile",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Complain",
+          "item": [
+            {
+              "name": "Complains [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/complains",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "complains"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/complains/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "complains",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Contact",
+          "item": [
+            {
+              "name": "Contact [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/contact",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "contact"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/contact/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "contact",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Dashboard",
+          "item": [
+            {
+              "name": "Dashboard [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/dashboard",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "dashboard"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Earning",
+          "item": [
+            {
+              "name": "Stats [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/stats",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "earning",
+                    "stats"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Subscriptions [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/subscriptions",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "earning",
+                    "subscriptions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Commissions [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/commissions",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "earning",
+                    "commissions"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Legal",
+          "item": [
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/legal/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "legal",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Merchant",
+          "item": [
+            {
+              "name": "Merchant [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/merchant",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "merchant"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/merchant/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "merchant",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Notification",
+          "item": [
+            {
+              "name": "Custom [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/notification/custom",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "notification",
+                    "custom"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "item": [
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/product/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "product",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Subscriber",
+          "item": [
+            {
+              "name": "Subscribers [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subscribers",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "subscribers"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Subscriptionplan",
+          "item": [
+            {
+              "name": "Details [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subscription-plan/:id/details",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "subscription-plan",
+                    ":id",
+                    "details"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Transaction",
+          "item": [
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/transaction/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "transaction",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "User",
+          "item": [
+            {
+              "name": "Users [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/users",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":id [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/users/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/users/:id/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "DEVELOPMENT_SERVER",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "otpPageToken",
+      "value": ""
+    },
+    {
+      "key": "PRODUCTION_SERVER",
+      "value": ""
+    }
+  ]
+}

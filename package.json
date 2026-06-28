@@ -9,6 +9,8 @@
   "scripts": {
     "create:schema": "node schemas/scripts/create-module.js",
     "sync:schema": "node scripts/sync-schemas.js",
+    "generate:postman": "node scripts/generatePostman.js",
+    "seed:full": "npm run seed:full --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

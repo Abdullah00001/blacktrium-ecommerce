@@ -17,7 +17,8 @@
     "create:admin": "node ./scripts/createAdmin.js",
     "create:subscriptionFeature": "node ./scripts/addSubscriptionFeature.js",
     "seed:legal": "node ./scripts/seedLegal.js",
-    "seed:country":"node ./scripts/seedCountries.js"
+    "seed:country":"node ./scripts/seedCountries.js",
+    "seed:full": "npx ts-node -r tsconfig-paths/register src/scripts/seedFull.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.893.0",
