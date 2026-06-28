@@ -8,6 +8,7 @@ import {
   updateMerchantService,
   getAllMerchantsService,
   updateMerchantStatusService,
+  getMerchantAnalyticsService,
 } from '@/app/modules/merchant/merchant.services';
 import {
   TCreateMerchant,
@@ -131,6 +132,25 @@ export const updateMerchantStatusController = asyncHandler(
       success: true,
       status: 200,
       message: 'Merchant shop status updated successfully',
+      data,
+      traceId,
+    });
+  }
+);
+
+export const getMerchantAnalyticsController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+
+    const data = await getMerchantAnalyticsService({
+      userId: user._id.toString(),
+    });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Merchant analytics retrieved successfully',
       data,
       traceId,
     });

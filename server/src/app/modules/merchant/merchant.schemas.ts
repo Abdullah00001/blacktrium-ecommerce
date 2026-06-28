@@ -15,6 +15,7 @@ export const CreateMerchantSchema = z.object({
   phone: z.string().min(1, 'Phone is required'),
   socialLinks: z.array(SocialLinkSchema).optional().default([]),
   profileImage: z.string().url().optional().nullable(),
+  bannerImage: z.string().url().optional().nullable(),
 });
 
 export type TCreateMerchant = z.infer<typeof CreateMerchantSchema>;
@@ -29,6 +30,7 @@ export const UpdateMerchantSchema = z.object({
   phone: z.string().min(1).optional(),
   socialLinks: z.array(SocialLinkSchema).optional(),
   profileImage: z.string().url().optional().nullable(),
+  bannerImage: z.string().url().optional().nullable(),
 });
 
 export type TUpdateMerchant = z.infer<typeof UpdateMerchantSchema>;

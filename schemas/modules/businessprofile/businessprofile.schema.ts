@@ -23,9 +23,11 @@ const BusinessProfileSchema = new Schema<IBusinessProfile>({
   },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  brandName: { type: String, default: null },
   email: { type: String, required: true },
   profileAvatar: { type: String, default: null },
   businessOwnerType: { type: String, default: null },
+  businessType: { type: String, enum: ['Physical', 'Virtual', 'Hybrid'], default: null },
   countryId: {
     type: Schema.Types.ObjectId,
     ref: 'Country',
@@ -35,6 +37,10 @@ const BusinessProfileSchema = new Schema<IBusinessProfile>({
   bio: { type: String, default: null },
   socialLinks: { type: [SocialLinkSchema], default: [] },
   status: { type: String, default: 'inactive', index: true },
+  followersCount: { type: Number, default: 0 },
+  followingCount: { type: Number, default: 0 },
+  rating: { type: Number, default: 0 },
+  reviewsCount: { type: Number, default: 0 },
 }, {
   timestamps: true
 });

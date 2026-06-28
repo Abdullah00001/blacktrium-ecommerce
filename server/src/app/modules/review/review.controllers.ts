@@ -6,11 +6,13 @@ import {
   createReviewService,
   getReviewsByTargetIdService,
   replyToReviewService,
+  reportReviewService,
 } from '@/app/modules/review/review.services';
 import {
   TCreateReview,
   TReviewQuery,
   TReplyReview,
+  TReportReview,
 } from '@/app/modules/review/review.schemas';
 
 export const createReviewController = asyncHandler(
@@ -69,6 +71,29 @@ export const replyToReviewController = asyncHandler(
       success: true,
       status: 200,
       message: 'Reply added successfully',
+      data,
+      traceId,
+    });
+  }
+);
+
+export const reportReviewController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+    const { id } = req.params as { id: string };
+    const payload = req.body as TReportReview;
+
+    const data = await reportReviewService({
+      reviewId: id,
+      userId: user._id.toString(),
+      payload,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Review reported successfully',
       data,
       traceId,
     });

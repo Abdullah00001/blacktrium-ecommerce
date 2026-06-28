@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 const mongoObjectIdRegex = /^[0-9a-fA-F]{24}$/;
 
+const SocialLinkSchema = z.object({
+  platform: z.string().min(1, 'Platform name is required'),
+  url: z.string().url({ message: 'Must be a valid URL' }),
+});
 
 export const PromotionSchema = z.object({
   title: z.string().min(1, 'Promotion title is required'),
@@ -26,6 +30,8 @@ export const CreateBusinessSchema = z.object({
   subCategoryId: z.string().regex(mongoObjectIdRegex, 'Invalid Sub-category ID format'),
   countryId: z.string().regex(mongoObjectIdRegex, 'Invalid Country ID format').optional(),
   location: z.string().min(1, 'Location cannot be empty'),
+  websiteLink: z.string().url('Invalid website URL').optional().nullable(),
+  socialLinks: z.array(SocialLinkSchema).optional().default([]),
   thumbnailImage: z.string().url().optional().nullable(),
   businessImages: z.array(z.string().url()).max(10, 'Maximum 10 images allowed').optional().default([]),
   businessDescription: z.string().max(2000, 'Description too long').optional().nullable(),
@@ -41,6 +47,8 @@ export const UpdateBusinessSchema = z.object({
   businessType: z.string().min(1).optional(),
   countryId: z.string().regex(mongoObjectIdRegex).optional(),
   location: z.string().min(1).optional(),
+  websiteLink: z.string().url().optional().nullable(),
+  socialLinks: z.array(SocialLinkSchema).optional(),
   thumbnailImage: z.string().url().optional().nullable(),
   businessImages: z.array(z.string().url()).max(10).optional(),
   businessDescription: z.string().max(2000).optional().nullable(),
@@ -66,6 +74,7 @@ export const BusinessQuerySchema = z.object({
   subCategoryId: z.string().optional(),
   countryId: z.string().optional(),
   businessType: z.string().optional(),
+  businessOwnerType: z.string().optional(),
   location: z.string().optional(),
   isFeatured: z.any().optional().transform((val) => {
     if (val === 'true') return true;

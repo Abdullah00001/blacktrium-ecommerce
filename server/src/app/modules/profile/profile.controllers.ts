@@ -33,7 +33,7 @@ export const getMyProfileController = asyncHandler(
     const user = req.user as IUser;
     console.log(user);
     const profile = req.profile as IProfile;
-    const data = getMyProfileService({ profile, user });
+    const data = await getMyProfileService({ profile, user });
     res.status(200).json({
       success: true,
       status: 200,

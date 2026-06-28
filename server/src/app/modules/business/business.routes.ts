@@ -6,6 +6,7 @@ import {
   updateBusinessController,
   getAllBusinessesController,
   updateBusinessStatusController,
+  keepBusinessActiveController,
 } from '@/app/modules/business/business.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
 import {
@@ -61,6 +62,16 @@ router
     findUserById,
     validateReqBody(UpdateBusinessSchema),
     updateBusinessController
+  );
+
+// POST keep a business active (used during downgrades)
+router
+  .route('/business/:id/keep-active')
+  .post(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    keepBusinessActiveController
   );
 
 // GET all businesses (Admin)

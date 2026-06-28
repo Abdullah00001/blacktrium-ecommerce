@@ -1,5 +1,10 @@
 import { Document, Types } from 'mongoose';
 
+export interface ISocialLink {
+  platform: string;
+  url: string;
+}
+
 export interface IPromotion {
   title: string;
   subtitle: string;
@@ -24,6 +29,8 @@ export interface IBusiness extends Document {
   subCategoryId: Types.ObjectId;
   countryId?: Types.ObjectId;
   location: string;
+  websiteLink?: string | null;
+  socialLinks?: ISocialLink[];
   thumbnailImage: string | null;
   businessImages: string[];
   businessDescription: string | null;

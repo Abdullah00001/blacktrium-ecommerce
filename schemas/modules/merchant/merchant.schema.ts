@@ -31,6 +31,9 @@ const MerchantSchema = new Schema<IMerchant>({
   phone: { type: String, required: true },
   socialLinks: { type: [SocialLinkSchema], default: [] },
   profileImage: { type: String, default: null },
+  bannerImage: { type: String, default: null },
+  totalViews: { type: Number, default: 0 },
+  monthlyViews: { type: [Number], default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
   status: { type: String, default: 'active', index: true },
 }, {
   timestamps: true

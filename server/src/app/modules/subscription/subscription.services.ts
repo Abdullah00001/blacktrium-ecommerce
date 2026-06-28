@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { SubscriptionModel } from '@/app/schemas/subscription/subscription.schema';
 import { ISubscription } from '@/app/schemas/subscription/subscription.types';
+import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
 import { TSyncSubscription } from '@/app/modules/subscription/subscription.schemas';
 import { getSystemQueue } from '@/app/queues/queues';
 
@@ -10,8 +11,8 @@ import { getSystemQueue } from '@/app/queues/queues';
  */
 const PLAN_BUSINESS_LIMITS: Record<string, number> = {
   starter: 1,
-  growth: 3,
-  pro: 10,
+  growth: 1,
+  pro: 2,
 };
 
 // ========================
@@ -59,6 +60,18 @@ export const syncSubscriptionService = async ({
       await systemQueue.add('expire-subscription', { subscriptionId: result._id.toString() }, { jobId });
     }
   }
+
+  // ACTIVATE BUSINESS PROFILE
+  // When a subscription is purchased/started, activate their business profile!
+  await BusinessProfileModel.findOneAndUpdate(
+    { userId: new Types.ObjectId(userId) },
+    { 
+      $set: { 
+        subscriptionId: result._id,
+        status: 'active' 
+      } 
+    }
+  );
 
   return result;
 };

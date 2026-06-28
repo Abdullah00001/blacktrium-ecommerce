@@ -6,6 +6,7 @@ import {
   updateMerchantController,
   getAllMerchantsController,
   updateMerchantStatusController,
+  getMerchantAnalyticsController,
 } from '@/app/modules/merchant/merchant.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
 import {
@@ -51,6 +52,16 @@ router
     checkAccountStatus,
     findUserById,
     getMyMerchantController
+  );
+
+// GET merchant analytics (Authenticated Pro User)
+router
+  .route('/merchant/analytics')
+  .get(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    getMerchantAnalyticsController
   );
 
 // GET single merchant shop

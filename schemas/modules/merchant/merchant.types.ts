@@ -15,8 +15,11 @@ export interface IMerchant extends Document {
   shopLink?: string | null;
   location: string;
   phone: string;
-  socialLinks: ISocialLink[];
-  profileImage: string | null;
+  socialLinks?: ISocialLink[];
+  profileImage?: string | null;
+  bannerImage?: string | null;
+  totalViews: number;
+  monthlyViews: number[]; // Array of 12 numbers
   status: string;
   createdAt: Date;
   updatedAt: Date;

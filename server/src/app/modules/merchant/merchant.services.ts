@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { MerchantModel } from '@/app/schemas/merchant/merchant.schema';
 import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
+import { OrderModel } from '@/app/schemas/order/order.schema';
 import { IMerchant } from '@/app/schemas/merchant/merchant.types';
 import {
   TCreateMerchant,
@@ -19,8 +20,13 @@ export const createMerchantService = async ({
   userId: string;
   payload: TCreateMerchant;
 }): Promise<unknown> => {
-  const profile = await BusinessProfileModel.findOne({ userId: new Types.ObjectId(userId) });
+  const profile = await BusinessProfileModel.findOne({ userId: new Types.ObjectId(userId) }).populate('subscriptionId');
   if (!profile) throw new Error('Business Profile not found');
+
+  const planTier = profile.subscriptionId ? (profile.subscriptionId as any).planTier : 'starter';
+  if (planTier.toLowerCase() !== 'pro') {
+    throw new Error('To create a Merchant Profile and start selling your products, you need to subscribe to the Pro plan. Please upgrade your account to Pro to continue.');
+  }
 
   const existingShop = await MerchantModel.findOne({ businessProfileId: profile._id });
   if (existingShop) throw new Error('A merchant shop already exists for this business profile');
@@ -137,4 +143,78 @@ export const updateMerchantStatusService = async ({
     throw new Error('Merchant shop not found');
   }
   return result;
+};
+
+export const getMerchantAnalyticsService = async ({
+  userId,
+}: {
+  userId: string;
+}) => {
+  const profile = await BusinessProfileModel.findOne({ userId: new Types.ObjectId(userId) });
+  if (!profile) throw new Error('Business Profile not found');
+
+  const merchant = await MerchantModel.findOne({ businessProfileId: profile._id });
+  if (!merchant) throw new Error('Merchant shop not found');
+
+  // Total and Monthly Earnings via aggregation
+  const currentYear = new Date().getFullYear();
+  const startOfYear = new Date(`${currentYear}-01-01T00:00:00.000Z`);
+  const endOfYear = new Date(`${currentYear}-12-31T23:59:59.999Z`);
+
+  const earningsAggregation = await OrderModel.aggregate([
+    {
+      $match: {
+        merchantId: merchant._id,
+        status: { $ne: 'cancelled' },
+        createdAt: { $gte: startOfYear, $lte: endOfYear }
+      }
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        monthlyTotal: { $sum: "$paymentInfo.total" }
+      }
+    }
+  ]);
+
+  const monthlyEarning = new Array(12).fill(0);
+  let totalEarning = 0;
+
+  earningsAggregation.forEach(item => {
+    // MongoDB month is 1-indexed (1=Jan, 12=Dec)
+    monthlyEarning[item._id - 1] = item.monthlyTotal;
+  });
+
+  const totalEarningAgg = await OrderModel.aggregate([
+    {
+      $match: {
+        merchantId: merchant._id,
+        status: { $ne: 'cancelled' }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: "$paymentInfo.total" }
+      }
+    }
+  ]);
+  
+  if (totalEarningAgg.length > 0) {
+    totalEarning = totalEarningAgg[0].total;
+  }
+
+  // Recent Transactions
+  const recentTransactions = await OrderModel.find({ merchantId: merchant._id })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .select('orderId paymentInfo status createdAt');
+
+  return {
+    totalEarning,
+    totalView: merchant.totalViews || 0,
+    monthlyEarning,
+    monthlyView: merchant.monthlyViews || new Array(12).fill(0),
+    recentTransactions,
+  };
 };

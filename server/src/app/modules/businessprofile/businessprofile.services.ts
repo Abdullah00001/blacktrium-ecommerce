@@ -49,7 +49,7 @@ export const getAllBusinessProfilesService = async ({
 }: {
   query: TBusinessProfileQuery;
 }): Promise<unknown> => {
-  const { page = 1, limit = 10, search, status } = query as any;
+  const { page = 1, limit = 10, search, status, businessOwnerType } = query as any;
   const skip = (page - 1) * limit;
   const filter: Record<string, any> = {};
 
@@ -62,6 +62,9 @@ export const getAllBusinessProfilesService = async ({
   }
   if (status) {
     filter.status = status;
+  }
+  if (businessOwnerType) {
+    filter.businessOwnerType = businessOwnerType;
   }
 
   const [data, total] = await Promise.all([

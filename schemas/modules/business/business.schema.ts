@@ -1,5 +1,12 @@
 import { Schema, model, Model } from 'mongoose';
 import { IBusiness } from '@/business/business.types';
+const SocialLinkSchema = new Schema(
+  {
+    platform: { type: String, required: true },
+    url: { type: String, required: true },
+  },
+  { _id: false }
+);
 
 const PromotionSchema = new Schema(
   {
@@ -50,6 +57,8 @@ const BusinessSchema = new Schema<IBusiness>({
     index: true,
   },
   location: { type: String, required: true },
+  websiteLink: { type: String, default: null },
+  socialLinks: { type: [SocialLinkSchema], default: [] },
   thumbnailImage: { type: String, default: null },
   businessImages: [{ type: String }],
   businessDescription: { type: String, default: null },

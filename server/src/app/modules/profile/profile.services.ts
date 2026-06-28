@@ -3,6 +3,7 @@ import { IUser } from '@/app/schemas/user/user.types';
 import { TProfilePayload } from '@/app/modules/profile/profile.schemas';
 import { ProfileModel } from '@/app/schemas/profile/profile.schema';
 import { UserModel } from '@/app/schemas/user/user.schema';
+import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
 import { IProfile } from '@/app/schemas/profile/profile.types';
 
 export const updateProfileService = async ({
@@ -47,14 +48,16 @@ export const updateProfileService = async ({
   }
 };
 
-export const getMyProfileService = ({
+export const getMyProfileService = async ({
   profile,
   user,
 }: {
   user: IUser;
   profile: IProfile;
-}): unknown => {
+}): Promise<unknown> => {
   try {
+    const businessProfile = await BusinessProfileModel.findOne({ userId: user._id }).select('_id status');
+
     return {
       _id: user._id,
       firstName: user.firstName,
@@ -65,6 +68,8 @@ export const getMyProfileService = ({
       country: profile.country,
       interest: profile.interest,
       role: user.role,
+      businessProfileStatus: businessProfile ? businessProfile.status : 'inactive',
+      businessProfileId: businessProfile ? businessProfile._id : null,
     };
   } catch (error) {
     throw error;

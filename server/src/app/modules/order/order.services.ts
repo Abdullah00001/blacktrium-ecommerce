@@ -24,12 +24,22 @@ export const createOrderService = async ({
 }): Promise<IOrder> => {
   const merchantObjectId = new Types.ObjectId(payload.merchantId);
   
-  // 1. Validate and Deduct Stock for all items
+  // 1. Validate, Check Currencies, and Deduct Stock for all items
+  let orderCurrency: string | null = null;
+  
   for (const item of payload.items) {
     const product = await ProductModel.findById(item.productId);
     if (!product) {
       throw new Error(`Product ${item.productId} not found`);
     }
+    
+    // Check for currency consistency
+    if (!orderCurrency) {
+      orderCurrency = product.currency;
+    } else if (orderCurrency !== product.currency) {
+      throw new Error('All products in a single order must have the same currency. Please checkout products with different currencies separately.');
+    }
+
     if (product.stockQuantity < item.quantity) {
       throw new Error(`Insufficient stock for product ${product.name}`);
     }

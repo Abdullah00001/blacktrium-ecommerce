@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
-const mongoObjectIdRegex = /^[0-9a-fA-F]{24}$/;
-
 export const CreateReviewSchema = z.object({
-  targetId: z.string().regex(mongoObjectIdRegex, 'Invalid Target ID format'),
-  rating: z.number().int().min(1).max(5),
+  targetId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid target ID'),
+  targetType: z.enum(['Business', 'Product', 'BusinessProfile']),
+  rating: z.number().min(1).max(5),
   text: z.string().optional(),
   image: z.string().url('Invalid image URL format').optional(),
   isAnonymous: z.boolean().optional().default(false),
@@ -24,3 +23,9 @@ export const ReviewQuerySchema = z.object({
 });
 
 export type TReviewQuery = z.infer<typeof ReviewQuerySchema>;
+
+export const ReportReviewSchema = z.object({
+  reason: z.string().min(1, 'Report reason is required'),
+});
+
+export type TReportReview = z.infer<typeof ReportReviewSchema>;

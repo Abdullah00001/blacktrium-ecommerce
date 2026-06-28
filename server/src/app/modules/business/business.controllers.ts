@@ -8,6 +8,7 @@ import {
   updateBusinessService,
   getAllBusinessesService,
   updateBusinessStatusService,
+  keepBusinessActiveService,
 } from '@/app/modules/business/business.services';
 import {
   TCreateBusiness,
@@ -122,6 +123,27 @@ export const updateBusinessStatusController = asyncHandler(
       success: true,
       status: 200,
       message: 'Business status updated successfully',
+      data,
+      traceId,
+    });
+  }
+);
+
+export const keepBusinessActiveController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+    const { id } = req.params as { id: string }; // businessId
+
+    const data = await keepBusinessActiveService({
+      businessId: id,
+      userId: user._id.toString(),
+    });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Business set as active. Other businesses have been deactivated.',
       data,
       traceId,
     });

@@ -3,12 +3,14 @@ import {
   createReviewController,
   getReviewsByTargetIdController,
   replyToReviewController,
+  reportReviewController,
 } from '@/app/modules/review/review.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
 import {
   CreateReviewSchema,
   ReplyReviewSchema,
   ReviewQuerySchema,
+  ReportReviewSchema,
 } from '@/app/modules/review/review.schemas';
 import {
   checkAccessToken,
@@ -50,6 +52,17 @@ router
     findUserById,
     validateReqBody(ReplyReviewSchema),
     replyToReviewController
+  );
+
+// POST report a review
+router
+  .route('/review/:id/report')
+  .post(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    validateReqBody(ReportReviewSchema),
+    reportReviewController
   );
 
 export default router;

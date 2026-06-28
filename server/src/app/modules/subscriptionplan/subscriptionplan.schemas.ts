@@ -31,9 +31,15 @@ export const adminUpdateSubscriptionPlanSchema = z.object({
   description: z.string().optional(),
 });
 
-export type TCreateSubscriptionPlan = z.infer<typeof createSubscriptionPlanSchema>;
-export type TUpdateSubscriptionPlan = z.infer<typeof updateSubscriptionPlanSchema>;
-export type TAdminUpdateSubscriptionPlan = z.infer<typeof adminUpdateSubscriptionPlanSchema>;
+export type TCreateSubscriptionPlan = z.infer<
+  typeof createSubscriptionPlanSchema
+>;
+export type TUpdateSubscriptionPlan = z.infer<
+  typeof updateSubscriptionPlanSchema
+>;
+export type TAdminUpdateSubscriptionPlan = z.infer<
+  typeof adminUpdateSubscriptionPlanSchema
+>;
 
 export const subscriptionPlanQuerySchema = z.object({
   page: z.string().regex(/^\d+$/).transform(Number).optional(),
@@ -43,4 +49,6 @@ export const subscriptionPlanQuerySchema = z.object({
   planTier: z.string().optional(),
 });
 
-export type TSubscriptionPlanQuery = z.infer<typeof subscriptionPlanQuerySchema>;
+export type TSubscriptionPlanQuery = z.infer<
+  typeof subscriptionPlanQuerySchema
+>;
