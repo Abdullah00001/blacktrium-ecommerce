@@ -21,6 +21,7 @@ export interface IMerchant extends Document {
   totalViews: number;
   monthlyViews: number[]; // Array of 12 numbers
   status: string;
+  isFeatured: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

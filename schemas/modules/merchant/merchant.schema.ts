@@ -35,6 +35,7 @@ const MerchantSchema = new Schema<IMerchant>({
   totalViews: { type: Number, default: 0 },
   monthlyViews: { type: [Number], default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
   status: { type: String, default: 'active', index: true },
+  isFeatured: { type: Boolean, default: false, index: true },
 }, {
   timestamps: true
 });
