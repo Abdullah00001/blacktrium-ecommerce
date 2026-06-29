@@ -115,7 +115,7 @@ const seedFull = async () => {
       location: 'New York, USA',
       phone: '+14155552671',
       isFeatured: true
-    });
+    } as any);
 
     console.log('Seeding Businesses...');
     await BusinessModel.create({
