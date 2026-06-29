@@ -34,6 +34,8 @@ export const BusinessProfileQuerySchema = z.object({
   search: z.string().optional(),
   status: z.string().optional(),
   businessOwnerType: z.string().optional(),
+  businessType: z.string().optional(),
+  countryId: z.string().optional(),
 });
 
 export type TBusinessProfileQuery = z.infer<typeof BusinessProfileQuerySchema>;
