@@ -16,7 +16,7 @@ export const requireMerchantShop = async (
       res.status(403).json({
         success: false,
         status: 403,
-        message: 'You must have a merchant shop to access the wallet',
+        message: 'You must have a registered merchant shop to access this resource',
       });
       return;
     }
