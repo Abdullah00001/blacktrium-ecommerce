@@ -53,29 +53,26 @@ export const profileSchema = z.object({
     // Pipe the S3-validated string into the top-level URL validator
     .pipe(z.url({ error: 'Profile avatar must be a valid URL' }))
     .optional(),
-  interest: z.preprocess(
-    (val) => {
-      if (typeof val === 'string') {
-        try {
-          const parsed = JSON.parse(val);
-          if (Array.isArray(parsed)) return parsed;
-        } catch {
-          return [val];
+  interest: z
+    .preprocess(
+      (val) => {
+        if (typeof val === 'string') {
+          try {
+            const parsed = JSON.parse(val);
+            if (Array.isArray(parsed)) return parsed;
+          } catch {
+            return [val];
+          }
         }
-      }
-      return val;
-    },
-    z
-      .array(
-        z
-          .string({ error: 'Each interest must be text' })
-          .trim()
-          .min(1, { error: 'Interest cannot be empty' })
-          .max(50, { error: 'Interest cannot exceed 50 characters' }),
-        { error: 'Interests must be formatted as an array/list' }
-      )
-      .max(5, { error: 'You can only add up to 5 interests' })
-  ).optional(),
+        return val;
+      },
+      z
+        .array(z.string({ error: 'Each interest must be text' }).trim(), {
+          error: 'Interests must be formatted as an array/list',
+        })
+        .max(5, { error: 'You can only add up to 5 interests' })
+    )
+    .optional(),
 });
 
 export type TProfilePayload = z.infer<typeof profileSchema>;

@@ -23,16 +23,16 @@ const router = Router();
 router.use(checkAccessToken, checkAccountStatus, findUserById);
 
 router
-  .route('/')
+  .route('/cart')
   .get(getCartController)
   .delete(clearCartController);
 
 router
-  .route('/add')
+  .route('/cart/add')
   .post(validateReqBody(AddToCartSchema), addToCartController);
 
 router
-  .route('/item/:itemId')
+  .route('/cart/item/:itemId')
   .patch(validateReqBody(UpdateCartItemSchema), updateCartItemController)
   .delete(removeCartItemController);
 

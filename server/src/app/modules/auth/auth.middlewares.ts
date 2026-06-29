@@ -127,7 +127,8 @@ export const findUserById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const traceId = getTraceId();
     const route = req.path;
-    const { sub } = req.user as JwtPayload;
+    const jwtPayloadOrUser = req.user as any;
+    const sub = jwtPayloadOrUser.sub || jwtPayloadOrUser._id;
     const foundUser = await UserModel.findOne({ _id: sub });
     if (!foundUser) {
       res.status(404).json({
@@ -332,7 +333,8 @@ export const checkAccountStatus = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const traceId = getTraceId();
     const route = req.path;
-    const { sub } = req.user as JwtPayload;
+    const jwtPayloadOrUser = req.user as any;
+    const sub = jwtPayloadOrUser.sub || jwtPayloadOrUser._id;
     const user = await UserModel.findOne({ _id: sub });
     if (!user) {
       res.status(401).json({
