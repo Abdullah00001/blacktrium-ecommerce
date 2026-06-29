@@ -333,6 +333,72 @@
                     }
                   },
                   "response": []
+                },
+                {
+                  "name": "Personalization Step 2 (Recommended Businesses)",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/business-profile/recommended",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "business-profile",
+                        "recommended"
+                      ]
+                    },
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Follow / Unfollow Business",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/follow/toggle",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "follow",
+                        "toggle"
+                      ]
+                    },
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"targetId\": \"REPLACE_WITH_BUSINESS_PROFILE_ID\",\n  \"targetType\": \"BusinessProfile\"\n}"
+                    }
+                  },
+                  "response": []
                 }
               ]
             },
@@ -772,7 +838,7 @@
           "name": "Business",
           "item": [
             {
-              "name": "Business [Auto]",
+              "name": "Create Business",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -784,12 +850,22 @@
                   "path": [
                     "business"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Me [Auto]",
+              "name": "Get Business Me",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -802,12 +878,22 @@
                     "business",
                     "me"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Business",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -820,12 +906,22 @@
                     "business",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Business",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -838,12 +934,22 @@
                     "business",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Keep active [Auto]",
+              "name": "Create Business Keep-active",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -857,6 +963,16 @@
                     ":id",
                     "keep-active"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -867,61 +983,7 @@
           "name": "Businessprofile",
           "item": [
             {
-              "name": "Me [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "business-profile",
-                    "me"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Me [Auto]",
-              "request": {
-                "method": "PATCH",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "business-profile",
-                    "me"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": ":id [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/:id",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "business-profile",
-                    ":id"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Recommended [Auto]",
+              "name": "Get Business-profile Recommended",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -934,6 +996,100 @@
                     "business-profile",
                     "recommended"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Business-profile Me",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    "me"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Business-profile Me",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    "me"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Business-profile",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/:id",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    ":id"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -944,90 +1100,7 @@
           "name": "Cart",
           "item": [
             {
-              "name": "Cart [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": []
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Cart [Auto]",
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": []
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Add [Auto]",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/add",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "add"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": ":itemId [Auto]",
-              "request": {
-                "method": "PATCH",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/item/:itemId",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "item",
-                    ":itemId"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": ":itemId [Auto]",
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/item/:itemId",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "item",
-                    ":itemId"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Cart [Auto]",
+              "name": "Get Cart",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1039,12 +1112,22 @@
                   "path": [
                     "cart"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Cart [Auto]",
+              "name": "Delete Cart",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1056,12 +1139,22 @@
                   "path": [
                     "cart"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Add [Auto]",
+              "name": "Create Cart Add",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1074,12 +1167,22 @@
                     "cart",
                     "add"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":itemId [Auto]",
+              "name": "Update Cart Item",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -1093,12 +1196,22 @@
                     "item",
                     ":itemId"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":itemId [Auto]",
+              "name": "Delete Cart Item",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1112,6 +1225,16 @@
                     "item",
                     ":itemId"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1122,7 +1245,7 @@
           "name": "Contact",
           "item": [
             {
-              "name": "Contact [Auto]",
+              "name": "Create Contact",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1134,6 +1257,77 @@
                   "path": [
                     "contact"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Dashboard",
+          "item": [
+            {
+              "name": "Get Dashboard Home",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/home",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dashboard",
+                    "home"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Dashboard Merchant",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/merchant",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dashboard",
+                    "merchant"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1144,7 +1338,7 @@
           "name": "Favorite",
           "item": [
             {
-              "name": "Toggle [Auto]",
+              "name": "Create Favorite Toggle",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1157,12 +1351,22 @@
                     "favorite",
                     "toggle"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Favorite [Auto]",
+              "name": "Get Favorite",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1174,6 +1378,16 @@
                   "path": [
                     "favorite"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1184,41 +1398,7 @@
           "name": "Follow",
           "item": [
             {
-              "name": "Toggle [Auto]",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/toggle",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "toggle"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Status [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/status",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "status"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Toggle [Auto]",
+              "name": "Create Follow Toggle",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1231,12 +1411,22 @@
                     "follow",
                     "toggle"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Get Follow Status",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1249,6 +1439,16 @@
                     "follow",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1259,7 +1459,7 @@
           "name": "Merchant",
           "item": [
             {
-              "name": "Merchant [Auto]",
+              "name": "Create Merchant",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1271,12 +1471,22 @@
                   "path": [
                     "merchant"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Me [Auto]",
+              "name": "Get Merchant Me",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1289,12 +1499,22 @@
                     "merchant",
                     "me"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Analytics [Auto]",
+              "name": "Get Merchant Analytics",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1307,12 +1527,22 @@
                     "merchant",
                     "analytics"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Merchant",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1325,12 +1555,22 @@
                     "merchant",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Merchant",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -1343,6 +1583,16 @@
                     "merchant",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1353,7 +1603,7 @@
           "name": "Order",
           "item": [
             {
-              "name": "Order [Auto]",
+              "name": "Create Order",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1365,12 +1615,22 @@
                   "path": [
                     "order"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "My orders [Auto]",
+              "name": "Get Order My-orders",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1383,12 +1643,22 @@
                     "order",
                     "my-orders"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Merchant [Auto]",
+              "name": "Get Order Merchant",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1401,12 +1671,22 @@
                     "order",
                     "merchant"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Order",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1419,12 +1699,22 @@
                     "order",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Order Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -1438,6 +1728,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1448,7 +1748,7 @@
           "name": "Product",
           "item": [
             {
-              "name": "Product [Auto]",
+              "name": "Create Product",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1460,12 +1760,22 @@
                   "path": [
                     "product"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Product [Auto]",
+              "name": "Get Product",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1477,12 +1787,22 @@
                   "path": [
                     "product"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Product",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1495,12 +1815,22 @@
                     "product",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Product",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -1513,12 +1843,22 @@
                     "product",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Delete Product",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1531,6 +1871,16 @@
                     "product",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1541,7 +1891,7 @@
           "name": "Review",
           "item": [
             {
-              "name": "Review [Auto]",
+              "name": "Create Review",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1553,12 +1903,22 @@
                   "path": [
                     "review"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":targetId [Auto]",
+              "name": "Get Review Target",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1572,12 +1932,22 @@
                     "target",
                     ":targetId"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Reply [Auto]",
+              "name": "Create Review Reply",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1591,12 +1961,22 @@
                     ":id",
                     "reply"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Report [Auto]",
+              "name": "Create Review Report",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1610,6 +1990,16 @@
                     ":id",
                     "report"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1620,7 +2010,7 @@
           "name": "Subscription",
           "item": [
             {
-              "name": "Sync [Auto]",
+              "name": "Create Subscription Sync",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1633,12 +2023,22 @@
                     "subscription",
                     "sync"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Me [Auto]",
+              "name": "Get Subscription Me",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1651,12 +2051,22 @@
                     "subscription",
                     "me"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Cancel [Auto]",
+              "name": "Create Subscription Cancel",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1669,6 +2079,16 @@
                     "subscription",
                     "cancel"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1679,7 +2099,7 @@
           "name": "Subscriptionplan",
           "item": [
             {
-              "name": "Subscription plan [Auto]",
+              "name": "Create Dev Subscription-plan",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1692,12 +2112,22 @@
                     "dev",
                     "subscription-plan"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Dev Subscription-plan",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -1711,12 +2141,22 @@
                     "subscription-plan",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Subscription plan [Auto]",
+              "name": "Get Subscription-plan",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1728,12 +2168,22 @@
                   "path": [
                     "subscription-plan"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Subscription-plan",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1746,6 +2196,16 @@
                     "subscription-plan",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1756,7 +2216,7 @@
           "name": "Transaction",
           "item": [
             {
-              "name": "Me [Auto]",
+              "name": "Get Transaction Me",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1769,12 +2229,22 @@
                     "transaction",
                     "me"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Withdraw [Auto]",
+              "name": "Create Transaction Withdraw",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1787,6 +2257,16 @@
                     "transaction",
                     "withdraw"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -1797,7 +2277,7 @@
           "name": "Wallet",
           "item": [
             {
-              "name": "Me [Auto]",
+              "name": "Get Wallet Me",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1810,12 +2290,22 @@
                     "wallet",
                     "me"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Connect stripe [Auto]",
+              "name": "Create Wallet Connect-stripe",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -1828,46 +2318,15 @@
                     "wallet",
                     "connect-stripe"
                   ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Dashboard",
-          "item": [
-            {
-              "name": "Home [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/home",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "dashboard",
-                    "home"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Merchant [Auto]",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/merchant",
-                  "host": [
-                    "{{DEVELOPMENT_SERVER}}"
-                  ],
-                  "path": [
-                    "dashboard",
-                    "merchant"
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
@@ -2388,7 +2847,7 @@
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Country Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2402,6 +2861,16 @@
                     "country",
                     ":id",
                     "status"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
@@ -2602,7 +3071,7 @@
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Admin Category",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2616,12 +3085,22 @@
                     "category",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Admin Subcategory",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2634,6 +3113,16 @@
                     "admin",
                     "subcategory",
                     ":id"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
@@ -2736,7 +3225,7 @@
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Update Admin Product-category",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2750,6 +3239,16 @@
                     "product-category",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2760,7 +3259,7 @@
           "name": "Business",
           "item": [
             {
-              "name": "Business [Auto]",
+              "name": "Get Admin Business",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2773,12 +3272,22 @@
                     "admin",
                     "business"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Business Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2793,6 +3302,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2803,7 +3322,7 @@
           "name": "Businessprofile",
           "item": [
             {
-              "name": "Business profile [Auto]",
+              "name": "Get Admin Business-profile",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2816,12 +3335,22 @@
                     "admin",
                     "business-profile"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Business-profile Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2836,6 +3365,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2846,7 +3385,7 @@
           "name": "Complain",
           "item": [
             {
-              "name": "Complains [Auto]",
+              "name": "Get Admin Complains",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2859,12 +3398,22 @@
                     "admin",
                     "complains"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Delete Admin Complains",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -2878,6 +3427,16 @@
                     "complains",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2888,7 +3447,7 @@
           "name": "Contact",
           "item": [
             {
-              "name": "Contact [Auto]",
+              "name": "Get Admin Contact",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2901,12 +3460,22 @@
                     "admin",
                     "contact"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Contact Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -2921,6 +3490,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2931,7 +3510,7 @@
           "name": "Dashboard",
           "item": [
             {
-              "name": "Dashboard [Auto]",
+              "name": "Get Admin Dashboard",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2944,6 +3523,16 @@
                     "admin",
                     "dashboard"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -2954,7 +3543,7 @@
           "name": "Earning",
           "item": [
             {
-              "name": "Stats [Auto]",
+              "name": "Get Admin Earning Stats",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2968,12 +3557,22 @@
                     "earning",
                     "stats"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Subscriptions [Auto]",
+              "name": "Get Admin Earning Subscriptions",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -2987,12 +3586,22 @@
                     "earning",
                     "subscriptions"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Commissions [Auto]",
+              "name": "Get Admin Earning Commissions",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -3006,6 +3615,16 @@
                     "earning",
                     "commissions"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3016,7 +3635,7 @@
           "name": "Legal",
           "item": [
             {
-              "name": ":id [Auto]",
+              "name": "Update Admin Legal",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3030,6 +3649,16 @@
                     "legal",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3040,7 +3669,7 @@
           "name": "Merchant",
           "item": [
             {
-              "name": "Merchant [Auto]",
+              "name": "Get Admin Merchant",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -3053,12 +3682,22 @@
                     "admin",
                     "merchant"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Merchant Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3073,6 +3712,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3083,7 +3732,7 @@
           "name": "Notification",
           "item": [
             {
-              "name": "Custom [Auto]",
+              "name": "Create Admin Notification Custom",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -3097,6 +3746,16 @@
                     "notification",
                     "custom"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3107,7 +3766,7 @@
           "name": "Product",
           "item": [
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Product Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3122,6 +3781,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3132,7 +3801,7 @@
           "name": "Subscriber",
           "item": [
             {
-              "name": "Subscribers [Auto]",
+              "name": "Get Admin Subscribers",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -3145,6 +3814,16 @@
                     "admin",
                     "subscribers"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3155,7 +3834,7 @@
           "name": "Subscriptionplan",
           "item": [
             {
-              "name": "Details [Auto]",
+              "name": "Update Admin Subscription-plan Details",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3170,6 +3849,16 @@
                     ":id",
                     "details"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3180,7 +3869,7 @@
           "name": "Transaction",
           "item": [
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Transaction Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3195,6 +3884,16 @@
                     ":id",
                     "status"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -3205,7 +3904,7 @@
           "name": "User",
           "item": [
             {
-              "name": "Users [Auto]",
+              "name": "Get Admin Users",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -3218,12 +3917,22 @@
                     "admin",
                     "users"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": ":id [Auto]",
+              "name": "Get Admin Users",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -3237,12 +3946,22 @@
                     "users",
                     ":id"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
             },
             {
-              "name": "Status [Auto]",
+              "name": "Update Admin Users Status",
               "request": {
                 "method": "PATCH",
                 "header": [],
@@ -3256,6 +3975,16 @@
                     "users",
                     ":id",
                     "status"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{accessToken}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
