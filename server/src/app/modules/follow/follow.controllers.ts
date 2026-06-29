@@ -33,7 +33,13 @@ export const checkFollowStatusController = asyncHandler(
     const { targetId, targetType } = req.query as { targetId: string; targetType: 'BusinessProfile' | 'Merchant' };
 
     if (!targetId || !targetType) {
-      throw new Error('targetId and targetType are required query parameters');
+      res.status(400).json({
+        success: false,
+        status: 400,
+        message: 'targetId and targetType are required query parameters',
+        traceId,
+      });
+      return;
     }
 
     const isFollowing = await checkFollowStatusService({

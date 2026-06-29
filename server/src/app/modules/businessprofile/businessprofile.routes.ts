@@ -39,6 +39,16 @@ router
     getRecommendedBusinessProfilesController
   );
 
+// GET all business profiles (Authenticated)
+router
+  .route('/business-profile')
+  .get(
+    checkAccessToken,
+    checkAccountStatus,
+    validateReqQuery(BusinessProfileQuerySchema),
+    getAllBusinessProfilesController
+  );
+
 // GET my business profile (Authenticated)
 router
   .route('/business-profile/me')

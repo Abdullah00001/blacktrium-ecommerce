@@ -271,6 +271,34 @@
                   "response": []
                 },
                 {
+                  "name": "Personalization Step 2 (Recommended Businesses)",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{DEVELOPMENT_SERVER}}/business-profile/recommended",
+                      "host": [
+                        "{{DEVELOPMENT_SERVER}}"
+                      ],
+                      "path": [
+                        "business-profile",
+                        "recommended"
+                      ]
+                    },
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
                   "name": "Personalization Step 1",
                   "request": {
                     "auth": {
@@ -329,34 +357,6 @@
                       "path": [
                         "auth",
                         "resend"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "Personalization Step 2 (Recommended Businesses)",
-                  "request": {
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{DEVELOPMENT_SERVER}}/business-profile/recommended",
-                      "host": [
-                        "{{DEVELOPMENT_SERVER}}"
-                      ],
-                      "path": [
-                        "business-profile",
-                        "recommended"
-                      ]
-                    },
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{accessToken}}",
-                          "type": "string"
-                        }
                       ]
                     }
                   },
@@ -657,25 +657,21 @@
                   ]
                 },
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "image",
-                      "type": "file",
-                      "uuid": "626deb84-6d96-48bf-a5cc-ed9433baadc5",
-                      "src": "/home/abdullah/Downloads/WhatsApp Image 2026-06-20 at 11.54.38.jpeg"
-                    },
-                    {
-                      "key": "imageUrl",
-                      "value": "",
-                      "description": "if need to update image with new one",
-                      "type": "text",
-                      "uuid": "4918bb61-1526-4134-a6db-96e299c68764",
-                      "disabled": true
+                  "mode": "raw",
+                  "raw": "{\n  \"imageUrl\": \"any_value\",\n  \"imageUrls\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
                     }
-                  ]
+                  }
                 },
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/image",
@@ -753,6 +749,11 @@
                       "key": "contentType",
                       "value": "about",
                       "description": "privacy | terms | about | mission"
+                    },
+                    {
+                      "key": "message",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
                     }
                   ]
                 }
@@ -789,6 +790,11 @@
                     {
                       "key": "search",
                       "value": null
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
                     }
                   ]
                 }
@@ -826,6 +832,11 @@
                       "key": "category",
                       "value": null,
                       "disabled": true
+                    },
+                    {
+                      "key": "message",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
                     }
                   ]
                 }
@@ -841,7 +852,13 @@
               "name": "Create Business",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/business",
                   "host": [
@@ -860,6 +877,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"businessName\": \"string_value\",\n  \"businessType\": \"string_value\",\n  \"categoryId\": \"string_value\",\n  \"subCategoryId\": \"string_value\",\n  \"countryId\": \"string_value\",\n  \"location\": \"string_value\",\n  \"websiteLink\": \"string_value\",\n  \"socialLinks\": \"any_value\",\n  \"thumbnailImage\": \"string_value\",\n  \"businessImages\": \"string_value\",\n  \"businessDescription\": \"string_value\",\n  \"promotions\": \"any_value\",\n  \"events\": \"any_value\",\n  \"spotlightFeature\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -905,6 +931,12 @@
                   "path": [
                     "business",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -924,7 +956,13 @@
               "name": "Update Business",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/business/:id",
                   "host": [
@@ -933,6 +971,12 @@
                   "path": [
                     "business",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -944,6 +988,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"businessName\": \"string_value\",\n  \"businessType\": \"string_value\",\n  \"countryId\": \"string_value\",\n  \"location\": \"string_value\",\n  \"websiteLink\": \"string_value\",\n  \"socialLinks\": \"any_value\",\n  \"thumbnailImage\": \"string_value\",\n  \"businessImages\": \"string_value\",\n  \"businessDescription\": \"string_value\",\n  \"promotions\": \"any_value\",\n  \"events\": \"any_value\",\n  \"spotlightFeature\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -962,6 +1015,12 @@
                     "business",
                     ":id",
                     "keep-active"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1042,7 +1101,13 @@
               "name": "Update Business-profile Me",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/business-profile/me",
                   "host": [
@@ -1062,6 +1127,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"string_value\",\n  \"lastName\": \"string_value\",\n  \"brandName\": \"string_value\",\n  \"profileAvatar\": \"string_value\",\n  \"businessOwnerType\": \"string_value\",\n  \"businessType\": \"any_value\",\n  \"countryId\": \"string_value\",\n  \"tagLine\": \"string_value\",\n  \"bio\": \"string_value\",\n  \"socialLinks\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1079,6 +1153,12 @@
                   "path": [
                     "business-profile",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1157,7 +1237,13 @@
               "name": "Create Cart Add",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/cart/add",
                   "host": [
@@ -1177,6 +1263,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"string_value\",\n  \"quantity\": 123,\n  \"size\": \"string_value\",\n  \"color\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1185,7 +1280,13 @@
               "name": "Update Cart Item",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/cart/item/:itemId",
                   "host": [
@@ -1195,6 +1296,12 @@
                     "cart",
                     "item",
                     ":itemId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "itemId",
+                      "value": "REPLACE_ME_ITEMID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1206,6 +1313,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": 123,\n  \"size\": \"string_value\",\n  \"color\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1224,6 +1340,12 @@
                     "cart",
                     "item",
                     ":itemId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "itemId",
+                      "value": "REPLACE_ME_ITEMID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1248,7 +1370,13 @@
               "name": "Create Contact",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/contact",
                   "host": [
@@ -1267,6 +1395,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"string_value\",\n  \"phone\": \"string_value\",\n  \"message\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1341,7 +1478,13 @@
               "name": "Create Favorite Toggle",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/favorite/toggle",
                   "host": [
@@ -1361,6 +1504,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"itemType\": \"any_value\",\n  \"targetId\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1371,12 +1523,29 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/favorite",
+                  "raw": "{{DEVELOPMENT_SERVER}}/favorite?type=REPLACE_ME&page=1&limit=10",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "favorite"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -1401,7 +1570,13 @@
               "name": "Create Follow Toggle",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/follow/toggle",
                   "host": [
@@ -1421,6 +1596,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"targetId\": \"string_value\",\n  \"targetType\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1431,13 +1615,25 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/follow/status",
+                  "raw": "{{DEVELOPMENT_SERVER}}/follow/status?targetId=REPLACE_ME&targetType=BusinessProfile",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "follow",
                     "status"
+                  ],
+                  "query": [
+                    {
+                      "key": "targetId",
+                      "value": "REPLACE_ME",
+                      "description": "Auto-extracted param"
+                    },
+                    {
+                      "key": "targetType",
+                      "value": "BusinessProfile",
+                      "description": "Auto-extracted param"
+                    }
                   ]
                 },
                 "auth": {
@@ -1462,7 +1658,13 @@
               "name": "Create Merchant",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/merchant",
                   "host": [
@@ -1481,6 +1683,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shopName\": \"string_value\",\n  \"aboutShop\": \"string_value\",\n  \"termsAndCondition\": \"string_value\",\n  \"shopType\": \"string_value\",\n  \"shopLink\": \"string_value\",\n  \"location\": \"string_value\",\n  \"phone\": \"string_value\",\n  \"socialLinks\": \"any_value\",\n  \"profileImage\": \"string_value\",\n  \"bannerImage\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1554,6 +1765,12 @@
                   "path": [
                     "merchant",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1573,7 +1790,13 @@
               "name": "Update Merchant",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/merchant/:id",
                   "host": [
@@ -1582,6 +1805,12 @@
                   "path": [
                     "merchant",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1593,6 +1822,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shopName\": \"string_value\",\n  \"aboutShop\": \"string_value\",\n  \"termsAndCondition\": \"string_value\",\n  \"shopType\": \"string_value\",\n  \"shopLink\": \"string_value\",\n  \"location\": \"string_value\",\n  \"phone\": \"string_value\",\n  \"socialLinks\": \"any_value\",\n  \"profileImage\": \"string_value\",\n  \"bannerImage\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1606,7 +1844,13 @@
               "name": "Create Order",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/order",
                   "host": [
@@ -1625,6 +1869,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"merchantId\": \"string_value\",\n  \"items\": \"any_value\",\n  \"customerInfo\": \"any_value\",\n  \"paymentInfo\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1635,13 +1888,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/order/my-orders",
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/my-orders?page=1&limit=10&status=REPLACE_ME&orderId=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "order",
                     "my-orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -1663,13 +1938,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/order/merchant",
+                  "raw": "{{DEVELOPMENT_SERVER}}/order/merchant?page=1&limit=10&status=REPLACE_ME&orderId=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "order",
                     "merchant"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -1698,6 +1995,12 @@
                   "path": [
                     "order",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1717,7 +2020,13 @@
               "name": "Update Order Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/order/:id/status",
                   "host": [
@@ -1727,6 +2036,12 @@
                     "order",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1738,6 +2053,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1751,7 +2075,13 @@
               "name": "Create Product",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/product",
                   "host": [
@@ -1770,6 +2100,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"merchantId\": \"string_value\",\n  \"categoryId\": \"string_value\",\n  \"name\": \"string_value\",\n  \"description\": \"string_value\",\n  \"location\": \"string_value\",\n  \"price\": 123,\n  \"currency\": \"string_value\",\n  \"stockQuantity\": 123,\n  \"colors\": \"string_value\",\n  \"materials\": \"string_value\",\n  \"sizes\": \"string_value\",\n  \"shippingCost\": 123,\n  \"shippingCurrency\": \"string_value\",\n  \"discount\": 123,\n  \"images\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1780,12 +2119,44 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/product",
+                  "raw": "{{DEVELOPMENT_SERVER}}/product?page=1&limit=10&search=&status=REPLACE_ME&categoryId=REPLACE_ME&merchantId=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "product"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "merchantId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -1814,6 +2185,12 @@
                   "path": [
                     "product",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1833,7 +2210,13 @@
               "name": "Update Product",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/product/:id",
                   "host": [
@@ -1842,6 +2225,12 @@
                   "path": [
                     "product",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1853,6 +2242,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"categoryId\": \"string_value\",\n  \"name\": \"string_value\",\n  \"description\": \"string_value\",\n  \"location\": \"string_value\",\n  \"price\": 123,\n  \"currency\": \"string_value\",\n  \"stockQuantity\": 123,\n  \"colors\": \"string_value\",\n  \"materials\": \"string_value\",\n  \"sizes\": \"string_value\",\n  \"shippingCost\": 123,\n  \"shippingCurrency\": \"string_value\",\n  \"discount\": 123,\n  \"images\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1870,6 +2268,12 @@
                   "path": [
                     "product",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1894,7 +2298,13 @@
               "name": "Create Review",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/review",
                   "host": [
@@ -1913,6 +2323,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"targetId\": \"string_value\",\n  \"targetType\": \"any_value\",\n  \"rating\": 123,\n  \"text\": \"string_value\",\n  \"image\": \"string_value\",\n  \"isAnonymous\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1923,7 +2342,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/review/target/:targetId",
+                  "raw": "{{DEVELOPMENT_SERVER}}/review/target/:targetId?page=1&limit=10",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
@@ -1931,6 +2350,24 @@
                     "review",
                     "target",
                     ":targetId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "targetId",
+                      "value": "REPLACE_ME_TARGETID"
+                    }
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -1950,7 +2387,13 @@
               "name": "Create Review Reply",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/review/:id/reply",
                   "host": [
@@ -1960,6 +2403,12 @@
                     "review",
                     ":id",
                     "reply"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -1971,6 +2420,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -1979,7 +2437,13 @@
               "name": "Create Review Report",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/review/:id/report",
                   "host": [
@@ -1989,6 +2453,12 @@
                     "review",
                     ":id",
                     "report"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -2000,6 +2470,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2013,7 +2492,13 @@
               "name": "Create Subscription Sync",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/subscription/sync",
                   "host": [
@@ -2033,6 +2518,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"revenueCatId\": \"string_value\",\n  \"packageId\": \"string_value\",\n  \"productId\": \"string_value\",\n  \"planTier\": \"string_value\",\n  \"platform\": \"string_value\",\n  \"purchasedAt\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2102,7 +2596,13 @@
               "name": "Create Dev Subscription-plan",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/dev/subscription-plan",
                   "host": [
@@ -2122,6 +2622,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"revenueCatId\": \"string_value\",\n  \"packageId\": \"string_value\",\n  \"productId\": \"string_value\",\n  \"name\": \"string_value\",\n  \"description\": \"string_value\",\n  \"planTier\": \"string_value\",\n  \"price\": 123,\n  \"currency\": \"string_value\",\n  \"billingPeriod\": \"string_value\",\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2130,7 +2639,13 @@
               "name": "Update Dev Subscription-plan",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/dev/subscription-plan/:id",
                   "host": [
@@ -2140,6 +2655,12 @@
                     "dev",
                     "subscription-plan",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -2151,6 +2672,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"revenueCatId\": \"string_value\",\n  \"packageId\": \"string_value\",\n  \"productId\": \"string_value\",\n  \"name\": \"string_value\",\n  \"description\": \"string_value\",\n  \"planTier\": \"string_value\",\n  \"price\": 123,\n  \"currency\": \"string_value\",\n  \"billingPeriod\": \"string_value\",\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2161,12 +2691,39 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/subscription-plan",
+                  "raw": "{{DEVELOPMENT_SERVER}}/subscription-plan?page=1&limit=10&search=&status=REPLACE_ME&planTier=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "subscription-plan"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "planTier",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -2195,6 +2752,12 @@
                   "path": [
                     "subscription-plan",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -2221,13 +2784,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/transaction/me",
+                  "raw": "{{DEVELOPMENT_SERVER}}/transaction/me?page=1&limit=10&type=REPLACE_ME&status=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "transaction",
                     "me"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -2247,7 +2832,13 @@
               "name": "Create Transaction Withdraw",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/transaction/withdraw",
                   "host": [
@@ -2267,6 +2858,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 123\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2308,7 +2908,13 @@
               "name": "Create Wallet Connect-stripe",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/wallet/connect-stripe",
                   "host": [
@@ -2328,6 +2934,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stripeAccountId\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2641,25 +3256,21 @@
               "name": "Upload Image",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "image",
-                      "type": "file",
-                      "uuid": "626deb84-6d96-48bf-a5cc-ed9433baadc5",
-                      "src": "/home/abdullah/Downloads/download.jpeg"
-                    },
-                    {
-                      "key": "imageUrl",
-                      "value": "",
-                      "description": "if need to update image with new one",
-                      "type": "text",
-                      "uuid": "4918bb61-1526-4134-a6db-96e299c68764",
-                      "disabled": true
+                  "mode": "raw",
+                  "raw": "{\n  \"imageUrl\": \"any_value\",\n  \"imageUrls\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
                     }
-                  ]
+                  }
                 },
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/image",
@@ -2739,6 +3350,11 @@
                       "key": "contentType",
                       "value": "about",
                       "description": "privacy | terms | about | mission"
+                    },
+                    {
+                      "key": "message",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
                     }
                   ]
                 }
@@ -2850,7 +3466,13 @@
               "name": "Update Admin Country Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/country/:id/status",
                   "host": [
@@ -2861,6 +3483,12 @@
                     "country",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -2872,6 +3500,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"any_value\",\n  \"message\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -2954,6 +3591,11 @@
                       "key": "status",
                       "value": "true",
                       "disabled": true
+                    },
+                    {
+                      "key": "message",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
                     }
                   ]
                 }
@@ -3074,7 +3716,13 @@
               "name": "Update Admin Category",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/category/:id",
                   "host": [
@@ -3084,6 +3732,12 @@
                     "admin",
                     "category",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3095,6 +3749,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"categoryName\": \"string_value\",\n  \"categoryImage\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3103,7 +3766,13 @@
               "name": "Update Admin Subcategory",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/subcategory/:id",
                   "host": [
@@ -3113,6 +3782,12 @@
                     "admin",
                     "subcategory",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3124,6 +3799,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subCategoryName\": \"string_value\",\n  \"status\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3228,7 +3912,13 @@
               "name": "Update Admin Product-category",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/product-category/:id",
                   "host": [
@@ -3238,6 +3928,12 @@
                     "admin",
                     "product-category",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3249,6 +3945,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"categoryName\": \"string_value\",\n  \"status\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3264,13 +3969,70 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business?page=1&limit=10&search=&status=REPLACE_ME&categoryId=REPLACE_ME&subCategoryId=REPLACE_ME&countryId=REPLACE_ME&businessType=REPLACE_ME&businessOwnerType=REPLACE_ME&location=REPLACE_ME&isFeatured=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "business"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "subCategoryId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "countryId",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "businessType",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "businessOwnerType",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "location",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3290,7 +4052,13 @@
               "name": "Update Admin Business Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/business/:id/status",
                   "host": [
@@ -3301,6 +4069,12 @@
                     "business",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3312,6 +4086,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3327,13 +4110,40 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business-profile",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/business-profile?page=1&limit=10&search=&status=REPLACE_ME&businessOwnerType=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "business-profile"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "businessOwnerType",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3353,7 +4163,13 @@
               "name": "Update Admin Business-profile Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/business-profile/:id/status",
                   "host": [
@@ -3364,6 +4180,12 @@
                     "business-profile",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3375,6 +4197,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3390,13 +4221,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/complains",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/complains?page=1&limit=10&search=&type=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "complains"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3426,6 +4279,12 @@
                     "admin",
                     "complains",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3478,7 +4337,13 @@
               "name": "Update Admin Contact Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/contact/:id/status",
                   "host": [
@@ -3489,6 +4354,12 @@
                     "contact",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3500,6 +4371,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3577,7 +4457,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/subscriptions",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/subscriptions?page=1&limit=10&search=&type=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
@@ -3585,6 +4465,28 @@
                     "admin",
                     "earning",
                     "subscriptions"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3606,7 +4508,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/commissions",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/earning/commissions?page=1&limit=10&search=&type=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
@@ -3614,6 +4516,28 @@
                     "admin",
                     "earning",
                     "commissions"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3638,7 +4562,13 @@
               "name": "Update Admin Legal",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/legal/:id",
                   "host": [
@@ -3648,6 +4578,12 @@
                     "admin",
                     "legal",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3659,6 +4595,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"any_value\",\n  \"message\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3674,13 +4619,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/merchant",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/merchant?page=1&limit=10&search=&status=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "merchant"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3700,7 +4667,13 @@
               "name": "Update Admin Merchant Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/merchant/:id/status",
                   "host": [
@@ -3711,6 +4684,12 @@
                     "merchant",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3722,6 +4701,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3735,7 +4723,13 @@
               "name": "Create Admin Notification Custom",
               "request": {
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/notification/custom",
                   "host": [
@@ -3756,6 +4750,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"string_value\",\n  \"description\": \"string_value\",\n  \"targetType\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3769,7 +4772,13 @@
               "name": "Update Admin Product Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/product/:id/status",
                   "host": [
@@ -3780,6 +4789,12 @@
                     "product",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3791,6 +4806,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3806,13 +4830,30 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subscribers",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/subscribers?page=1&limit=10&search=",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "subscribers"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3837,7 +4878,13 @@
               "name": "Update Admin Subscription-plan Details",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/subscription-plan/:id/details",
                   "host": [
@@ -3848,6 +4895,12 @@
                     "subscription-plan",
                     ":id",
                     "details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3859,6 +4912,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"string_value\",\n  \"description\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3872,7 +4934,13 @@
               "name": "Update Admin Transaction Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/transaction/:id/status",
                   "host": [
@@ -3883,6 +4951,12 @@
                     "transaction",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3894,6 +4968,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"any_value\",\n  \"stripeTransferId\": \"string_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []
@@ -3909,13 +4992,35 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{DEVELOPMENT_SERVER}}/admin/users",
+                  "raw": "{{DEVELOPMENT_SERVER}}/admin/users?page=1&limit=10&search=&type=REPLACE_ME",
                   "host": [
                     "{{DEVELOPMENT_SERVER}}"
                   ],
                   "path": [
                     "admin",
                     "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "From Zod Schema"
+                    },
+                    {
+                      "key": "type",
+                      "value": "REPLACE_ME",
+                      "description": "From Zod Schema"
+                    }
                   ]
                 },
                 "auth": {
@@ -3945,6 +5050,12 @@
                     "admin",
                     "users",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3964,7 +5075,13 @@
               "name": "Update Admin Users Status",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{DEVELOPMENT_SERVER}}/admin/users/:id/status",
                   "host": [
@@ -3975,6 +5092,12 @@
                     "users",
                     ":id",
                     "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "REPLACE_ME_ID"
+                    }
                   ]
                 },
                 "auth": {
@@ -3986,6 +5109,15 @@
                       "type": "string"
                     }
                   ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"any_value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               },
               "response": []

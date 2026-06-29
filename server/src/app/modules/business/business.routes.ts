@@ -32,6 +32,12 @@ router
     checkAccountStatus,
     validateReqBody(CreateBusinessSchema),
     createBusinessController
+  )
+  .get(
+    checkAccessToken,
+    checkAccountStatus,
+    validateReqQuery(BusinessQuerySchema),
+    getAllBusinessesController
   );
 
 // GET my businesses (Authenticated)
