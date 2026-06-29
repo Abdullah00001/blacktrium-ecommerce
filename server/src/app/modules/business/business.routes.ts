@@ -15,10 +15,9 @@ import {
   BusinessQuerySchema,
   AdminUpdateBusinessStatusSchema,
 } from '@/app/modules/business/business.schemas';
-import {
+import { findUserById,
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
   checkAdminAccessToken,
   isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
@@ -31,7 +30,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(CreateBusinessSchema),
     createBusinessController
   );
@@ -42,7 +40,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     getMyBusinessesController
   );
 
@@ -59,7 +56,6 @@ router
   .patch(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(UpdateBusinessSchema),
     updateBusinessController
   );
@@ -70,7 +66,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     keepBusinessActiveController
   );
 

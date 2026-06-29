@@ -14,8 +14,7 @@ import {
 } from '@/app/modules/order/order.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 import { requireMerchantShop } from '@/app/modules/wallet/wallet.middlewares';
 import { checkOrderExists } from '@/app/modules/order/order.middlewares';
@@ -32,7 +31,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(CreateOrderSchema),
     createOrderController
   );
@@ -43,7 +41,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqQuery(OrderQuerySchema),
     getMyOrdersController
   );
@@ -54,7 +51,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     validateReqQuery(OrderQuerySchema),
     getMerchantOrdersController
@@ -66,7 +62,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     checkOrderExists,
     getOrderByIdController
   );
@@ -77,7 +72,6 @@ router
   .patch(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     checkOrderExists,
     validateReqBody(UpdateOrderStatusSchema),

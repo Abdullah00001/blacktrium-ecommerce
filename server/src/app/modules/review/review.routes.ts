@@ -14,8 +14,7 @@ import {
 } from '@/app/modules/review/review.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
@@ -30,7 +29,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(CreateReviewSchema),
     createReviewController
   );
@@ -49,7 +47,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(ReplyReviewSchema),
     replyToReviewController
   );
@@ -60,7 +57,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(ReportReviewSchema),
     reportReviewController
   );

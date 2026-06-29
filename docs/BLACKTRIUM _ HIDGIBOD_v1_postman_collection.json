@@ -1216,6 +1216,42 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Toggle [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/follow/toggle",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "follow",
+                    "toggle"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Status [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/follow/status",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "follow",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },

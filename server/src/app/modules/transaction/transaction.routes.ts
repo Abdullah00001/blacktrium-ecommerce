@@ -10,10 +10,9 @@ import {
   RequestWithdrawalSchema,
   AdminUpdateTransactionStatusSchema,
 } from '@/app/modules/transaction/transaction.schemas';
-import {
+import { findUserById,
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
   checkAdminAccessToken,
   isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
@@ -32,7 +31,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     validateReqQuery(TransactionQuerySchema),
     getMyTransactionsController
@@ -44,7 +42,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     validateReqBody(RequestWithdrawalSchema),
     requestWithdrawalController

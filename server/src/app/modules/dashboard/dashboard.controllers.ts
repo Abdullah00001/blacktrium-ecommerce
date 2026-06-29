@@ -32,7 +32,8 @@ export const getAdminDashboardController = asyncHandler(
 export const getUserDashboardHomeController = asyncHandler(
   async (req: Request, res: Response) => {
     const traceId = getTraceId();
-    const data = await getUserDashboardHomeService();
+    const user = req.user as IUser;
+    const data = await getUserDashboardHomeService(user._id.toString());
 
     res.status(200).json({
       success: true,

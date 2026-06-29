@@ -13,27 +13,30 @@ import {
 } from '@/app/modules/cart/cart.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
 
-// Apply auth middleware to all cart routes
-router.use(checkAccessToken, checkAccountStatus, findUserById);
+// Applying auth middleware directly to routes to avoid leaking to v1 global scope
 
 router
   .route('/cart')
-  .get(getCartController)
-  .delete(clearCartController);
+  .get(checkAccessToken,
+    checkAccountStatus, getCartController)
+  .delete(checkAccessToken,
+    checkAccountStatus, clearCartController);
 
 router
   .route('/cart/add')
-  .post(validateReqBody(AddToCartSchema), addToCartController);
+  .post(checkAccessToken,
+    checkAccountStatus, validateReqBody(AddToCartSchema), addToCartController);
 
 router
   .route('/cart/item/:itemId')
-  .patch(validateReqBody(UpdateCartItemSchema), updateCartItemController)
-  .delete(removeCartItemController);
+  .patch(checkAccessToken,
+    checkAccountStatus, validateReqBody(UpdateCartItemSchema), updateCartItemController)
+  .delete(checkAccessToken,
+    checkAccountStatus, removeCartItemController);
 
 export const CartRoutes = router;

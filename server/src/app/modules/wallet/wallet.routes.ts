@@ -7,8 +7,7 @@ import { validateReqBody } from '@/app/utils/system.utils';
 import { ConnectStripeSchema } from '@/app/modules/wallet/wallet.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 import { requireMerchantShop } from '@/app/modules/wallet/wallet.middlewares';
 
@@ -24,7 +23,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     getMyWalletController
   );
@@ -35,7 +33,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     validateReqBody(ConnectStripeSchema),
     connectStripeController

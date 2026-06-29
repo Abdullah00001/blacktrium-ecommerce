@@ -10,8 +10,7 @@ import {
 } from '@/app/modules/favorite/favorite.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
@@ -26,7 +25,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(ToggleFavoriteSchema),
     toggleFavoriteController
   );
@@ -37,7 +35,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqQuery(FavoriteQuerySchema),
     getFavoritesController
   );

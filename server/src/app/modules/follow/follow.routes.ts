@@ -7,8 +7,7 @@ import { validateReqBody } from '@/app/utils/system.utils';
 import { ToggleFollowSchema } from '@/app/modules/follow/follow.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
@@ -19,7 +18,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(ToggleFollowSchema),
     toggleFollowController
   );
@@ -30,7 +28,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     checkFollowStatusController
   );
 

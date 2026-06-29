@@ -14,10 +14,9 @@ import {
   ProductQuerySchema,
   AdminUpdateProductStatusSchema,
 } from '@/app/modules/product/product.schemas';
-import {
+import { findUserById,
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
   checkAdminAccessToken,
   isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
@@ -39,7 +38,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(CreateProductSchema),
     checkMerchantBeforeCreateProduct,
     createProductController
@@ -67,7 +65,6 @@ router
   .patch(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     checkProductExists,
     checkProductOwnership,
     validateReqBody(UpdateProductSchema),
@@ -80,7 +77,6 @@ router
   .delete(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     checkProductExists,
     checkProductOwnership,
     deleteProductController

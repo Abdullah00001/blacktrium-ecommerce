@@ -7,7 +7,6 @@ import {
 import {
   checkAdminAccessToken,
   findUserById,
-  findUserById,
   isAdmin,
   checkAccessToken,
   checkAccountStatus,
@@ -34,10 +33,10 @@ router
 // User Dashboard Routes
 // ========================
 
-// GET User App Home Screen Data (Public or Auth)
+// GET User App Home Screen Data (Authenticated)
 router
   .route('/dashboard/home')
-  .get(getUserDashboardHomeController);
+  .get(checkAccessToken, checkAccountStatus, getUserDashboardHomeController);
 
 // ========================
 // Merchant Dashboard Routes
@@ -49,7 +48,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     requireMerchantShop,
     getMerchantDashboardController
   );

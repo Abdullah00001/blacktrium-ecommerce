@@ -8,8 +8,7 @@ import { validateReqBody } from '@/app/utils/system.utils';
 import { SyncSubscriptionSchema } from '@/app/modules/subscription/subscription.schemas';
 import {
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
 } from '@/app/modules/auth/auth.middlewares';
 
 const router = Router();
@@ -23,7 +22,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(SyncSubscriptionSchema),
     syncSubscriptionController
   );
@@ -33,7 +31,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     getMySubscriptionController
   );
 
@@ -42,7 +39,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     cancelSubscriptionController
   );
 

@@ -15,10 +15,9 @@ import {
   MerchantQuerySchema,
   AdminUpdateMerchantStatusSchema,
 } from '@/app/modules/merchant/merchant.schemas';
-import {
+import { findUserById,
   checkAccessToken,
-  checkAccountStatus,
-  findUserById,
+    checkAccountStatus,
   checkAdminAccessToken,
   isAdmin,
 } from '@/app/modules/auth/auth.middlewares';
@@ -39,7 +38,6 @@ router
   .post(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     validateReqBody(CreateMerchantSchema),
     createMerchantController
   );
@@ -50,7 +48,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     getMyMerchantController
   );
 
@@ -60,7 +57,6 @@ router
   .get(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     getMerchantAnalyticsController
   );
 
@@ -78,7 +74,6 @@ router
   .patch(
     checkAccessToken,
     checkAccountStatus,
-    findUserById,
     checkMerchantExists,
     checkMerchantOwnership,
     validateReqBody(UpdateMerchantSchema),

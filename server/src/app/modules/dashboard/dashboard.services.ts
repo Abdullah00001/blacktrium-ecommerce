@@ -3,6 +3,8 @@ import { MerchantModel } from '@/app/schemas/merchant/merchant.schema';
 import { OrderModel } from '@/app/schemas/order/order.schema';
 import { CategoryModel } from '@/app/schemas/category/category.schema';
 import { ProductModel } from '@/app/schemas/product/product.schema';
+import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
+import { FollowModel } from '@/app/schemas/follow/follow.schema';
 import { Role, AccountStatus } from '@/app/schemas/user/user.types';
 import mongoose from 'mongoose';
 
@@ -102,28 +104,56 @@ export const getAdminDashboardOverviewService = async (query: { chartType?: stri
   };
 };
 
-export const getUserDashboardHomeService = async () => {
-  // 1. Fetch Top Categories
-  const categories = await CategoryModel.find({ status: true }).limit(10).lean();
+export const getUserDashboardHomeService = async (userId: string) => {
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
-  // 2. Fetch Featured/Trending Products
-  const trendingProducts = await ProductModel.find({ status: 'active' })
-    .sort({ stockQuantity: -1 }) // Mocking trending by stock, can be updated
+  // 1. Fetch Featured Businesses
+  const featuredBusinesses = await MerchantModel.find({ status: 'active', isFeatured: true })
+    .sort({ rating: -1, followersCount: -1 })
     .limit(10)
-    .populate('merchantId', 'shopName')
+    .populate('businessProfileId', 'rating followersCount')
     .lean();
 
-  // 3. Fetch New Arrivals
-  const newArrivals = await ProductModel.find({ status: 'active' })
+  // 2. Fetch All Businesses
+  const allBusinesses = await MerchantModel.find({ status: 'active' })
     .sort({ createdAt: -1 })
-    .limit(10)
-    .populate('merchantId', 'shopName')
+    .limit(15)
+    .populate('businessProfileId', 'rating followersCount')
     .lean();
+
+  // 3. Fetch All Products
+  const allProducts = await ProductModel.find({ status: 'active' })
+    .sort({ createdAt: -1 })
+    .limit(20)
+    .populate('merchantId', 'shopName location')
+    .lean();
+
+  // 4. Fetch Business Owners (Recommended logic with isFollowing)
+  const rawBusinessOwners = await BusinessProfileModel.find({ status: 'active' })
+    .sort({ rating: -1, followersCount: -1 })
+    .limit(10)
+    .lean();
+
+  const businessOwnersIds = rawBusinessOwners.map(profile => profile._id);
+
+  const followingRecords = await FollowModel.find({
+    userId: userObjectId,
+    targetId: { $in: businessOwnersIds },
+    targetType: 'BusinessProfile'
+  }).lean();
+
+  const followingSet = new Set(followingRecords.map(record => record.targetId.toString()));
+
+  const businessOwners = rawBusinessOwners.map(profile => ({
+    ...profile,
+    isFollowing: followingSet.has(profile._id.toString())
+  }));
 
   return {
-    categories,
-    trendingProducts,
-    newArrivals,
+    featuredBusinesses,
+    allBusinesses,
+    allProducts,
+    businessOwners,
   };
 };
 
