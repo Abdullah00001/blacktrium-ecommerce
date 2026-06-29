@@ -7,6 +7,7 @@ import {
   updateBusinessProfileService,
   getAllBusinessProfilesService,
   updateBusinessProfileStatusService,
+  getRecommendedBusinessProfilesService,
 } from '@/app/modules/businessprofile/businessprofile.services';
 import {
   TUpdateBusinessProfile,
@@ -98,6 +99,25 @@ export const updateBusinessProfileStatusController = asyncHandler(
       success: true,
       status: 200,
       message: 'Business profile status updated successfully',
+      data,
+      traceId,
+    });
+  }
+);
+
+export const getRecommendedBusinessProfilesController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const traceId = getTraceId();
+    const user = req.user as IUser;
+
+    const data = await getRecommendedBusinessProfilesService({
+      userId: user?._id.toString() || null,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Recommended business profiles retrieved successfully',
       data,
       traceId,
     });

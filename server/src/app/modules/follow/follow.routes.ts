@@ -15,7 +15,7 @@ const router = Router();
 
 // Toggle Follow/Unfollow
 router
-  .route('/toggle')
+  .route('/follow/toggle')
   .post(
     checkAccessToken,
     checkAccountStatus,
@@ -26,7 +26,7 @@ router
 
 // Check if currently following
 router
-  .route('/status')
+  .route('/follow/status')
   .get(
     checkAccessToken,
     checkAccountStatus,

@@ -919,6 +919,24 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Recommended [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/business-profile/recommended",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "business-profile",
+                    "recommended"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },

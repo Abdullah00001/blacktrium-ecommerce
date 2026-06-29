@@ -39,10 +39,20 @@ This document maps all **70+ backend API endpoints** to the specific UI screens 
   * `POST /api/v1/profile/password` (Changes password while logged in)
 
 ### 1.4 Business Account Setup
+* **Recommended Businesses Screen (Signup Step 2)**:
+  * `GET /api/v1/business-profile/recommended` (Fetches top business owners to follow during onboarding. Injects `isFollowing` state.)
 * **Become a Merchant Flow**:
   * `POST /api/v1/business-profile` (Upgrades user to merchant role)
-  * `GET /api/v1/business-profile/me` (Fetches the current user's business profile status)
+  * `GET /api/v1/business-profile/me` (Fetches the current user's business profile and embedded `subscriptionId` object)
   * `PATCH /api/v1/business-profile/me` (Updates business branding and info)
+
+> [!TIP]
+> **How to handle "Switch to Business" & Subscriptions on Frontend**
+> The mobile app does not need a "switch profile" API. Call `GET /api/v1/business-profile/me` on startup. The backend populates the Subscription data inside the response, allowing the UI to route based on 4 states:
+> 1. **New User (404 Not Found)**: Show "Become a Merchant" onboarding button.
+> 2. **Unpaid (200 OK, `subscriptionId: null`)**: Route directly to Subscription Pricing Screen.
+> 3. **Expired (200 OK, `subscriptionId.status === 'expired'`)**: Block dashboard access and show "Please Renew" screen.
+> 4. **Active (200 OK, `subscriptionId.status === 'active'`)**: Show "Switch to Business" button and grant Merchant Dashboard access.
 
 ---
 

@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { BusinessProfileModel } from '@/app/schemas/businessprofile/businessprofile.schema';
+import { FollowModel } from '@/app/schemas/follow/follow.schema';
 import { IBusinessProfile } from '@/app/schemas/businessprofile/businessprofile.types';
 import {
   TUpdateBusinessProfile,
@@ -110,4 +111,35 @@ export const updateBusinessProfileStatusService = async ({
     throw new Error('Business Profile not found');
   }
   return result;
+};
+
+export const getRecommendedBusinessProfilesService = async ({
+  userId,
+}: {
+  userId: string | null;
+}) => {
+  // Fetch top 10 recommended business profiles based on rating & followers (active status only)
+  const profiles = await BusinessProfileModel.find({ status: 'active' })
+    .sort({ rating: -1, followersCount: -1 })
+    .limit(10)
+    .lean();
+
+  if (!userId) {
+    return profiles.map(p => ({ ...p, isFollowing: false }));
+  }
+
+  // If user is authenticated, check which ones they follow
+  const profileIds = profiles.map(p => p._id);
+  const follows = await FollowModel.find({
+    followerId: new Types.ObjectId(userId),
+    targetId: { $in: profileIds },
+    targetType: 'BusinessProfile'
+  }).lean();
+
+  const followingSet = new Set(follows.map(f => f.targetId.toString()));
+
+  return profiles.map(p => ({
+    ...p,
+    isFollowing: followingSet.has(p._id.toString())
+  }));
 };

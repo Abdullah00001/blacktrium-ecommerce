@@ -95,6 +95,29 @@ async function runTests() {
   res = await makeRequest('/profile', 'PATCH', { firstName: 'UpdatedName' }, 'user');
   assertLog('Update User Profile', res);
 
+  console.log('\n--- 1.5 ONBOARDING FLOW (Step 2) ---');
+  res = await makeRequest('/business-profile/recommended', 'GET', null, 'user');
+  assertLog('Fetch Recommended Business Owners', res);
+  let targetBusinessId = '';
+  if (res.data?.data?.length > 0) {
+    targetBusinessId = res.data.data[0]._id;
+    console.log(`Target Business for Follow test: ${targetBusinessId}`);
+  }
+
+  if (targetBusinessId) {
+    res = await makeRequest('/follow/toggle', 'POST', { targetType: 'BusinessProfile', targetId: targetBusinessId }, 'user');
+    assertLog('Follow Business Owner', res);
+    
+    // Re-fetch to ensure isFollowing is true
+    res = await makeRequest('/business-profile/recommended', 'GET', null, 'user');
+    const updatedProfile = res.data?.data?.find(p => p._id === targetBusinessId);
+    if (updatedProfile && updatedProfile.isFollowing) {
+      console.log('✅ [SUCCESS] Recommended API correctly injected isFollowing: true');
+    } else {
+      console.log('❌ [FAIL] Recommended API failed to inject isFollowing: true');
+    }
+  }
+
   console.log('\n--- 2. CATALOG & DISCOVERY FLOW ---');
   res = await makeRequest('/dashboard/home', 'GET', null, 'user');
   assertLog('GET /dashboard/home', res);

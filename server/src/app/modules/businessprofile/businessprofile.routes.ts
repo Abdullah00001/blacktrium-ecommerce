@@ -5,6 +5,7 @@ import {
   updateBusinessProfileController,
   getAllBusinessProfilesController,
   updateBusinessProfileStatusController,
+  getRecommendedBusinessProfilesController,
 } from '@/app/modules/businessprofile/businessprofile.controllers';
 import { validateReqBody, validateReqQuery } from '@/app/utils/system.utils';
 import {
@@ -29,6 +30,16 @@ const router = Router();
 // ========================
 // Business Profile Routes
 // ========================
+
+// GET Recommended Business Profiles (Public/Authenticated)
+router
+  .route('/business-profile/recommended')
+  .get(
+    checkAccessToken,
+    checkAccountStatus,
+    findUserById,
+    getRecommendedBusinessProfilesController
+  );
 
 // GET my business profile (Authenticated)
 router
