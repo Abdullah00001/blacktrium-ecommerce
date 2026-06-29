@@ -17,6 +17,7 @@ import { ProductCategoryModel } from '@/app/schemas/productcategory/productcateg
 import { ProductModel } from '@/app/schemas/product/product.schema';
 import { MerchantModel } from '@/app/schemas/merchant/merchant.schema';
 import { OrderModel } from '@/app/schemas/order/order.schema';
+import { BusinessModel } from '@/app/schemas/business/business.schema';
 
 const seedFull = async () => {
   try {
@@ -39,6 +40,7 @@ const seedFull = async () => {
     await ProductCategoryModel.deleteMany({});
     await ProductModel.deleteMany({});
     await MerchantModel.deleteMany({});
+    await BusinessModel.deleteMany({});
     await OrderModel.deleteMany({});
 
     const passwordHash = await bcrypt.hash('Password123!', 10);
@@ -64,7 +66,7 @@ const seedFull = async () => {
     // 2. Create Categories & Product Categories
     console.log('Seeding Categories...');
     const category = await CategoryModel.create({ categoryName: 'Clothing', categoryImage: 'https://example.com/cat.jpg', status: true });
-    await SubcategoryModel.create({ categoryId: category._id, subCategoryName: 'Men', status: true });
+    const subCategory = await SubcategoryModel.create({ categoryId: category._id, subCategoryName: 'Men', status: true });
     const productCategory = await ProductCategoryModel.create({ categoryName: 'Shirts', status: true });
 
     // 3. Create Users
@@ -111,7 +113,25 @@ const seedFull = async () => {
       termsAndCondition: "No refunds.",
       shopType: 'Fashion',
       location: 'New York, USA',
-      phone: '+14155552671'
+      phone: '+14155552671',
+      isFeatured: true
+    });
+
+    console.log('Seeding Businesses...');
+    await BusinessModel.create({
+      businessProfileId: businessProfile._id,
+      businessName: 'Elite Dining Co.',
+      businessType: 'Restaurant',
+      categoryId: category._id,
+      subCategoryId: subCategory._id,
+      location: 'Los Angeles, CA',
+      websiteLink: 'https://elitedining.com',
+      thumbnailImage: 'https://example.com/elite-dining.jpg',
+      businessDescription: 'Premium dining experience',
+      spotlightFeature: true,
+      rating: 4.8,
+      reviewsCount: 150,
+      status: 'active'
     });
 
     // Active Subscription for Merchant
