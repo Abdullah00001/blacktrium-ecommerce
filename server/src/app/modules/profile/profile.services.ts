@@ -16,18 +16,24 @@ export const updateProfileService = async ({
   try {
     const { country, firstName, lastName, phone, profileAvatar, interest } =
       payload;
+    const userUpdate: Record<string, any> = {};
+    if (firstName !== undefined) userUpdate.firstName = firstName;
+    if (lastName !== undefined) userUpdate.lastName = lastName;
+    if (phone !== undefined) userUpdate.phone = phone;
+
+    const profileUpdate: Record<string, any> = {};
+    if (country !== undefined) profileUpdate.country = country;
+    if (profileAvatar !== undefined) profileUpdate.profileAvatar = profileAvatar;
+    if (interest !== undefined) profileUpdate.interest = interest;
+
     const updatedUser = await UserModel.findOneAndUpdate(
-      {
-        _id: user._id,
-      },
-      { $set: { firstName, lastName, phone } },
+      { _id: user._id },
+      { $set: userUpdate },
       { returnDocument: 'after' }
     );
     const updatedProfile = await ProfileModel.findOneAndUpdate(
-      {
-        userId: user._id,
-      },
-      { $set: { country, profileAvatar, interest } },
+      { userId: user._id },
+      { $set: profileUpdate },
       { returnDocument: 'after' }
     );
     if (!updatedProfile || !updatedUser)
