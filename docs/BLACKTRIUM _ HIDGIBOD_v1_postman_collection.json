@@ -1007,6 +1007,96 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Cart [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/cart",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "cart"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cart [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/cart",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "cart"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Add [Auto]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/cart/add",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "cart",
+                    "add"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":itemId [Auto]",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/cart/item/:itemId",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "cart",
+                    "item",
+                    ":itemId"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": ":itemId [Auto]",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/cart/item/:itemId",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "cart",
+                    "item",
+                    ":itemId"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -1683,6 +1773,47 @@
                   "path": [
                     "wallet",
                     "connect-stripe"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Dashboard",
+          "item": [
+            {
+              "name": "Home [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/home",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dashboard",
+                    "home"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Merchant [Auto]",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{DEVELOPMENT_SERVER}}/dashboard/merchant",
+                  "host": [
+                    "{{DEVELOPMENT_SERVER}}"
+                  ],
+                  "path": [
+                    "dashboard",
+                    "merchant"
                   ]
                 }
               },

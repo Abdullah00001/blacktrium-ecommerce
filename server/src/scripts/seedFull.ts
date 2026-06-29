@@ -68,7 +68,14 @@ const seedFull = async () => {
     const productCategory = await ProductCategoryModel.create({ categoryName: 'Shirts', status: true });
 
     // 3. Create Users
-    console.log('Seeding Users (Consumers & Merchants)...');
+    console.log('Seeding Users (Admin, Consumers & Merchants)...');
+    
+    // Admin 1
+    const adminUser = await UserModel.create({
+      firstName: 'Admin', lastName: 'User', email: 'kefom76841@fishnone.com', password: passwordHash,
+      isVerified: true, isLegalTermsAccepted: true, role: 'admin' as any
+    });
+    await ProfileModel.create({ userId: adminUser._id, country: 'US' });
     
     // Consumer 1
     const user1 = await UserModel.create({
@@ -170,6 +177,7 @@ const seedFull = async () => {
 
     console.log('\n--------------------------------------------');
     console.log('✓ Seeding complete! Logins:');
+    console.log('Admin: kefom76841@fishnone.com / Password123!');
     console.log('User: user1@example.com / Password123!');
     console.log('Merchant: merchant@example.com / Password123!');
 

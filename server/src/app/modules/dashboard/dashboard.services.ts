@@ -2,7 +2,9 @@ import { UserModel } from '@/app/schemas/user/user.schema';
 import { MerchantModel } from '@/app/schemas/merchant/merchant.schema';
 import { OrderModel } from '@/app/schemas/order/order.schema';
 import { CategoryModel } from '@/app/schemas/category/category.schema';
+import { ProductModel } from '@/app/schemas/product/product.schema';
 import { Role, AccountStatus } from '@/app/schemas/user/user.types';
+import mongoose from 'mongoose';
 
 export const getAdminDashboardOverviewService = async (query: { chartType?: string, year?: string }) => {
   const chartType = query.chartType || 'Business'; // 'Business' or 'Users'
@@ -99,3 +101,66 @@ export const getAdminDashboardOverviewService = async (query: { chartType?: stri
     newUsers
   };
 };
+
+export const getUserDashboardHomeService = async () => {
+  // 1. Fetch Top Categories
+  const categories = await CategoryModel.find({ status: true }).limit(10).lean();
+
+  // 2. Fetch Featured/Trending Products
+  const trendingProducts = await ProductModel.find({ status: 'active' })
+    .sort({ stockQuantity: -1 }) // Mocking trending by stock, can be updated
+    .limit(10)
+    .populate('merchantId', 'shopName')
+    .lean();
+
+  // 3. Fetch New Arrivals
+  const newArrivals = await ProductModel.find({ status: 'active' })
+    .sort({ createdAt: -1 })
+    .limit(10)
+    .populate('merchantId', 'shopName')
+    .lean();
+
+  return {
+    categories,
+    trendingProducts,
+    newArrivals,
+  };
+};
+
+export const getMerchantDashboardService = async (merchantId: string) => {
+  const merchantObjectId = new mongoose.Types.ObjectId(merchantId);
+
+  // 1. Total Active Products
+  const activeProductsCount = await ProductModel.countDocuments({
+    merchantId: merchantObjectId,
+    status: 'active',
+  });
+
+  // 2. Orders Statistics
+  const orders = await OrderModel.find({ merchantId: merchantObjectId }).lean();
+  
+  const pendingOrdersCount = orders.filter(o => o.status === 'pending').length;
+  const totalOrdersCount = orders.length;
+
+  // 3. Total Earnings
+  const totalEarnings = orders
+    .filter(o => o.status !== 'cancelled' && o.paymentInfo?.status === 'paid')
+    .reduce((acc, curr) => acc + (curr.paymentInfo?.total || 0), 0);
+
+  // 4. Recent Orders
+  const recentOrders = await OrderModel.find({ merchantId: merchantObjectId })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .lean();
+
+  return {
+    overview: {
+      totalEarnings,
+      activeProductsCount,
+      pendingOrdersCount,
+      totalOrdersCount,
+    },
+    recentOrders,
+  };
+};
+
